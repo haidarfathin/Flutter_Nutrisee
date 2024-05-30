@@ -1,0 +1,70 @@
+name: nutrisee
+description: A new Flutter project.
+publish_to: none
+version: '1.0.0+1'
+environment:
+  sdk: '>=2.19.0 <3.0.0'
+dependencies:
+  bloc_concurrency: ^0.2.0
+  change_app_package_name: ^1.1.0
+  copy_with_extension: ^5.0.4
+  cupertino_icons: ^1.0.2
+  dartz: ^0.10.1
+  dio: ^4.0.6
+  dio_logging_interceptor: ^1.0.1
+  equatable: ^2.0.3
+  event_bus: ^2.0.0
+  firebase_core: ^2.31.1
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.1
+  flutter_image_compress: ^2.0.4
+  flutter_launcher_icons: ^0.13.1
+  flutter_local_notifications: ^15.1.1
+  flutter_localizations:
+    sdk: flutter
+  flutter_secure_storage: ^9.0.0
+  gap: ^3.0.1
+  get_it: ^7.2.0
+  go_router: ^10.1.2
+  google_fonts: ^5.1.0
+  google_nav_bar: ^5.0.6
+  gradient_borders: ^1.0.0
+  image_picker: ^1.0.4
+  infinite_scroll_pagination: ^4.0.0
+  injectable: ^2.3.0
+  ionicons: ^0.2.2
+  json_annotation: ^4.8.1
+  path_provider: ^2.0.11
+  permission_handler: ^11.0.0
+  retrofit: ^3.0.1+1
+  rxdart: ^0.27.5
+  syncfusion_flutter_gauges: ^25.2.5
+  uuid: ^4.0.0
+dev_dependencies:
+  build_runner: null
+  copy_with_extension_gen: ^5.0.4
+  flutter_gen_runner: null
+  flutter_lints: '^2.0.0'
+  flutter_test:
+    sdk: flutter
+  injectable_generator: null
+  json_serializable: null
+  retrofit_generator: null
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/images/
+    - assets/maps/
+
+flutter_launcher_icons:
+  image_path_android: "assets/images/ic_launcher.png"
+  image_path_ios: "assets/images/ic_launcher_1024.png"
+  android: true # can specify file name here e.g. "ic_launcher"
+  ios: true # can specify file name here e.g. "My-Launcher-Icon"
+  adaptive_icon_background: "assets/images/ic_launcher_background.png" # only available for Android 8.0 devices and above
+  adaptive_icon_foreground: "assets/images/ic_launcher_foreground.png" # only available for Android 8.0 devices and above
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  remove_alpha_ios: true
+  background_color_ios: "#FFFFFF"

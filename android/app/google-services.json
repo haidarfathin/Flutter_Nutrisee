@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "216665541926",
+    "project_id": "ocr-flutter-d232e",
+    "storage_bucket": "ocr-flutter-d232e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216665541926:android:8697067ded325f617bc5e7",
+        "android_client_info": {
+          "package_name": "com.example.nutrisee"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdNJEHd3JC_SGU7bolTue8-ToEAdxXGeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
