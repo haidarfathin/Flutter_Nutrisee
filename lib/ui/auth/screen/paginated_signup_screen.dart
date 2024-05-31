@@ -10,7 +10,7 @@ import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_textfield.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
-import 'package:nutrisee/ui/auth/widget/app_radio.dart';
+import 'package:nutrisee/core/widgets/app_radio.dart';
 import 'package:nutrisee/ui/auth/widget/diabetes_type_radio.dart';
 
 import '../widget/diebetisi_radio.dart';

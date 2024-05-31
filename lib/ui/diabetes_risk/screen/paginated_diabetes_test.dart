@@ -1,13 +1,19 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:im_stepper/stepper.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_textfield.dart';
-import 'package:nutrisee/ui/auth/widget/app_radio.dart';
+import 'package:nutrisee/core/widgets/app_theme.dart';
+import 'package:nutrisee/core/widgets/app_radio.dart';
+import 'package:nutrisee/ui/diabetes_risk/screen/diabetes_result_screen.dart';
+import 'package:nutrisee/ui/diabetes_risk/widget/questioner_card.dart';
 
 class PaginatedDiabetesTest extends StatefulWidget {
   const PaginatedDiabetesTest({super.key});
@@ -18,136 +24,313 @@ class PaginatedDiabetesTest extends StatefulWidget {
 
 class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
   String? _selectedGender;
-  final List<String> options = ['Option 1', 'Option 2', 'Option 3'];
-  String selectedOption = '';
+  final List<String> lingkarPinggangOptions = [
+    '< 80cm',
+    '80-88cm',
+    '89-93cm',
+    '94-102cm',
+    '> 102cm'
+  ];
+  String? selectedLingkarPinggang;
+
+  List<StepWidget> steps() => [
+        StepWidget(
+          title: "Tentang Kamu",
+          content: stepOne(context),
+        ),
+        StepWidget(
+          title: "Kondisi kesehatan",
+          content: stepTwo(context),
+        ),
+        StepWidget(
+          title: "Gaya Hidup",
+          content: stepThree(context),
+        ),
+      ];
+
+  int activeStep = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            "Langkah 1 dari 3",
-            style: context.textTheme.bodyLarge,
+        backgroundColor: AppColors.whiteBG,
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverLayoutBuilder(
+              builder: (context, constraints) {
+                final scrolled = constraints.scrollOffset > 0;
+                return SliverAppBar(
+                  title: const Text("Kalkulator Risiko Diabetes"),
+                  leading: IconButton(
+                    onPressed: () {
+                      if (activeStep > 0) {
+                        setState(() {
+                          activeStep--;
+                        });
+                      } else {
+                        context.pop();
+                      }
+                    },
+                    icon: const Icon(
+                      Ionicons.arrow_back,
+                      color: AppColors.textBlack,
+                    ),
+                    splashRadius: 20,
+                  ),
+                  leadingWidth: 80,
+                  backgroundColor: scrolled ? Colors.white : Colors.transparent,
+                  pinned: true,
+                );
+              },
+            ),
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: AppTheme.marginHorizontal,
+                      right: AppTheme.marginHorizontal,
+                      top: 20,
+                      bottom: AppTheme.marginVertical,
+                    ),
+                    child: DotStepper(
+                      dotCount: steps().length,
+                      dotRadius: 12,
+                      spacing: 30,
+                      activeStep: activeStep,
+                      shape: Shape.circle,
+                      lineConnectorsEnabled: true,
+                      tappingEnabled: true,
+                      fixedDotDecoration: const FixedDotDecoration(
+                        color: AppColors.grayBG,
+                        strokeWidth: 5,
+                        strokeColor: Colors.white,
+                      ),
+                      indicatorDecoration: const IndicatorDecoration(
+                        color: AppColors.primary,
+                        strokeWidth: 5,
+                        strokeColor: Colors.white,
+                      ),
+                      lineConnectorDecoration: const LineConnectorDecoration(
+                        color: AppColors.grayBG,
+                        strokeWidth: 3,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    steps()[activeStep].title,
+                    style: context.textTheme.headlineLarge,
+                  ),
+                  const Gap(50),
+                ],
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppTheme.marginHorizontal,
+                ),
+                child: steps()[activeStep].content,
+              ),
+            ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppTheme.marginHorizontal,
+                  vertical: AppTheme.marginVertical,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        activeStep >= 1
+                            ? Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 20),
+                                  child: AppButton(
+                                    caption: "Kembali",
+                                    color: AppColors.ancientSwatch.shade100,
+                                    useIcon: false,
+                                    captionStyle: context.textTheme.titleLarge
+                                        ?.copyWith(color: AppColors.primary),
+                                    onPressed: () {
+                                      setState(() => activeStep--);
+                                    },
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                        Expanded(
+                          child: AppButton(
+                            onPressed: () {
+                              activeStep == 2
+                                  ? Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DiabetesResultScreen()))
+                                  : setState(() => activeStep += 1);
+                            },
+                            caption: activeStep == 2 ? "Selesai" : "Lanjut",
+                            useIcon: false,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ));
+  }
+
+  Widget stepTwo(BuildContext context) {
+    return Column(
+      children: [
+        QuestionerCard(),
+        Gap(20),
+        QuestionerCard(),
+        Gap(20),
+        QuestionerCard(),
+        Gap(20),
+        QuestionerCard(),
+        Gap(40)
+      ],
+    );
+  }
+
+  Widget stepThree(BuildContext context) {
+    return Column(
+      children: [
+        QuestionerCard(),
+        Gap(20),
+        QuestionerCard(),
+        Gap(40),
+      ],
+    );
+  }
+
+  Column stepOne(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Jenis Kelamin",
+            style: context.textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w600, color: AppColors.textBlack),
           ),
-          const Gap(12),
-          Text(
-            "Tentang Kamu",
-            style: context.textTheme.displayLarge,
-          ),
-          const Gap(30),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Jenis Kelamin",
+        ),
+        const Gap(8),
+        Row(
+          children: [
+            Expanded(
+              child: AppRadioButton(
+                title: "Laki-laki",
+                isSelected: _selectedGender == "l",
+                onTap: () => setState(() => _selectedGender = "l"),
+              ),
+            ),
+            const Gap(20),
+            Expanded(
+              child: AppRadioButton(
+                title: "Perempuan",
+                isSelected: _selectedGender == "w",
+                onTap: () => setState(() => _selectedGender = "w"),
+              ),
+            ),
+          ],
+        ),
+        const Gap(20),
+        Row(
+          children: [
+            Expanded(
+              child: AppTextField(
+                keyboardType: TextInputType.number,
+                title: "Tinggi Badan",
+                hint: "000",
+                endIcon: Text(
+                  "cm",
+                  style: context.textTheme.bodyLarge?.copyWith(
+                    color: AppColors.textGray,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            const Gap(20),
+            Expanded(
+              child: AppTextField(
+                keyboardType: TextInputType.number,
+                title: "Berat Badan",
+                hint: "000",
+                endIcon: Text(
+                  "kg",
+                  style: context.textTheme.bodyLarge?.copyWith(
+                    color: AppColors.textGray,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const Gap(20),
+        AppTextField(
+          title: "Tanggal lahir",
+          hint: "dd-mm-YYYY",
+          startIcon: Ionicons.calendar_outline,
+          endIcon: Ionicons.chevron_forward,
+          readOnlyField: true,
+          onTap: () => _selectDate(),
+        ),
+        const Gap(20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Berapa lingkar pinggang kamu?",
               style: context.textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.w600, color: AppColors.textBlack),
             ),
-          ),
-          Gap(8),
-          Row(
-            children: [
-              Expanded(
-                child: AppRadioButton(
-                  title: "Laki-laki",
-                  isSelected: _selectedGender == "l",
-                  onTap: () => setState(() => _selectedGender = "l"),
-                ),
+            InkWell(
+              onTap: () {},
+              child: const Icon(
+                Icons.question_mark,
+                size: 18,
+                color: AppColors.secondary,
               ),
-              Gap(20),
-              Expanded(
-                child: AppRadioButton(
-                  title: "Perempuan",
-                  isSelected: _selectedGender == "w",
-                  onTap: () => setState(() => _selectedGender = "w"),
-                ),
-              ),
-            ],
-          ),
-          Gap(20),
-          Row(
-            children: [
-              Expanded(
-                child: AppTextField(
-                  keyboardType: TextInputType.number,
-                  title: "Tinggi Badan",
-                  hint: "000",
-                  endIcon: Text(
-                    "cm",
-                    style: context.textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textGray,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              Gap(20),
-              Expanded(
-                child: AppTextField(
-                  keyboardType: TextInputType.number,
-                  title: "Berat Badan",
-                  hint: "000",
-                  endIcon: Text(
-                    "kg",
-                    style: context.textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textGray,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const Gap(20),
-          AppTextField(
-            title: "Tanggal lahir",
-            hint: "dd-mm-YYYY",
-            startIcon: Ionicons.calendar_outline,
-            endIcon: Ionicons.chevron_forward,
-            readOnlyField: true,
-            onTap: () => _selectDate(),
-          ),
-          Gap(20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Berapa lingkar pinggang kamu?",
-                style: context.textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w600, color: AppColors.textBlack),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.question_mark,
-                  size: 16,
-                  color: AppColors.secondary,
-                ),
-              )
-            ],
-          ),
-          Gap(8),
-          Wrap(
-            spacing: 8.0, // Space between chips
-            children: options.map((option) {
+            )
+          ],
+        ),
+        const Gap(8),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Wrap(
+            spacing: 10.0, // Space between chips
+            children: lingkarPinggangOptions.map((option) {
               return ChoiceChip(
+                showCheckmark: false,
+                backgroundColor: AppColors.grayBG,
+                selectedColor: AppColors.ancientSwatch.shade200,
                 label: Text(option),
-                selected: selectedOption == option,
+                selected: selectedLingkarPinggang == option,
                 onSelected: (bool selected) {
                   setState(() {
-                    selectedOption = selected ? option : '';
+                    selectedLingkarPinggang = selected ? option : '';
                   });
                 },
               );
             }).toList(),
           ),
-          AppButton(
-            caption: "SELANJUTNYA",
-            onPressed: () {},
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -179,4 +362,14 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
       });
     }
   }
+}
+
+class StepWidget {
+  final String title;
+  final Widget content;
+
+  StepWidget({
+    required this.title,
+    required this.content,
+  });
 }

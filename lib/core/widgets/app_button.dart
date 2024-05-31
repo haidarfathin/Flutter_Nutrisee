@@ -11,12 +11,16 @@ class AppButton extends StatelessWidget {
   final String caption;
   final bool isEnabled;
   final bool isLoading;
+  final BoxBorder? border;
+  final TextStyle? captionStyle;
 
   const AppButton({
     super.key,
-    this.color = AppColors.secondary,
+    this.color = AppColors.primary,
     this.caption = 'Button',
     this.useIcon = true,
+    this.border,
+    this.captionStyle,
     required this.onPressed,
     this.isEnabled = true,
     this.isLoading = false,
@@ -37,18 +41,18 @@ class AppButton extends StatelessWidget {
               vertical: 12,
             ),
             decoration: BoxDecoration(
-              color: AppColors.primary,
+              color: color,
               borderRadius: BorderRadius.circular(50),
+              border: border,
             ),
             child: Stack(
               alignment: Alignment.centerRight,
               children: [
                 Center(
-                  child: Text(
-                    caption,
-                    style: context.textTheme.titleLarge
-                        ?.copyWith(color: Colors.white),
-                  ),
+                  child: Text(caption,
+                      style: captionStyle ??
+                          context.textTheme.titleLarge
+                              ?.copyWith(color: Colors.white)),
                 ),
                 useIcon
                     ? Container(

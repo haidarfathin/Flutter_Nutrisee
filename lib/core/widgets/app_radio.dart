@@ -19,13 +19,14 @@ class AppRadioButton extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTap(),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
         decoration: BoxDecoration(
-          color: AppColors.grayBG,
+          color:
+              isSelected ? AppColors.ancientSwatch.shade100 : AppColors.grayBG,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: isSelected ? AppColors.primary : AppColors.textGray,
-            width: 1,
+            width: 2.5,
           ),
         ),
         child: Row(
@@ -40,7 +41,7 @@ class AppRadioButton extends StatelessWidget {
             Text(
               title,
               style: context.textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
                 color: isSelected ? AppColors.primary : AppColors.textBlack,
               ),
             ),

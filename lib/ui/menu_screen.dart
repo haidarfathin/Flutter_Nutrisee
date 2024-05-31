@@ -70,7 +70,10 @@ class _MenuScreenState extends State<MenuScreen> {
             currentScreen = 1;
           });
         },
-        child: Padding(
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: AppColors.greenGradient,
+              borderRadius: BorderRadius.circular(12)),
           padding: const EdgeInsets.all(12.0),
           child: Assets.images.icOcr.image(),
         ),
@@ -83,18 +86,19 @@ class _MenuScreenState extends State<MenuScreen> {
             topRight: Radius.circular(30),
           ),
         ),
-        child: Padding(
+        child: Container(
+          decoration: BoxDecoration(gradient: AppColors.greenGradient),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           child: GNav(
             gap: 10,
-            color: AppColors.ancientSwatch.shade300,
+            color: AppColors.whiteBG,
             padding: const EdgeInsets.all(12),
-            activeColor: AppColors.primary,
-            tabBackgroundColor: AppColors.secondary.withOpacity(0.2),
+            activeColor: AppColors.whiteBG,
+            tabBackgroundColor: AppColors.primary.withOpacity(0.6),
             textStyle: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 10,
-              color: AppColors.primary,
+              color: Colors.white,
             ),
             onTabChange: (index) {
               setState(() {
