@@ -3,6 +3,7 @@ import 'package:nutrisee/ui/auth/screen/login_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nutrisee/ui/auth/screen/signup_screen.dart';
 import 'package:nutrisee/ui/diabetes_risk/screen/diabetes_risk_screen.dart';
+import 'package:nutrisee/ui/diabetes_risk/screen/paginated_diabetes_test.dart';
 import 'package:nutrisee/ui/home/screen/home_screen.dart';
 import 'package:nutrisee/ui/menu_screen.dart';
 import 'package:nutrisee/ui/profile/screen/profile_screen.dart';
@@ -36,6 +37,10 @@ var router = GoRouter(routes: [
   GoRoute(
     path: '/diabetes-risk',
     builder: (context, state) => const DiabetesRiskScreen(),
+  ),
+  GoRoute(
+    path: '/diabetes-risk-steps',
+    builder: (context, state) => const PaginatedDiabetesTest(),
   ),
 ]);
 

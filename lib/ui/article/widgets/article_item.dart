@@ -66,7 +66,7 @@ class ArticleItem extends StatelessWidget {
                 ),
                 const Gap(6),
                 Text(
-                  "asdfmaklsdm lfnskdmflS DSKNSLDKFMS KDSNFLSF SDFSKFM ",
+                  "Sayuran adalah  ",
                   style: context.textTheme.bodyLarge?.copyWith(
                     fontSize: 10,
                     overflow: TextOverflow.ellipsis,

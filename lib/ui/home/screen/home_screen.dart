@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
         "route": "",
       },
       {
-        "icon": Assets.images.icDiabetesRisk.image(),
+        "icon": Assets.images.icDiabetesTest.image(),
         "title": "Risiko Diabetes",
         "route": "/diabetes-risk",
       },
@@ -101,52 +101,6 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: Assets.images.icWomenEat.image(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 16,
-                ),
-                height: 110,
-                decoration: BoxDecoration(
-                  color: AppColors.secondary.withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      "Mulai Pindai\nTabel Nilai Gizi",
-                      style: context.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 15,
-                            offset: const Offset(
-                                3, 5), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Image.asset("assets/images/ic_scan.png"),
-                      ),
                     ),
                   ],
                 ),

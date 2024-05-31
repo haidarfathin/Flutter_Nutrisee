@@ -12,20 +12,12 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/ast_atau.png
-  AssetGenImage get astAtau =>
-      const AssetGenImage('assets/images/ast_atau.png');
-
   /// File path: assets/images/ic_bulb.png
   AssetGenImage get icBulb => const AssetGenImage('assets/images/ic_bulb.png');
 
   /// File path: assets/images/ic_count.png
   AssetGenImage get icCount =>
       const AssetGenImage('assets/images/ic_count.png');
-
-  /// File path: assets/images/ic_diabetes_risk.png
-  AssetGenImage get icDiabetesRisk =>
-      const AssetGenImage('assets/images/ic_diabetes_risk.png');
 
   /// File path: assets/images/ic_diabetes_test.png
   AssetGenImage get icDiabetesTest =>
@@ -54,12 +46,20 @@ class $AssetsImagesGen {
   AssetGenImage get icNutrition =>
       const AssetGenImage('assets/images/ic_nutrition.png');
 
+  /// File path: assets/images/ic_ocr.png
+  AssetGenImage get icOcr => const AssetGenImage('assets/images/ic_ocr.png');
+
   /// File path: assets/images/ic_remind_med.png
   AssetGenImage get icRemindMed =>
       const AssetGenImage('assets/images/ic_remind_med.png');
 
-  /// File path: assets/images/ic_scan.png
-  AssetGenImage get icScan => const AssetGenImage('assets/images/ic_scan.png');
+  /// File path: assets/images/ic_scan_barcode.png
+  AssetGenImage get icScanBarcode =>
+      const AssetGenImage('assets/images/ic_scan_barcode.png');
+
+  /// File path: assets/images/ic_warning.png
+  AssetGenImage get icWarning =>
+      const AssetGenImage('assets/images/ic_warning.png');
 
   /// File path: assets/images/ic_women_eat.png
   AssetGenImage get icWomenEat =>
@@ -71,10 +71,8 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-        astAtau,
         icBulb,
         icCount,
-        icDiabetesRisk,
         icDiabetesTest,
         icDiabetisiNo,
         icDiabetisiYes,
@@ -82,8 +80,10 @@ class $AssetsImagesGen {
         icLogo,
         icNutriscore,
         icNutrition,
+        icOcr,
         icRemindMed,
-        icScan,
+        icScanBarcode,
+        icWarning,
         icWomenEat,
         imgArticle
       ];

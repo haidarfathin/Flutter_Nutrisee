@@ -4,6 +4,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
+import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:nutrisee/ui/article/screen/article_screen.dart';
 import 'package:nutrisee/ui/history/screen/history_screen.dart';
 import 'package:nutrisee/ui/home/screen/home_screen.dart';
@@ -62,20 +63,18 @@ class _MenuScreenState extends State<MenuScreen> {
         index: currentScreen,
         children: screens,
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: AppColors.primary,
-      //   onPressed: () {
-      //     setState(() {
-      //       currentScreen = 1;
-      //     });
-      //   },
-      //   child: Icon(
-      //     Icons.document_scanner_outlined,
-      //     size: 30,
-      //     color: AppColors.ancientSwatch.shade50,
-      //   ),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.primary,
+        onPressed: () {
+          setState(() {
+            currentScreen = 1;
+          });
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Assets.images.icOcr.image(),
+        ),
+      ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.white,

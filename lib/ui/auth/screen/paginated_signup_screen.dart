@@ -79,7 +79,7 @@ class _PaginatedSignupScreenState extends State<PaginatedSignupScreen> {
                 caption: "DAFTAR",
                 useIcon: false,
                 onPressed: () {
-                context.go('/home');
+                  context.go('/home');
                 },
               ),
             ],

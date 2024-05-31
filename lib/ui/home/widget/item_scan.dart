@@ -18,7 +18,7 @@ class ScanItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Assets.images.icDiabetesRisk.image(),
+          Assets.images.icDiabetesTest.image(),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
