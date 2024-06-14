@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:dio_logging_interceptor/dio_logging_interceptor.dart';
 import 'package:injectable/injectable.dart';
 import '../core/utils/refresh_token_interceptor.dart';
 import 'injection.dart';
@@ -18,8 +17,16 @@ abstract class NetworkModule {
         receiveTimeout: Config.timeout,
       ),
     );
-    dio.interceptors
-        .add(DioLoggingInterceptor(level: Level.body, compact: false));
+    // dio.interceptors
+    //     .add(DioLoggingInterceptor(level: Level.body, compact: false));
+    dio.interceptors.add(LogInterceptor(
+      request: true,
+      requestBody: true,
+      responseBody: true,
+      requestHeader: false,
+      responseHeader: false,
+      error: true,
+    ));
     dio.interceptors.add(getIt<RefreshTokenInterceptor>());
     return dio;
   }

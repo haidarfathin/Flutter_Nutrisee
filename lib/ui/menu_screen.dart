@@ -66,13 +66,11 @@ class _MenuScreenState extends State<MenuScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primary,
         onPressed: () {
-          setState(() {
-            currentScreen = 1;
-          });
+          context.push("/scan-product");
         },
         child: Container(
           decoration: BoxDecoration(
-              gradient: AppColors.greenGradient,
+              color: Color(0xff049913),
               borderRadius: BorderRadius.circular(12)),
           padding: const EdgeInsets.all(12.0),
           child: Assets.images.icOcr.image(),
@@ -87,7 +85,17 @@ class _MenuScreenState extends State<MenuScreen> {
           ),
         ),
         child: Container(
-          decoration: BoxDecoration(gradient: AppColors.greenGradient),
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xff90C788),
+                Color(0xff049913),
+              ],
+              stops: [0.3, 1.0],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+            ),
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           child: GNav(
             gap: 10,

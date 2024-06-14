@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:injectable/injectable.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:nutrisee/core/config/config.dart';
+import 'package:nutrisee/di/injection.config.dart';
 import 'firebase_options.dart';
 
 import 'base_app.dart';
@@ -27,6 +30,9 @@ void main() async {
   }
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  Gemini.init(
+    apiKey: Config.geminiKey,
   );
   runApp(const App());
 }

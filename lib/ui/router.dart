@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:nutrisee/ui/auth/screen/login_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nutrisee/ui/auth/screen/signup_screen.dart';
+import 'package:nutrisee/ui/diabetes_risk/screen/diabetes_result_screen.dart';
 import 'package:nutrisee/ui/diabetes_risk/screen/diabetes_risk_screen.dart';
 import 'package:nutrisee/ui/diabetes_risk/screen/paginated_diabetes_test.dart';
 import 'package:nutrisee/ui/home/screen/home_screen.dart';
 import 'package:nutrisee/ui/menu_screen.dart';
 import 'package:nutrisee/ui/profile/screen/profile_screen.dart';
+import 'package:nutrisee/ui/scan_product/screen/scan_product_screen.dart';
 import 'splash/screen/splash_screen.dart';
 
 var router = GoRouter(routes: [
@@ -41,6 +43,14 @@ var router = GoRouter(routes: [
   GoRoute(
     path: '/diabetes-risk-steps',
     builder: (context, state) => const PaginatedDiabetesTest(),
+  ),
+  GoRoute(
+    path: '/diabetes-risk-result',
+    builder: (context, state) => const DiabetesResultScreen(),
+  ),
+  GoRoute(
+    path: '/scan-product',
+    builder: (context, state) => const ScanProductScreen(),
   ),
 ]);
 

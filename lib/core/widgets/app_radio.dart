@@ -25,8 +25,8 @@ class AppRadioButton extends StatelessWidget {
               isSelected ? AppColors.ancientSwatch.shade100 : AppColors.grayBG,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.textGray,
-            width: 2.5,
+            color: isSelected ? AppColors.primary : Colors.grey.shade400,
+            width: 1.5,
           ),
         ),
         child: Row(

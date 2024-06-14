@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -9,6 +12,7 @@ import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_textfield.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
+import 'package:nutrisee/ui/auth/auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,8 +22,24 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool isLogin = true;
+
   @override
   Widget build(BuildContext context) {
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+
+    Future<void> login() async {
+      try {
+        await Auth().signIn(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      } on FirebaseAuthException catch (e) {
+        log(e.toString());
+      }
+    }
+
     return Scaffold(
       backgroundColor: AppColors.whiteBG,
       body: SafeArea(
@@ -39,22 +59,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: context.textTheme.displayLarge,
                 ),
                 const Gap(70),
-                const AppTextField(
+                AppTextField(
                   keyboardType: TextInputType.emailAddress,
                   hint: "Your Email",
                   startIcon: Ionicons.mail_outline,
+                  controller: emailController,
                 ),
                 const Gap(20),
-                const AppTextField(
+                AppTextField(
                   hint: "Your Password",
                   startIcon: Ionicons.lock_closed_outline,
                   obscure: true,
                   endIcon: Ionicons.eye,
+                  controller: passwordController,
                 ),
                 const Gap(50),
                 AppButton(
                   caption: "MASUK",
                   onPressed: () {
+                    login();
                     context.go('/menu');
                   },
                 ),

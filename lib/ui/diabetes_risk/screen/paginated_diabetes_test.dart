@@ -53,164 +53,176 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.whiteBG,
         body: CustomScrollView(
-          slivers: <Widget>[
-            SliverLayoutBuilder(
-              builder: (context, constraints) {
-                final scrolled = constraints.scrollOffset > 0;
-                return SliverAppBar(
-                  title: const Text("Kalkulator Risiko Diabetes"),
-                  leading: IconButton(
-                    onPressed: () {
-                      if (activeStep > 0) {
-                        setState(() {
-                          activeStep--;
-                        });
-                      } else {
-                        context.pop();
-                      }
-                    },
-                    icon: const Icon(
-                      Ionicons.arrow_back,
-                      color: AppColors.textBlack,
-                    ),
-                    splashRadius: 20,
-                  ),
-                  leadingWidth: 80,
-                  backgroundColor: scrolled ? Colors.white : Colors.transparent,
-                  pinned: true,
-                );
-              },
-            ),
-            SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: AppTheme.marginHorizontal,
-                      right: AppTheme.marginHorizontal,
-                      top: 20,
-                      bottom: AppTheme.marginVertical,
-                    ),
-                    child: DotStepper(
-                      dotCount: steps().length,
-                      dotRadius: 12,
-                      spacing: 30,
-                      activeStep: activeStep,
-                      shape: Shape.circle,
-                      lineConnectorsEnabled: true,
-                      tappingEnabled: true,
-                      fixedDotDecoration: const FixedDotDecoration(
-                        color: AppColors.grayBG,
-                        strokeWidth: 5,
-                        strokeColor: Colors.white,
-                      ),
-                      indicatorDecoration: const IndicatorDecoration(
-                        color: AppColors.primary,
-                        strokeWidth: 5,
-                        strokeColor: Colors.white,
-                      ),
-                      lineConnectorDecoration: const LineConnectorDecoration(
-                        color: AppColors.grayBG,
-                        strokeWidth: 3,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    steps()[activeStep].title,
-                    style: context.textTheme.headlineLarge,
-                  ),
-                  const Gap(50),
-                ],
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppTheme.marginHorizontal,
+      slivers: <Widget>[
+        SliverLayoutBuilder(
+          builder: (context, constraints) {
+            final scrolled = constraints.scrollOffset > 0;
+            return SliverAppBar(
+              title: const Text("Kalkulator Risiko Diabetes"),
+              leading: IconButton(
+                onPressed: () {
+                  if (activeStep > 0) {
+                    setState(() {
+                      activeStep--;
+                    });
+                  } else {
+                    context.pop();
+                  }
+                },
+                icon: const Icon(
+                  Ionicons.arrow_back,
+                  color: AppColors.textBlack,
                 ),
-                child: steps()[activeStep].content,
+                splashRadius: 20,
               ),
-            ),
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppTheme.marginHorizontal,
-                  vertical: AppTheme.marginVertical,
+              leadingWidth: 80,
+              backgroundColor: scrolled ? Colors.white : Colors.transparent,
+              pinned: true,
+            );
+          },
+        ),
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: AppTheme.marginHorizontal,
+                  right: AppTheme.marginHorizontal,
+                  top: 20,
+                  bottom: AppTheme.marginVertical,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        activeStep >= 1
-                            ? Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 20),
-                                  child: AppButton(
-                                    caption: "Kembali",
-                                    color: AppColors.ancientSwatch.shade100,
-                                    useIcon: false,
-                                    captionStyle: context.textTheme.titleLarge
-                                        ?.copyWith(color: AppColors.primary),
-                                    onPressed: () {
-                                      setState(() => activeStep--);
-                                    },
-                                  ),
-                                ),
-                              )
-                            : Container(),
-                        Expanded(
+                child: DotStepper(
+                  dotCount: steps().length,
+                  dotRadius: 12,
+                  spacing: 30,
+                  activeStep: activeStep,
+                  shape: Shape.circle,
+                  lineConnectorsEnabled: true,
+                  tappingEnabled: true,
+                  fixedDotDecoration: const FixedDotDecoration(
+                    color: AppColors.grayBG,
+                    strokeWidth: 5,
+                    strokeColor: Colors.white,
+                  ),
+                  indicatorDecoration: const IndicatorDecoration(
+                    color: AppColors.primary,
+                    strokeWidth: 5,
+                    strokeColor: Colors.white,
+                  ),
+                  lineConnectorDecoration: const LineConnectorDecoration(
+                    color: AppColors.grayBG,
+                    strokeWidth: 3,
+                  ),
+                ),
+              ),
+              Text(
+                steps()[activeStep].title,
+                style: context.textTheme.headlineLarge,
+              ),
+              const Gap(50),
+            ],
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppTheme.marginHorizontal,
+            ),
+            child: steps()[activeStep].content,
+          ),
+        ),
+        bottomButton(context)
+      ],
+    ));
+  }
+
+  SliverFillRemaining bottomButton(BuildContext context) {
+    return SliverFillRemaining(
+      hasScrollBody: false,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppTheme.marginHorizontal,
+          vertical: AppTheme.marginVertical,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                activeStep >= 1
+                    ? Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 20),
                           child: AppButton(
-                            onPressed: () {
-                              activeStep == 2
-                                  ? Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DiabetesResultScreen()))
-                                  : setState(() => activeStep += 1);
-                            },
-                            caption: activeStep == 2 ? "Selesai" : "Lanjut",
+                            caption: "Kembali",
+                            color: AppColors.ancientSwatch.shade100,
                             useIcon: false,
+                            captionStyle: context.textTheme.titleLarge
+                                ?.copyWith(color: AppColors.primary),
+                            onPressed: () {
+                              setState(() => activeStep--);
+                            },
                           ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            )
+                        ),
+                      )
+                    : Container(),
+                Expanded(
+                  child: AppButton(
+                    onPressed: () {
+                      activeStep == 2
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const DiabetesResultScreen(),
+                              ),
+                            )
+                          : setState(() => activeStep += 1);
+                    },
+                    caption: activeStep == 2 ? "Selesai" : "Lanjut",
+                    useIcon: false,
+                  ),
+                )
+              ],
+            ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   Widget stepTwo(BuildContext context) {
     return Column(
       children: [
-        QuestionerCard(),
-        Gap(20),
-        QuestionerCard(),
-        Gap(20),
-        QuestionerCard(),
-        Gap(20),
-        QuestionerCard(),
-        Gap(40)
+        QuestionerCard(
+          captions:
+              "Apakah kakek, bibi, paman, atau sepupu pertama pernah didiagnosis Diabetes?",
+          options: [
+            QuestionerOptions(
+              isPositive: true,
+              label: "Ya",
+            ),
+            QuestionerOptions(
+              isPositive: false,
+              label: "Tidak",
+            ),
+          ],
+        )
       ],
     );
   }
 
   Widget stepThree(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-        QuestionerCard(),
-        Gap(20),
-        QuestionerCard(),
-        Gap(40),
+        // QuestionerCard(),
+        // Gap(20),
+        // QuestionerCard(),
+        // Gap(40),
+        Placeholder()
       ],
     );
   }
@@ -317,9 +329,17 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
             children: lingkarPinggangOptions.map((option) {
               return ChoiceChip(
                 showCheckmark: false,
+                elevation: 4,
                 backgroundColor: AppColors.grayBG,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide(color: Colors.transparent),
+                ),
                 selectedColor: AppColors.ancientSwatch.shade200,
-                label: Text(option),
+                label: Text(
+                  option,
+                  style: context.textTheme.bodyLarge?.copyWith(),
+                ),
                 selected: selectedLingkarPinggang == option,
                 onSelected: (bool selected) {
                   setState(() {

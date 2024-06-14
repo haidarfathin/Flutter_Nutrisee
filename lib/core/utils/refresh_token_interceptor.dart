@@ -53,7 +53,7 @@ class RefreshTokenInterceptor extends QueuedInterceptorsWrapper {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) async {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
     debugPrint(err.response.toString());
     if (shouldRetry(err)) {
       try {
@@ -68,16 +68,16 @@ class RefreshTokenInterceptor extends QueuedInterceptorsWrapper {
           await _storage.write(key: authTokenKey, value: body['access']);
           await retryRequest(err, handler);
         } else {
-          return handler.reject(DioErrorWrapper(
-              requestOptions: err.requestOptions, dioError: err));
+          return handler.reject(DioExceptionWrapper(
+              requestOptions: err.requestOptions, dioException: err));
         }
       } catch (e) {
-        return handler.reject(
-            DioErrorWrapper(requestOptions: err.requestOptions, dioError: err));
+        return handler.reject(DioExceptionWrapper(
+            requestOptions: err.requestOptions, dioException: err));
       }
     } else {
-      return handler.reject(
-          DioErrorWrapper(requestOptions: err.requestOptions, dioError: err));
+      return handler.reject(DioExceptionWrapper(
+          requestOptions: err.requestOptions, dioException: err));
     }
   }
 
@@ -93,7 +93,7 @@ class RefreshTokenInterceptor extends QueuedInterceptorsWrapper {
   Future<String?> get _savedRefreshToken async =>
       await _storage.read(key: authRefreshTokenKey);
 
-  bool shouldRetry(DioError error) {
+  bool shouldRetry(DioException error) {
     var message = error.response?.data?['code'];
     if (message is String) {
       return message.contains(expiredMessage);
@@ -106,7 +106,7 @@ class RefreshTokenInterceptor extends QueuedInterceptorsWrapper {
     await _storage.write(key: authRefreshTokenKey, value: body['refresh']);
   }
 
-  Future retryRequest(DioError err, ErrorInterceptorHandler handler) async {
+  Future retryRequest(DioException err, ErrorInterceptorHandler handler) async {
     final token = await _savedToken;
     final headers = {
       'platform': Platform.isAndroid ? 'android' : 'ios',
@@ -120,8 +120,8 @@ class RefreshTokenInterceptor extends QueuedInterceptorsWrapper {
     if (response.statusCode == HttpStatus.ok) {
       return handler.resolve(response);
     } else {
-      return handler.reject(
-          DioErrorWrapper(requestOptions: err.requestOptions, dioError: err));
+      return handler.reject(DioExceptionWrapper(
+          requestOptions: err.requestOptions, dioException: err));
     }
   }
 }

@@ -1,14 +1,15 @@
 import 'package:dio/dio.dart';
 
-class DioErrorWrapper extends DioError {
-  final DioError dioError;
+class DioExceptionWrapper extends DioException {
+  final DioException dioException;
 
-  DioErrorWrapper({required super.requestOptions, required this.dioError});
+  DioExceptionWrapper(
+      {required super.requestOptions, required this.dioException});
 
   @override
   String get message {
-    if (dioError.type == DioErrorType.response) {
-      final body = dioError.response?.data as Map<String, dynamic>;
+    if (dioException.type == DioExceptionType.badResponse) {
+      final body = dioException.response?.data as Map<String, dynamic>;
       return body['message'].toString();
     }
     return 'unknown error';

@@ -12,8 +12,16 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/ic_approve.png
+  AssetGenImage get icApprove =>
+      const AssetGenImage('assets/images/ic_approve.png');
+
   /// File path: assets/images/ic_bulb.png
   AssetGenImage get icBulb => const AssetGenImage('assets/images/ic_bulb.png');
+
+  /// File path: assets/images/ic_camera_permission.png
+  AssetGenImage get icCameraPermission =>
+      const AssetGenImage('assets/images/ic_camera_permission.png');
 
   /// File path: assets/images/ic_count.png
   AssetGenImage get icCount =>
@@ -61,6 +69,9 @@ class $AssetsImagesGen {
   AssetGenImage get icScanBarcode =>
       const AssetGenImage('assets/images/ic_scan_barcode.png');
 
+  /// File path: assets/images/ic_stop.png
+  AssetGenImage get icStop => const AssetGenImage('assets/images/ic_stop.png');
+
   /// File path: assets/images/ic_warning.png
   AssetGenImage get icWarning =>
       const AssetGenImage('assets/images/ic_warning.png');
@@ -75,7 +86,9 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        icApprove,
         icBulb,
+        icCameraPermission,
         icCount,
         icDiabetesTest,
         icDiabetisiNo,
@@ -88,6 +101,7 @@ class $AssetsImagesGen {
         icQuestioner,
         icRemindMed,
         icScanBarcode,
+        icStop,
         icWarning,
         icWomenEat,
         imgArticle
