@@ -57,30 +57,6 @@ class AppTheme {
         fillColor: WidgetStateProperty.all(AppColors.primary),
       );
 
-  InputDecorationTheme inputDecorationTheme({bool isDarkTheme = false}) =>
-      InputDecorationTheme(
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: AppColors.textGray,
-          ),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: AppColors.textGray,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: AppColors.ancientSwatch,
-          ),
-        ),
-        iconColor: AppColors.ancientSwatch,
-        focusColor: AppColors.ancientSwatch,
-      );
-
   static const marginHorizontal = 18.0;
   static const marginVertical = 20.0;
 
@@ -101,7 +77,6 @@ extension SwitchTheme on AppTheme {
       checkboxTheme: checkBoxTheme(),
       scaffoldBackgroundColor: Colors.white,
       appBarTheme: appBarTheme(),
-      inputDecorationTheme: inputDecorationTheme(),
       bottomNavigationBarTheme: bottomNavigationBarTheme());
 
   ThemeData get dark => ThemeData(
@@ -110,7 +85,6 @@ extension SwitchTheme on AppTheme {
         checkboxTheme: checkBoxTheme(isDarkTheme: true),
         scaffoldBackgroundColor: Colors.black26,
         appBarTheme: appBarTheme(isDarkTheme: true),
-        inputDecorationTheme: inputDecorationTheme(isDarkTheme: true),
         bottomNavigationBarTheme: bottomNavigationBarTheme(isDarkTheme: true),
       );
 }

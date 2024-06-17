@@ -69,6 +69,22 @@ class $AssetsImagesGen {
   AssetGenImage get icScanBarcode =>
       const AssetGenImage('assets/images/ic_scan_barcode.png');
 
+  /// File path: assets/images/ic_score_a.png
+  AssetGenImage get icScoreA =>
+      const AssetGenImage('assets/images/ic_score_a.png');
+
+  /// File path: assets/images/ic_score_b.png
+  AssetGenImage get icScoreB =>
+      const AssetGenImage('assets/images/ic_score_b.png');
+
+  /// File path: assets/images/ic_score_c.png
+  AssetGenImage get icScoreC =>
+      const AssetGenImage('assets/images/ic_score_c.png');
+
+  /// File path: assets/images/ic_score_d.png
+  AssetGenImage get icScoreD =>
+      const AssetGenImage('assets/images/ic_score_d.png');
+
   /// File path: assets/images/ic_stop.png
   AssetGenImage get icStop => const AssetGenImage('assets/images/ic_stop.png');
 
@@ -101,6 +117,10 @@ class $AssetsImagesGen {
         icQuestioner,
         icRemindMed,
         icScanBarcode,
+        icScoreA,
+        icScoreB,
+        icScoreC,
+        icScoreD,
         icStop,
         icWarning,
         icWomenEat,

@@ -14,31 +14,19 @@ class ArticleScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.whiteBG,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppTheme.marginHorizontal,
-          ),
-          child: CustomScrollView(
-            slivers: <Widget>[
-              const SliverAppBar(
-                scrolledUnderElevation: 0,
-                title: Text("Artikel"),
-                collapsedHeight: 130,
-                pinned: true,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(0.0),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: 10,
-                      bottom: 20,
-                    ),
-                    child: AppSearchBar(
-                      hint: "Search",
-                    ),
-                  ),
-                ),
+        child: CustomScrollView(
+          slivers: <Widget>[
+            const SliverAppBar(
+              scrolledUnderElevation: 0,
+              title: Text("Artikel"),
+              pinned: true,
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppTheme.marginHorizontal,
+                vertical: AppTheme.marginVertical,
               ),
-              SliverGrid(
+              sliver: SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 20.0,
@@ -52,8 +40,8 @@ class ArticleScreen extends StatelessWidget {
                   childCount: 15,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

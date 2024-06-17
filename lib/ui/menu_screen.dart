@@ -63,19 +63,21 @@ class _MenuScreenState extends State<MenuScreen> {
         index: currentScreen,
         children: screens,
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primary,
-        onPressed: () {
-          context.push("/scan-product");
-        },
-        child: Container(
-          decoration: BoxDecoration(
-              color: Color(0xff049913),
-              borderRadius: BorderRadius.circular(12)),
-          padding: const EdgeInsets.all(12.0),
-          child: Assets.images.icOcr.image(),
-        ),
-      ),
+      floatingActionButton: currentScreen == 0
+          ? FloatingActionButton(
+              backgroundColor: AppColors.primary,
+              onPressed: () {
+                context.push("/scan-product");
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Color(0xff049913),
+                    borderRadius: BorderRadius.circular(12)),
+                padding: const EdgeInsets.all(12.0),
+                child: Assets.images.icOcr.image(),
+              ),
+            )
+          : null,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.white,

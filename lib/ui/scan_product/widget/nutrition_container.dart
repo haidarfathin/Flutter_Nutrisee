@@ -7,26 +7,32 @@ class NutritionContainer extends StatelessWidget {
   final double kandungan;
   final Color background;
   final String title;
-  final String subtitle;
+
   const NutritionContainer({
     super.key,
     required this.kandungan,
     required this.background,
     required this.title,
-    required this.subtitle,
   });
+
+  double getBatasHarian(String title) {
+    switch (title.toLowerCase()) {
+      case 'gula':
+        return 50.0;
+      case 'garam':
+        return 2000.0;
+      case 'lemak':
+        return 70.0;
+      default:
+        return 100.0;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    double batasHarian = 0;
-    if (title == "Gula") {
-      batasHarian = 50;
-    } else if (title == "Lemak Jenuh") {
-      batasHarian = 70;
-    } else if (title == "Garam") {
-      batasHarian = 2000;
-    }
-    double proportionalHeight = (kandungan / batasHarian) * 150;
+    final double batasHarian = getBatasHarian(title);
+    final double proportionalHeight = (kandungan / batasHarian) * 150;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -35,7 +41,12 @@ class NutritionContainer extends StatelessWidget {
           width: 100,
           child: Text(
             title,
-            style: context.textTheme.bodySmall,
+            style: context.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: batasHarian == kandungan
+                  ? Colors.redAccent.shade700
+                  : AppColors.textGray,
+            ),
             textAlign: TextAlign.center,
           ),
         ),
@@ -49,6 +60,9 @@ class NutritionContainer extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: AppColors.grayBG,
+                  border: Border.all(
+                    color: Colors.grey.shade400,
+                  ),
                 ),
               ),
               Align(
@@ -57,10 +71,12 @@ class NutritionContainer extends StatelessWidget {
                   height: proportionalHeight,
                   decoration: BoxDecoration(
                     color: background,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
+                    borderRadius: batasHarian == kandungan
+                        ? BorderRadius.circular(20)
+                        : const BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
                   ),
                 ),
               ),
@@ -69,7 +85,9 @@ class NutritionContainer extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Text(
-                    subtitle,
+                    title.toLowerCase() == "garam"
+                        ? "${kandungan.toInt()}mg"
+                        : "${kandungan.toInt()}gr",
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: AppColors.whiteBG,
                       fontWeight: FontWeight.bold,

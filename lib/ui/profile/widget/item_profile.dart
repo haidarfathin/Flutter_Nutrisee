@@ -11,7 +11,7 @@ class ProfileItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 35,
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         border: const GradientBoxBorder(
@@ -29,7 +29,7 @@ class ProfileItem extends StatelessWidget {
               color: AppColors.primary,
             ),
           ),
-          Gap(4),
+          Gap(8),
           Text(
             "tahun",
             style: context.textTheme.bodyLarge?.copyWith(
@@ -38,22 +38,6 @@ class ProfileItem extends StatelessWidget {
               color: AppColors.ancientSwatch.shade300,
             ),
           ),
-          Gap(6),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              height: 25,
-              width: 25,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.ancientSwatch.shade100),
-              child: const Icon(
-                Icons.edit_square,
-                size: 12,
-                color: AppColors.primary,
-              ),
-            ),
-          )
         ],
       )),
     );

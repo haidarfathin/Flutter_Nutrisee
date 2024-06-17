@@ -4,34 +4,56 @@ import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
 
 class ExaminationCard extends StatelessWidget {
-  const ExaminationCard({super.key});
+  final String title;
+  final String kandungan;
+  final double nilaiKandungan;
+  final String persamaan;
+  const ExaminationCard(
+      {super.key,
+      required this.title,
+      required this.kandungan,
+      required this.persamaan,
+      required this.nilaiKandungan});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Assets.images.icWarning.image(height: 60),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              "Kandungan Gula Tinggi",
-              style: context.textTheme.bodyLarge?.copyWith(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+            Flexible(
+              flex: 1,
+              child: Assets.images.icWarning.image(height: 80),
             ),
-            Gap(4),
-            Expanded(
-              child: Text(
-                "Kandungan gula pada produk ini sebesar 19g (1 sdm)!",
-                style: context.textTheme.bodyLarge?.copyWith(fontSize: 10),
+            const Gap(8),
+            Flexible(
+              flex: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  Gap(4),
+                  Text(
+                    "Kandungan $kandungan pada produk ini sebesar ${nilaiKandungan.toInt()}gr ($persamaan)!",
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      fontSize: 10,
+                    ),
+                    maxLines: 2,
+                  ),
+                ],
               ),
             ),
           ],
-        )
-      ],
+        );
+      },
     );
   }
 }
