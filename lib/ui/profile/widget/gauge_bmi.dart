@@ -44,7 +44,7 @@ class GaugeBmi extends StatelessWidget {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.green.shade300,
-                    border: (18.5 <= bmiValue && bmiValue <= 22.9)
+                    border: (18.5 <= bmiValue && bmiValue <= 24.9)
                         ? Border.all(
                             color: Colors.green.shade500,
                             width: 5,
@@ -52,7 +52,7 @@ class GaugeBmi extends StatelessWidget {
                         : null,
                   ),
                   child: Text(
-                    "18.5 - 22.9",
+                    "18.5 - 24.9",
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: Colors.black,
                       fontSize: 10,
@@ -66,7 +66,7 @@ class GaugeBmi extends StatelessWidget {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.yellow.shade200,
-                    border: (23.0 <= bmiValue && bmiValue <= 29.9)
+                    border: (25.0 <= bmiValue && bmiValue <= 29.9)
                         ? Border.all(
                             color: Colors.yellow,
                             width: 5,
@@ -74,7 +74,7 @@ class GaugeBmi extends StatelessWidget {
                         : null,
                   ),
                   child: Text(
-                    "23.0 - 29.9",
+                    "25.0 - 29.9",
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: Colors.black,
                       fontSize: 10,
@@ -120,21 +120,20 @@ class GaugeBmi extends StatelessWidget {
               Icon(
                 Icons.arrow_drop_up_rounded,
                 size: 30,
-                color: bmiValue < 18.5
-                    ? Colors.blue.shade500
-                    : Colors.transparent,
+                color:
+                    bmiValue < 18.5 ? Colors.blue.shade500 : Colors.transparent,
               ),
               Icon(
                 Icons.arrow_drop_up_rounded,
                 size: 30,
-                color: (18.5 <= bmiValue && bmiValue <= 22.9)
+                color: (18.5 <= bmiValue && bmiValue <= 24.9)
                     ? Colors.green.shade500
                     : Colors.transparent,
               ),
               Icon(
                 Icons.arrow_drop_up_rounded,
                 size: 30,
-                color: (23.0 <= bmiValue && bmiValue <= 24.9)
+                color: (25.0 <= bmiValue && bmiValue <= 29.9)
                     ? Colors.yellow
                     : Colors.transparent,
               ),

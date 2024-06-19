@@ -19,6 +19,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/ic_bulb.png
   AssetGenImage get icBulb => const AssetGenImage('assets/images/ic_bulb.png');
 
+  /// File path: assets/images/ic_calories.png
+  AssetGenImage get icCalories =>
+      const AssetGenImage('assets/images/ic_calories.png');
+
   /// File path: assets/images/ic_camera_permission.png
   AssetGenImage get icCameraPermission =>
       const AssetGenImage('assets/images/ic_camera_permission.png');
@@ -39,12 +43,26 @@ class $AssetsImagesGen {
   AssetGenImage get icDiabetisiYes =>
       const AssetGenImage('assets/images/ic_diabetisi_yes.png');
 
+  /// File path: assets/images/ic_female.png
+  AssetGenImage get icFemale =>
+      const AssetGenImage('assets/images/ic_female.png');
+
+  /// File path: assets/images/ic_food.png
+  AssetGenImage get icFood => const AssetGenImage('assets/images/ic_food.png');
+
+  /// File path: assets/images/ic_healthy_food.png
+  AssetGenImage get icHealthyFood =>
+      const AssetGenImage('assets/images/ic_healthy_food.png');
+
   /// File path: assets/images/ic_launcher.png
   AssetGenImage get icLauncher =>
       const AssetGenImage('assets/images/ic_launcher.png');
 
   /// File path: assets/images/ic_logo.png
   AssetGenImage get icLogo => const AssetGenImage('assets/images/ic_logo.png');
+
+  /// File path: assets/images/ic_male.png
+  AssetGenImage get icMale => const AssetGenImage('assets/images/ic_male.png');
 
   /// File path: assets/images/ic_nutriscore.png
   AssetGenImage get icNutriscore =>
@@ -65,9 +83,17 @@ class $AssetsImagesGen {
   AssetGenImage get icRemindMed =>
       const AssetGenImage('assets/images/ic_remind_med.png');
 
+  /// File path: assets/images/ic_running.png
+  AssetGenImage get icRunning =>
+      const AssetGenImage('assets/images/ic_running.png');
+
   /// File path: assets/images/ic_scan_barcode.png
   AssetGenImage get icScanBarcode =>
       const AssetGenImage('assets/images/ic_scan_barcode.png');
+
+  /// File path: assets/images/ic_scan_bmi.png
+  AssetGenImage get icScanBmi =>
+      const AssetGenImage('assets/images/ic_scan_bmi.png');
 
   /// File path: assets/images/ic_score_a.png
   AssetGenImage get icScoreA =>
@@ -85,12 +111,24 @@ class $AssetsImagesGen {
   AssetGenImage get icScoreD =>
       const AssetGenImage('assets/images/ic_score_d.png');
 
+  /// File path: assets/images/ic_sleep.png
+  AssetGenImage get icSleep =>
+      const AssetGenImage('assets/images/ic_sleep.png');
+
   /// File path: assets/images/ic_stop.png
   AssetGenImage get icStop => const AssetGenImage('assets/images/ic_stop.png');
+
+  /// File path: assets/images/ic_veggies.png
+  AssetGenImage get icVeggies =>
+      const AssetGenImage('assets/images/ic_veggies.png');
 
   /// File path: assets/images/ic_warning.png
   AssetGenImage get icWarning =>
       const AssetGenImage('assets/images/ic_warning.png');
+
+  /// File path: assets/images/ic_water.png
+  AssetGenImage get icWater =>
+      const AssetGenImage('assets/images/ic_water.png');
 
   /// File path: assets/images/ic_women_eat.png
   AssetGenImage get icWomenEat =>
@@ -104,25 +142,35 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [
         icApprove,
         icBulb,
+        icCalories,
         icCameraPermission,
         icCount,
         icDiabetesTest,
         icDiabetisiNo,
         icDiabetisiYes,
+        icFemale,
+        icFood,
+        icHealthyFood,
         icLauncher,
         icLogo,
+        icMale,
         icNutriscore,
         icNutrition,
         icOcr,
         icQuestioner,
         icRemindMed,
+        icRunning,
         icScanBarcode,
+        icScanBmi,
         icScoreA,
         icScoreB,
         icScoreC,
         icScoreD,
+        icSleep,
         icStop,
+        icVeggies,
         icWarning,
+        icWater,
         icWomenEat,
         imgArticle
       ];

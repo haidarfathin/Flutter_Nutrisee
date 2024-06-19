@@ -19,12 +19,12 @@ class HomeScreen extends StatelessWidget {
       {
         "icon": Assets.images.icNutrition.image(),
         "title": "Kalori Harian",
-        "route": "",
+        "route": "/calories",
       },
       {
         "icon": Assets.images.icCount.image(),
         "title": "Hitung BMI",
-        "route": "",
+        "route": "/bmi",
       },
       {
         "icon": Assets.images.icDiabetesTest.image(),

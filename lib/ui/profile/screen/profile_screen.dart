@@ -99,80 +99,7 @@ class ProfileScreen extends StatelessWidget {
                     ],
                   ),
                   Gap(20),
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: const Color(0xff404A40),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                text: "Body Mass Index: ",
-                                style: context.textTheme.titleLarge?.copyWith(
-                                  color: Colors.green.shade200,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: "OVERWEIGHT",
-                                    style:
-                                        context.textTheme.titleLarge?.copyWith(
-                                      color: AppColors.whiteBG,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: Icon(
-                                Ionicons.information_circle,
-                                color: Colors.green.shade300,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Gap(12),
-                        const GaugeBmi(
-                          bmiValue: 24.0,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            itemData(
-                              context,
-                              "Umur",
-                              "50",
-                            ),
-                            itemData(
-                              context,
-                              "Berat",
-                              "75",
-                            ),
-                            itemData(
-                              context,
-                              "Tinggi",
-                              "175",
-                            ),
-                          ],
-                        ),
-                        const Gap(12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            itemKalori(context, "1923", "BMR"),
-                            const Gap(14),
-                            itemKalori(context, "2034", "Kalori/hari"),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+                  cardProfile(context),
                   const Gap(20),
                   itemSetting(
                     context,
@@ -196,6 +123,82 @@ class ProfileScreen extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Container cardProfile(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: const Color(0xff404A40),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: "Body Mass Index: ",
+                  style: context.textTheme.titleLarge?.copyWith(
+                    color: Colors.green.shade200,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "OVERWEIGHT",
+                      style: context.textTheme.titleLarge?.copyWith(
+                        color: AppColors.whiteBG,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {},
+                child: Icon(
+                  Ionicons.information_circle,
+                  color: Colors.green.shade300,
+                ),
+              ),
+            ],
+          ),
+          const Gap(12),
+          const GaugeBmi(
+            bmiValue: 24.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              itemData(
+                context,
+                "Umur",
+                "50",
+              ),
+              itemData(
+                context,
+                "Berat",
+                "75",
+              ),
+              itemData(
+                context,
+                "Tinggi",
+                "175",
+              ),
+            ],
+          ),
+          const Gap(12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              itemKalori(context, "1923", "BMR"),
+              const Gap(14),
+              itemKalori(context, "2034", "Kalori/hari"),
+            ],
+          )
+        ],
       ),
     );
   }

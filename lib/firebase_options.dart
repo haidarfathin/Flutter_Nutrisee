@@ -71,5 +71,4 @@ class DefaultFirebaseOptions {
     authDomain: 'ocr-flutter-d232e.firebaseapp.com',
     storageBucket: 'ocr-flutter-d232e.appspot.com',
   );
-
 }

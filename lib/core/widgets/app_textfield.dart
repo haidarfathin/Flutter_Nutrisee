@@ -16,6 +16,7 @@ class AppTextField extends StatefulWidget {
   final bool? readOnlyField;
   final Function()? onTap;
   final TextInputType? keyboardType;
+  final FormFieldValidator<String>? validator;
   const AppTextField({
     Key? key,
     required this.hint,
@@ -31,6 +32,7 @@ class AppTextField extends StatefulWidget {
     this.endIconClicked,
     this.readOnlyField,
     this.keyboardType,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -76,13 +78,14 @@ class _AppTextFieldState extends State<AppTextField> {
                 alreadyClicked = true;
               });
             },
-            child: TextField(
+            child: TextFormField(
               obscureText: widget.obscure && isVisible == false,
               controller: widget.controller,
               onChanged: widget.onChanged,
               readOnly: widget.readOnlyField == true,
               onTap: widget.onTap,
               keyboardType: widget.keyboardType,
+              validator: widget.validator,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                     borderSide: BorderSide.none,

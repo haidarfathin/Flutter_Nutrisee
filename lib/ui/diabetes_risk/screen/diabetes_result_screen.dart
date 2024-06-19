@@ -16,7 +16,7 @@ class DiabetesResultScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.whiteBG,
       appBar: AppBar(
-        title: Text("Hasil Risiko Diabetes"),
+        title: const Text("Hasil Risiko Diabetes"),
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
       ),
@@ -29,7 +29,7 @@ class DiabetesResultScreen extends StatelessWidget {
           child: Column(
             children: [
               Assets.images.icDiabetesTest.image(width: 250),
-              Gap(20),
+              const Gap(20),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -43,7 +43,7 @@ class DiabetesResultScreen extends StatelessWidget {
                           BoxShadow(
                             color: Colors.green.withOpacity(0.3),
                             blurRadius: 15,
-                            offset: Offset(0, 4), // changes position of shadow
+                            offset: const Offset(0, 4),
                           ),
                         ]),
                     child: Column(
@@ -56,13 +56,13 @@ class DiabetesResultScreen extends StatelessWidget {
                             color: AppColors.ancientSwatch.shade400,
                           ),
                         ),
-                        Gap(8),
+                        const Gap(8),
                         Text(
                           "Rendah",
                           style: context.textTheme.headlineLarge
                               ?.copyWith(color: AppColors.ancientSwatch),
                         ),
-                        Gap(10),
+                        const Gap(10),
                         LinearRange(
                           sections: [
                             RangeSection(color: Colors.green, flex: 2),
@@ -73,7 +73,7 @@ class DiabetesResultScreen extends StatelessWidget {
                           ],
                           markerPosition: 20,
                         ),
-                        Gap(16),
+                        const Gap(16),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -110,9 +110,9 @@ class DiabetesResultScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Gap(10),
-                        Divider(color: AppColors.primary),
-                        Gap(10),
+                        const Gap(10),
+                        const Divider(color: AppColors.primary),
+                        const Gap(10),
                         Text(
                           "Hasil dapat bervariasi sesuai data yang dimasukkan, tetap pertimbangkan pemeriksaan formal dengan HgbA1c untuk pasien dengan risiko sedang atau lebih tinggi. Faktor risiko dapat berubah-ubah, tetap jaga kesehatan dengan meningkatkan aktifitas fisik dan menjaga pola makan sehat.",
                           style: context.textTheme.bodyLarge,
@@ -121,7 +121,7 @@ class DiabetesResultScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Gap(20),
+                  const Gap(20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -196,7 +196,7 @@ class DiabetesResultScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Gap(20),
+                  const Gap(20),
                   AppButton(
                     onPressed: () {
                       context.push("/menu");

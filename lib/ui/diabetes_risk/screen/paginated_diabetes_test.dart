@@ -1,6 +1,5 @@
 import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +11,6 @@ import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_textfield.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/core/widgets/app_radio.dart';
-import 'package:nutrisee/ui/diabetes_risk/screen/diabetes_result_screen.dart';
 import 'package:nutrisee/ui/diabetes_risk/widget/questioner_card.dart';
 
 class PaginatedDiabetesTest extends StatefulWidget {
@@ -23,7 +21,13 @@ class PaginatedDiabetesTest extends StatefulWidget {
 }
 
 class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController weightController = TextEditingController();
+  TextEditingController heightController = TextEditingController();
+  TextEditingController birthDateController = TextEditingController();
+
   String? _selectedGender;
+
   final List<String> lingkarPinggangOptions = [
     '< 80cm',
     '80-88cm',
@@ -173,13 +177,7 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
                   child: AppButton(
                     onPressed: () {
                       activeStep == 2
-                          ? Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const DiabetesResultScreen(),
-                              ),
-                            )
+                          ? context.push("/diabetes-risk-result")
                           : setState(() => activeStep += 1);
                     },
                     caption: activeStep == 2 ? "Selesai" : "Lanjut",
@@ -198,6 +196,9 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
     return Column(
       children: [
         QuestionerCard(
+          onOptionsSelected: () {
+            setState(() {});
+          },
           captions:
               "Apakah kakek, bibi, paman, atau sepupu pertama pernah didiagnosis Diabetes?",
           options: [
@@ -231,76 +232,105 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "Jenis Kelamin",
-            style: context.textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w600, color: AppColors.textBlack),
+        Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Jenis Kelamin",
+                  style: context.textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600, color: AppColors.textBlack),
+                ),
+              ),
+              const Gap(8),
+              Row(
+                children: [
+                  Expanded(
+                    child: AppRadioButton(
+                      title: "Laki-laki",
+                      isSelected: _selectedGender == "pria",
+                      onTap: () => setState(() => _selectedGender = "pria"),
+                    ),
+                  ),
+                  const Gap(20),
+                  Expanded(
+                    child: AppRadioButton(
+                      title: "Perempuan",
+                      isSelected: _selectedGender == "wanita",
+                      onTap: () => setState(() => _selectedGender = "wanita"),
+                    ),
+                  ),
+                ],
+              ),
+              const Gap(20),
+              Row(
+                children: [
+                  Expanded(
+                    child: AppTextField(
+                      keyboardType: TextInputType.number,
+                      title: "Tinggi Badan",
+                      hint: "000",
+                      controller: heightController,
+                      endIcon: Text(
+                        "cm",
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          color: AppColors.textGray,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Field ini harus diisi';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const Gap(20),
+                  Expanded(
+                    child: AppTextField(
+                      keyboardType: TextInputType.number,
+                      title: "Berat Badan",
+                      hint: "000",
+                      controller: weightController,
+                      endIcon: Text(
+                        "kg",
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          color: AppColors.textGray,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Field ini harus diisi';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const Gap(20),
+              AppTextField(
+                title: "Tanggal lahir",
+                hint: "dd-mm-YYYY",
+                startIcon: Ionicons.calendar_outline,
+                endIcon: Ionicons.chevron_forward,
+                readOnlyField: true,
+                controller: birthDateController,
+                onTap: () => _selectDate(),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Field ini harus diisi';
+                  }
+                  return null;
+                },
+              ),
+            ],
           ),
-        ),
-        const Gap(8),
-        Row(
-          children: [
-            Expanded(
-              child: AppRadioButton(
-                title: "Laki-laki",
-                isSelected: _selectedGender == "l",
-                onTap: () => setState(() => _selectedGender = "l"),
-              ),
-            ),
-            const Gap(20),
-            Expanded(
-              child: AppRadioButton(
-                title: "Perempuan",
-                isSelected: _selectedGender == "w",
-                onTap: () => setState(() => _selectedGender = "w"),
-              ),
-            ),
-          ],
-        ),
-        const Gap(20),
-        Row(
-          children: [
-            Expanded(
-              child: AppTextField(
-                keyboardType: TextInputType.number,
-                title: "Tinggi Badan",
-                hint: "000",
-                endIcon: Text(
-                  "cm",
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    color: AppColors.textGray,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const Gap(20),
-            Expanded(
-              child: AppTextField(
-                keyboardType: TextInputType.number,
-                title: "Berat Badan",
-                hint: "000",
-                endIcon: Text(
-                  "kg",
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    color: AppColors.textGray,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const Gap(20),
-        AppTextField(
-          title: "Tanggal lahir",
-          hint: "dd-mm-YYYY",
-          startIcon: Ionicons.calendar_outline,
-          endIcon: Ionicons.chevron_forward,
-          readOnlyField: true,
-          onTap: () => _selectDate(),
         ),
         const Gap(20),
         Row(
@@ -325,7 +355,7 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
         Align(
           alignment: Alignment.topLeft,
           child: Wrap(
-            spacing: 10.0, // Space between chips
+            spacing: 10.0,
             children: lingkarPinggangOptions.map((option) {
               return ChoiceChip(
                 showCheckmark: false,
@@ -355,7 +385,7 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
   }
 
   Future<void> _selectDate() async {
-    DateTime? _pickedDate = await showDatePicker(
+    DateTime? pickedDate = await showDatePicker(
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -376,9 +406,9 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
       firstDate: DateTime(1800),
       lastDate: DateTime(3000),
     );
-    if (_pickedDate != null) {
+    if (pickedDate != null) {
       setState(() {
-        log(_pickedDate.toString());
+        birthDateController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
       });
     }
   }
