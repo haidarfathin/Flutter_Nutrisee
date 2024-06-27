@@ -9,7 +9,8 @@ import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:nutrisee/ui/diabetes_risk/widget/linear_range.dart';
 
 class DiabetesResultScreen extends StatelessWidget {
-  const DiabetesResultScreen({super.key});
+  final Map<String, dynamic> diabetesResult;
+  const DiabetesResultScreen({super.key, required this.diabetesResult});
 
   @override
   Widget build(BuildContext context) {
@@ -58,11 +59,11 @@ class DiabetesResultScreen extends StatelessWidget {
                         ),
                         const Gap(8),
                         Text(
-                          "Rendah",
+                          interpretRiskScore(diabetesResult['score']),
                           style: context.textTheme.headlineLarge
-                              ?.copyWith(color: AppColors.ancientSwatch),
+                              ?.copyWith(color: AppColors.textBlack),
                         ),
-                        const Gap(10),
+                        const Gap(14),
                         LinearRange(
                           sections: [
                             RangeSection(color: Colors.green, flex: 2),
@@ -71,7 +72,7 @@ class DiabetesResultScreen extends StatelessWidget {
                             RangeSection(color: Colors.orange, flex: 4),
                             RangeSection(color: Colors.red, flex: 3),
                           ],
-                          markerPosition: 20,
+                          markerPosition: diabetesResult['score'],
                         ),
                         const Gap(16),
                         Row(
@@ -79,7 +80,7 @@ class DiabetesResultScreen extends StatelessWidget {
                           children: [
                             RichText(
                               text: TextSpan(
-                                text: "20",
+                                text: diabetesResult['score'].toString(),
                                 style: context.textTheme.headlineLarge,
                                 children: [
                                   TextSpan(
@@ -98,7 +99,7 @@ class DiabetesResultScreen extends StatelessWidget {
                             ),
                             RichText(
                               text: TextSpan(
-                                text: "23.1%",
+                                text: diabetesResult['percent'],
                                 style: context.textTheme.headlineLarge,
                                 children: [
                                   TextSpan(
@@ -199,7 +200,7 @@ class DiabetesResultScreen extends StatelessWidget {
                   const Gap(20),
                   AppButton(
                     onPressed: () {
-                      context.push("/menu");
+                      context.go("/menu");
                     },
                     caption: "Kembali ke Beranda",
                     useIcon: false,
@@ -211,5 +212,19 @@ class DiabetesResultScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String interpretRiskScore(int score) {
+    if (score <= 8) {
+      return "Resiko rendah";
+    } else if (score >= 9 && score <= 12) {
+      return "Resiko Sedang";
+    } else if (score >= 13 && score <= 20) {
+      return "Resiko Tinggi";
+    } else if (score >= 21) {
+      return "Resiko Sangat Tinggi";
+    } else {
+      return "Invalid";
+    }
   }
 }

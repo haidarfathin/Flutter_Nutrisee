@@ -3,16 +3,19 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
+import 'package:nutrisee/core/widgets/app_snackbar.dart';
 import 'package:nutrisee/core/widgets/app_textfield.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:nutrisee/ui/auth/auth.dart';
+import 'package:nutrisee/ui/auth/bloc/auth_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,17 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-
-    Future<void> login() async {
-      try {
-        await Auth().signIn(
-          email: emailController.text,
-          password: passwordController.text,
-        );
-      } on FirebaseAuthException catch (e) {
-        log(e.toString());
-      }
-    }
 
     return Scaffold(
       backgroundColor: AppColors.whiteBG,
@@ -74,12 +66,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: passwordController,
                 ),
                 const Gap(50),
-                AppButton(
-                  caption: "MASUK",
-                  onPressed: () {
-                    login();
-                    context.go('/menu');
-                  },
+                BlocProvider(
+                  create: (context) => AuthCubit(),
+                  child: BlocConsumer<AuthCubit, AuthState>(
+                    listener: (context, state) {
+                      if (state is AuthLoggedIn) {
+                        context.go('/menu');
+                      } else if (state is AuthError) {
+                        context.showSnackbar(state.message);
+                      }
+                    },
+                    builder: (context, state) {
+                      return AppButton(
+                        caption: "MASUK",
+                        isLoading: state is AuthLoading,
+                        onPressed: () {
+                          if (emailController.text.isEmpty) {
+                            context.showSnackbar("Please Fill Your Email");
+                          } else if (passwordController.text.isEmpty) {
+                            context.showSnackbar("Please Fill Your Password");
+                          } else {
+                            context.read<AuthCubit>().login(
+                                  emailController.text,
+                                  passwordController.text,
+                                );
+                          }
+                        },
+                      );
+                    },
+                  ),
                 ),
                 const Gap(30),
                 RichText(

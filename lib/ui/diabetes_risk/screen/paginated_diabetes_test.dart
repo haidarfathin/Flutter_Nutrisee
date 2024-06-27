@@ -27,6 +27,13 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
   TextEditingController birthDateController = TextEditingController();
 
   String? _selectedGender;
+  ValueNotifier<bool?> _2ndRelativeDiabetes = ValueNotifier<bool?>(null);
+  ValueNotifier<bool?> _1stRelativeDiabetes = ValueNotifier<bool?>(null);
+  ValueNotifier<bool?> _historyHighBloodGlucose = ValueNotifier<bool?>(null);
+  ValueNotifier<bool?> _consumeBloodPressureMedication =
+      ValueNotifier<bool?>(null);
+  ValueNotifier<bool?> _frequentPhysicalActivty = ValueNotifier<bool?>(null);
+  ValueNotifier<bool?> _dailyConsumptionVeggies = ValueNotifier<bool?>(null);
 
   final List<String> lingkarPinggangOptions = [
     '< 80cm',
@@ -80,6 +87,7 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
                 ),
                 splashRadius: 20,
               ),
+              scrolledUnderElevation: 0,
               leadingWidth: 80,
               backgroundColor: scrolled ? Colors.white : Colors.transparent,
               pinned: true,
@@ -176,9 +184,20 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
                 Expanded(
                   child: AppButton(
                     onPressed: () {
-                      activeStep == 2
-                          ? context.push("/diabetes-risk-result")
-                          : setState(() => activeStep += 1);
+                      if (activeStep == 2) {
+                        var score = calculateRiskScore();
+                        log("score: $score");
+                        var percentage =
+                            interpreterRiskPercentage(score, _selectedGender!);
+                        context.push('/diabetes-risk-result', extra: {
+                          'score': score,
+                          'percent': percentage,
+                        });
+                      } else {
+                        setState(() {
+                          activeStep += 1;
+                        });
+                      }
                     },
                     caption: activeStep == 2 ? "Selesai" : "Lanjut",
                     useIcon: false,
@@ -196,8 +215,11 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
     return Column(
       children: [
         QuestionerCard(
-          onOptionsSelected: () {
-            setState(() {});
+          selectedOptionNotifier: _2ndRelativeDiabetes,
+          onOptionsSelected: (isPositive) {
+            setState(() {
+              _2ndRelativeDiabetes.value = isPositive;
+            });
           },
           captions:
               "Apakah kakek, bibi, paman, atau sepupu pertama pernah didiagnosis Diabetes?",
@@ -211,24 +233,122 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
               label: "Tidak",
             ),
           ],
-        )
+        ),
+        const Gap(12),
+        QuestionerCard(
+          selectedOptionNotifier: _1stRelativeDiabetes,
+          onOptionsSelected: (isPositive) {
+            setState(() {
+              _1stRelativeDiabetes.value = isPositive;
+            });
+          },
+          captions:
+              "Apakah ayah, ibu, atau saudara kandung pernah didiagnosis Diabetes?",
+          options: [
+            QuestionerOptions(
+              isPositive: true,
+              label: "Ya",
+            ),
+            QuestionerOptions(
+              isPositive: false,
+              label: "Tidak",
+            ),
+          ],
+        ),
+        const Gap(12),
+        QuestionerCard(
+          selectedOptionNotifier: _historyHighBloodGlucose,
+          onOptionsSelected: (isPositive) {
+            setState(() {
+              _historyHighBloodGlucose.value = isPositive;
+            });
+          },
+          captions:
+              "Apakah Anda pernah didiagnosis memiliki kadar glukosa darah yang tinggi?",
+          options: [
+            QuestionerOptions(
+              isPositive: true,
+              label: "Ya",
+            ),
+            QuestionerOptions(
+              isPositive: false,
+              label: "Tidak",
+            ),
+          ],
+        ),
+        const Gap(12),
+        QuestionerCard(
+          selectedOptionNotifier: _consumeBloodPressureMedication,
+          onOptionsSelected: (isPositive) {
+            setState(() {
+              _consumeBloodPressureMedication.value = isPositive;
+            });
+          },
+          captions: "Apakah Anda mengonsumsi obat untuk tekanan darah tinggi?",
+          options: [
+            QuestionerOptions(
+              isPositive: true,
+              label: "Ya",
+            ),
+            QuestionerOptions(
+              isPositive: false,
+              label: "Tidak",
+            ),
+          ],
+        ),
       ],
     );
   }
 
   Widget stepThree(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        // QuestionerCard(),
-        // Gap(20),
-        // QuestionerCard(),
-        // Gap(40),
-        Placeholder()
+        QuestionerCard(
+          selectedOptionNotifier: _frequentPhysicalActivty,
+          onOptionsSelected: (isPositive) {
+            setState(() {
+              _frequentPhysicalActivty.value = isPositive;
+            });
+          },
+          captions:
+              "Apakah kamu berolahraga selama lebih dari 30 menit setiap hari?",
+          options: [
+            QuestionerOptions(
+              isPositive: true,
+              label: "Ya",
+            ),
+            QuestionerOptions(
+              isPositive: false,
+              label: "Tidak",
+            ),
+          ],
+        ),
+        const Gap(12),
+        QuestionerCard(
+          selectedOptionNotifier: _dailyConsumptionVeggies,
+          onOptionsSelected: (isPositive) {
+            setState(() {
+              _dailyConsumptionVeggies.value = isPositive;
+            });
+          },
+          captions: "Seberapa sering kamu mengkonsumsi sayur dan buah?",
+          options: [
+            QuestionerOptions(
+              isPositive: true,
+              label: "Sering",
+            ),
+            QuestionerOptions(
+              isPositive: false,
+              label: "Jarang",
+            ),
+          ],
+        ),
+        const Gap(12),
       ],
     );
   }
 
-  Column stepOne(BuildContext context) {
+  Widget stepOne(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -410,6 +530,109 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
       setState(() {
         birthDateController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
       });
+    }
+  }
+
+  int calculateRiskScore() {
+    int score = 0;
+
+    DateTime birthDate =
+        DateFormat('dd-MM-yyyy').parse(birthDateController.text);
+    int age = DateTime.now().year - birthDate.year;
+    if (DateTime.now().month < birthDate.month ||
+        (DateTime.now().month == birthDate.month &&
+            DateTime.now().day < birthDate.day)) {
+      age--;
+    }
+    if (age < 45) {
+      score += 0;
+    } else if (age >= 45 && age <= 54) {
+      score += 2;
+    } else if (age >= 55 && age < 64) {
+      score += 3;
+    } else {
+      score += 4;
+    }
+
+    if (_selectedGender == 'pria') {
+      if (selectedLingkarPinggang == "94-102cm") {
+        score += 3;
+      } else if (selectedLingkarPinggang == "> 102cm") {
+        score += 4;
+      }
+    } else {
+      if (selectedLingkarPinggang == "80-88cm") {
+        score += 3;
+      } else if (selectedLingkarPinggang == "< 80cm") {
+        score += 0;
+      } else {
+        score += 4;
+      }
+    }
+
+    double height = double.tryParse(heightController.text) ?? 0;
+    double weight = double.tryParse(weightController.text) ?? 0;
+    double bmi = weight / ((height / 100) * (height / 100));
+    if (bmi > 30) {
+      score += 3;
+    } else if (bmi >= 25 && bmi <= 30) {
+      score += 1;
+    } else {
+      score += 0;
+    }
+
+    if (_1stRelativeDiabetes.value == true) {
+      score += 5;
+    } else if (_2ndRelativeDiabetes.value == true) {
+      score += 3;
+    } else {
+      score += 0; // No history
+    }
+
+    if (_historyHighBloodGlucose.value == true) {
+      score += 5;
+    }
+    if (_consumeBloodPressureMedication.value == true) {
+      score += 2;
+    }
+    if (_frequentPhysicalActivty.value == false) {
+      score += 2;
+    }
+    if (_dailyConsumptionVeggies.value == false) {
+      score += 1;
+    }
+
+    return score;
+  }
+}
+
+String interpreterRiskPercentage(
+  int score,
+  String sex,
+) {
+  if (sex == "pria") {
+    if (score <= 8) {
+      return "0.8%";
+    } else if (score >= 9 && score <= 12) {
+      return "2.6%";
+    } else if (score >= 13 && score <= 20) {
+      return "23.1%";
+    } else if (score >= 21) {
+      return "~50%";
+    } else {
+      return "Invalid";
+    }
+  } else {
+    if (score <= 8) {
+      return "0.4%";
+    } else if (score >= 9 && score <= 12) {
+      return "2.2%";
+    } else if (score >= 13 && score <= 20) {
+      return "14.1%";
+    } else if (score >= 21) {
+      return "~50%";
+    } else {
+      return "Invalid";
     }
   }
 }

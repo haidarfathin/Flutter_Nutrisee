@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nutrisee/ui/auth/screen/login_screen.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nutrisee/ui/auth/screen/paginated_signup_screen.dart';
 import 'package:nutrisee/ui/auth/screen/signup_screen.dart';
 import 'package:nutrisee/ui/count_calories/screen/calories_screen.dart';
 import 'package:nutrisee/ui/count_calories/screen/count_calories_screen.dart';
@@ -9,6 +10,7 @@ import 'package:nutrisee/ui/diabetes_risk/screen/diabetes_result_screen.dart';
 import 'package:nutrisee/ui/diabetes_risk/screen/diabetes_risk_screen.dart';
 import 'package:nutrisee/ui/diabetes_risk/screen/paginated_diabetes_test.dart';
 import 'package:nutrisee/ui/home/screen/home_screen.dart';
+import 'package:nutrisee/ui/meds_reminder/screen/meds_reminder_screen.dart';
 import 'package:nutrisee/ui/menu_screen.dart';
 import 'package:nutrisee/ui/profile/screen/profile_screen.dart';
 import 'package:nutrisee/ui/scan_bmi/screen/count_bmi_screen.dart';
@@ -32,7 +34,7 @@ var router = GoRouter(routes: [
   ),
   GoRoute(
     path: '/signup',
-    builder: (context, state) => const SignupScreen(),
+    builder: (context, state) => const PaginatedSignupScreen(),
   ),
   GoRoute(
     path: '/home',
@@ -51,9 +53,12 @@ var router = GoRouter(routes: [
     builder: (context, state) => const PaginatedDiabetesTest(),
   ),
   GoRoute(
-    path: '/diabetes-risk-result',
-    builder: (context, state) => const DiabetesResultScreen(),
-  ),
+      path: '/diabetes-risk-result',
+      builder: (context, state) {
+        Map<String, dynamic> diabetesResult =
+            state.extra as Map<String, dynamic>;
+        return DiabetesResultScreen(diabetesResult: diabetesResult);
+      }),
   GoRoute(
     path: '/scan-product',
     builder: (context, state) => const ScanProductScreen(),
@@ -91,6 +96,10 @@ var router = GoRouter(routes: [
         bmiData: data,
       );
     },
+  ),
+  GoRoute(
+    path: "/meds",
+    builder: (context, state) => MedsReminderScreen(),
   ),
 ]);
 

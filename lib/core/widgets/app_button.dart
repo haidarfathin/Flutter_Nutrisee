@@ -30,7 +30,7 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(50),
-      onTap: isEnabled == true ? () => onPressed() : null,
+      onTap: isEnabled == true || isLoading == false ? () => onPressed() : null,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -45,33 +45,39 @@ class AppButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(50),
               border: border,
             ),
-            child: Stack(
-              alignment: Alignment.centerRight,
-              children: [
-                Center(
-                  child: Text(caption,
-                      style: captionStyle ??
-                          context.textTheme.titleLarge
-                              ?.copyWith(color: Colors.white)),
-                ),
-                useIcon
-                    ? Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.greenSwatch.shade300,
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Ionicons.arrow_forward,
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
-                    : Container(),
-              ],
-            ),
+            child: isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.whiteBG,
+                    ),
+                  )
+                : Stack(
+                    alignment: Alignment.centerRight,
+                    children: [
+                      Center(
+                        child: Text(caption,
+                            style: captionStyle ??
+                                context.textTheme.titleLarge
+                                    ?.copyWith(color: Colors.white)),
+                      ),
+                      useIcon
+                          ? Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.greenSwatch.shade300,
+                              ),
+                              child: const Center(
+                                child: Icon(
+                                  Ionicons.arrow_forward,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  ),
           ),
         ],
       ),

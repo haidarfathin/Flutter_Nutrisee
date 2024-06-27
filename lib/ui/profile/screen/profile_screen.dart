@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
+import 'package:nutrisee/core/widgets/app_snackbar.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
+import 'package:nutrisee/ui/auth/bloc/auth_cubit.dart';
 import 'package:nutrisee/ui/profile/widget/gauge_bmi.dart';
 import 'package:nutrisee/ui/profile/widget/item_profile.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -16,6 +20,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthCubit cubit;
+
     return Scaffold(
       backgroundColor: AppColors.whiteBG,
       appBar: AppBar(
@@ -111,11 +117,27 @@ class ProfileScreen extends StatelessWidget {
                     title: "Tentang Aplikasi",
                   ),
                   Gap(20),
-                  AppButton(
-                    onPressed: () {},
-                    caption: "Logout",
-                    useIcon: false,
-                    color: Colors.red.shade400,
+                  BlocProvider(
+                    create: (context) => AuthCubit(),
+                    child: BlocConsumer<AuthCubit, AuthState>(
+                      listener: (context, state) {
+                        if (state is AuthLoggedOut) {
+                          context.go('/');
+                        } else if (state is AuthError) {
+                          context.showSnackbar(state.message);
+                        }
+                      },
+                      builder: (context, state) {
+                        return AppButton(
+                          caption: "Logout",
+                          onPressed: () {
+                            context.read<AuthCubit>().logout();
+                          },
+                          useIcon: false,
+                          color: Colors.red.shade400,
+                        );
+                      },
+                    ),
                   ),
                   Gap(20),
                 ],

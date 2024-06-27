@@ -304,8 +304,8 @@ class _CountCaloriesScreenState extends State<CountCaloriesScreen> {
                           "${_selectedGender.toString()},${heightController.text}+${weightController.text}+${birthDateController.text}+${levelAktivitas.toString()}",
                         );
 
-                        context.pushNamed(
-                          'result_calory',
+                        context.push(
+                          '/result-calories',
                           extra: bmrValue,
                         );
                       }
@@ -323,17 +323,30 @@ class _CountCaloriesScreenState extends State<CountCaloriesScreen> {
   }
 
   Future<void> _selectDate() async {
-    DateTime? selectedDate = await showDatePicker(
+    DateTime? pickedDate = await showDatePicker(
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+              colorScheme: const ColorScheme.light(
+                primary: AppColors.primary,
+                onPrimary: AppColors.whiteBG,
+                onSurface: AppColors.textBlack,
+              ),
+              textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                foregroundColor: AppColors.primary,
+              ))),
+          child: child!,
+        );
+      },
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
+      firstDate: DateTime(1800),
+      lastDate: DateTime(3000),
     );
-
-    if (selectedDate != null) {
+    if (pickedDate != null) {
       setState(() {
-        birthDateController.text =
-            DateFormat('dd-MM-yyyy').format(selectedDate);
+        birthDateController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
       });
     }
   }
@@ -375,9 +388,9 @@ Map<String, double> calculateBMR(
       break;
   }
 
-  double dailyCalorieNeeds = bmr * activityMultiplier;
+  double tdee = bmr * activityMultiplier;
   return {
     'BMR': bmr,
-    'Daily Calorie Needs': dailyCalorieNeeds,
+    'TDEE': tdee,
   };
 }

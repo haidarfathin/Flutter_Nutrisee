@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
       {
         "icon": Assets.images.icRemindMed.image(),
         "title": "Pengingat Obat",
-        "route": "",
+        "route": "/meds",
       }
     ];
 

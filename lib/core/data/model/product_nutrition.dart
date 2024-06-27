@@ -6,7 +6,7 @@ class ProductNutrition {
   int? saturatedFat;
   int? natrium;
   int? sajianPerKemasan;
-  double? takaranSaji;
+  num? takaranSaji;
   String? description;
 
   ProductNutrition({
@@ -30,7 +30,7 @@ class ProductNutrition {
       saturatedFat: data['lemak_jenuh'] as int?,
       natrium: data['garam'] as int?,
       sajianPerKemasan: data['sajian_per_kemasan'] as int?,
-      takaranSaji: data['takaran_saji'] as double?,
+      takaranSaji: data['takaran_saji'] as num?,
       description: data['description'] as String?,
     );
   }

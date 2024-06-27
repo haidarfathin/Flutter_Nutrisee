@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:nutrisee/core/data/model/article/article.dart';
 import 'package:retrofit/http.dart';
 import '../../model/api_response.dart';
 import '../../model/user.dart';
@@ -14,4 +15,9 @@ abstract class ApiService {
   // sisanya sama persis seperti retrofit di android
   @GET('/user/{id}')
   Future<ApiResponse<User>> getUser(@Path('id') String userId);
+
+  @GET('/top-headlines?country=id&category=health&apiKey={apikey}')
+  Future<Article> getArticle(
+    @Path('apiKey') String apiKey,
+  );
 }

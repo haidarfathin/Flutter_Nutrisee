@@ -2,10 +2,12 @@ import 'dart:developer';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gap/gap.dart';
 import 'package:nutrisee/core/data/model/product_nutrition.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
+import 'package:vibration/vibration.dart';
 
 class ExaminationCard extends StatefulWidget {
   final ProductNutrition nutritionData;
@@ -23,6 +25,15 @@ class _ExaminationCardState extends State<ExaminationCard> {
   double nilaiKandungan = 0.0;
   String persamaan = "";
 
+  final FlutterTts textToSpeech = FlutterTts();
+
+  speak(String text) async {
+    await textToSpeech.setLanguage("id");
+    await textToSpeech.setPitch(1);
+    await textToSpeech.setVolume(1);
+    await textToSpeech.speak(text);
+  }
+
   @override
   Widget build(BuildContext context) {
     int gula = widget.nutritionData.sugar ?? 0;
@@ -36,7 +47,14 @@ class _ExaminationCardState extends State<ExaminationCard> {
           children: [
             Flexible(
               flex: 1,
-              child: examineImage(garam, gula, sajian),
+              child: InkWell(
+                onTap: () {
+                  String speakText =
+                      "Kandungan gula ini sangat tinggi, yaitu $gula gram, saya sarankan untuk tidak mengonsumsi ini berlebihan";
+                  speak(speakText);
+                },
+                child: examineImage(garam, gula, sajian),
+              ),
             ),
             const Gap(8),
             Flexible(
@@ -82,16 +100,20 @@ class _ExaminationCardState extends State<ExaminationCard> {
 
     if (title == "Kandungan Garam Tinggi") {
       if (garam >= 0.5 && garam <= 1.0) {
+        Vibration.vibrate(pattern: [500, 1000, 500, 1000]);
         return Assets.images.icWarning.image();
       } else if (garam > 1.0) {
+        Vibration.vibrate(pattern: [500, 2000, 500, 2000, 500, 2000]);
         return Assets.images.icStop.image();
       } else {
         return Assets.images.icApprove.image();
       }
     } else if (title == "Kandungan Gula Tinggi") {
-      if (gula >= 12.5 && gula <= 50.0) {
+      if (gula >= 12.5 && gula <= 30.0) {
+        Vibration.vibrate(pattern: [500, 1000, 500, 1000]);
         return Assets.images.icWarning.image();
-      } else if (gula > 50.0) {
+      } else if (gula > 30.0) {
+        Vibration.vibrate(pattern: [500, 2000, 500, 2000, 500, 2000]);
         return Assets.images.icStop.image();
       } else {
         return Assets.images.icApprove.image();

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../widget/im_flutter.dart';
@@ -14,14 +15,25 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Future.delayed(const Duration(seconds: 1), () => context.go('/login'));
+      _checkLoginStatus();
     });
+  }
+
+  void _checkLoginStatus() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // User is signed in, navigate to the menu
+      context.go('/menu');
+    } else {
+      // No user is signed in, navigate to the login screen
+      Future.delayed(const Duration(seconds: 1), () => context.go('/login'));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: ImFlutter(),
+      body: ImLogo(),
     );
   }
 }

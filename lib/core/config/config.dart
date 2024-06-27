@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 class Config {
-  static const baseUrl = 'https://629867c8de3d7eea3c664c1a.mockapi.io';
-  static const apiKey = 'API_KEY';
+  static const baseUrl = 'hhttps://newsapi.org/v2/';
+  static const apiKey = 'ff111c0a436344aca361e1d6f0826659';
   static const geminiKey = "AIzaSyAR0_63vEuG3mpV48zKLiS4_jxtBGUgiyA";
   static const notificationChannelId = 'nutrisee_channel_id';
   static const notificationChannelName = 'nutrisee notification';
