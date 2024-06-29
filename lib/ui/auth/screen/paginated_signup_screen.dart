@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:intl/intl.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
@@ -25,6 +26,8 @@ class PaginatedSignupScreen extends StatefulWidget {
 }
 
 class _PaginatedSignupScreenState extends State<PaginatedSignupScreen> {
+  AuthCubit cubit = AuthCubit();
+
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController mailController = TextEditingController();
@@ -32,6 +35,7 @@ class _PaginatedSignupScreenState extends State<PaginatedSignupScreen> {
   final TextEditingController rePwdController = TextEditingController();
   final TextEditingController heightController = TextEditingController();
   final TextEditingController weightController = TextEditingController();
+  final TextEditingController birthDateController = TextEditingController();
 
   String? _selectedGender;
   bool? _isDiabetisi;
@@ -41,81 +45,89 @@ class _PaginatedSignupScreenState extends State<PaginatedSignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
-      child: BlocListener<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state is AuthLoggedIn) {
-            context.go('/menu');
-          } else if (state is AuthError) {
-            context.showSnackbar(state.message);
-          }
-        },
-        child: PopScope(
-          canPop: false,
-          onPopInvoked: (didPop) {
-            if (didPop) {
-              return;
-            }
-            if (currentStep == 0) {
-              context.pop();
-            } else {
-              currentStep--;
-            }
-          },
-          child: Scaffold(
-            backgroundColor: AppColors.whiteBG,
-            appBar: AppBar(
-              automaticallyImplyLeading: true,
-              scrolledUnderElevation: 0,
-            ),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppTheme.marginHorizontal,
-              ),
-              child: CustomScrollView(
-                slivers: [
-                  stepper(context),
-                  SliverFillRemaining(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+        if (currentStep == 0) {
+          context.pop();
+        } else {
+          currentStep--;
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.whiteBG,
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          scrolledUnderElevation: 0,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppTheme.marginHorizontal,
+          ),
+          child: CustomScrollView(
+            slivers: [
+              stepper(context),
+              BlocProvider(
+                create: (context) => cubit,
+                child: BlocListener<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is RegisterSuccess) {
+                      setState(() {
+                        currentStep++;
+                      });
+                    } else if (state is AuthError) {
+                      context.showSnackbar(state.message ?? "");
+                    } else if (state is SaveDataSuccess) {
+                      context.go("/menu");
+                    }
+                  },
+                  child: SliverFillRemaining(
                     hasScrollBody: false,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         const Gap(20),
-                        AppButton(
-                          caption: currentStep == 0 ? "Daftar" : "Selanjutnya",
-                          onPressed: () {
-                            if (currentStep == 0) {
-                              if (mailController.text.isEmpty) {
-                                context.showSnackbar("Fill Your Email");
-                              } else if (pwdController.text.isEmpty ||
-                                  rePwdController.text.isEmpty) {
-                                context.showSnackbar("Fill Your Password");
-                              } else if (pwdController.text !=
-                                  rePwdController.text) {
-                                context. showSnackbar("Password doesn't match");
-                              } else {
-                                context.read<AuthCubit>().signup(
+                        BlocBuilder<AuthCubit, AuthState>(
+                          builder: (context, state) {
+                            return AppButton(
+                              caption:
+                                  currentStep == 0 ? "Daftar" : "Selanjutnya",
+                              onPressed: () {
+                                if (currentStep == 0) {
+                                  if (mailController.text.isEmpty) {
+                                    context.showSnackbar("Fill Your Email");
+                                  } else if (pwdController.text.isEmpty ||
+                                      rePwdController.text.isEmpty) {
+                                    context.showSnackbar("Fill Your Password");
+                                  } else if (pwdController.text !=
+                                      rePwdController.text) {
+                                    context
+                                        .showSnackbar("Password doesn't match");
+                                  } else {
+                                    cubit.signup(
                                       mailController.text,
                                       pwdController.text,
                                     );
-                              }
-                            } else if (currentStep == 2 &&
-                                _isDiabetisi == true) {
-                              if (_isDiabetisi == null) {
-                                context.showSnackbar("Are you diabetes?");
-                              } else {
-                                setState(() {
-                                  currentStep++;
-                                });
-                              }
-                            } else if (currentStep == 2 &&
-                                _isDiabetisi == false) {
-                              if (_isDiabetisi == null) {
-                                context.showSnackbar("Are you diabetes?");
-                              } else {
-                                context.read<AuthCubit>().saveUserData(
+                                  }
+                                } else if (currentStep == 2 &&
+                                    _isDiabetisi == true) {
+                                  if (_isDiabetisi == null) {
+                                    context.showSnackbar("Are you diabetes?");
+                                  } else {
+                                    setState(() {
+                                      currentStep++;
+                                    });
+                                  }
+                                } else if (currentStep == 2 &&
+                                    _isDiabetisi == false) {
+                                  if (_isDiabetisi == null) {
+                                    context.showSnackbar("Are you diabetes?");
+                                  } else {
+                                    cubit.saveUserData(
                                       email: mailController.text,
                                       firstName: firstNameController.text,
                                       lastName: lastNameController.text,
@@ -129,54 +141,57 @@ class _PaginatedSignupScreenState extends State<PaginatedSignupScreen> {
                                       birthDate: birthDate!,
                                       hasDiabetes: _isDiabetisi!,
                                     );
-                              }
-                            } else if (currentStep == 3) {
-                              if (_diabetesType == "") {
-                                context.showSnackbar(
-                                    "Please Fill Your Diabetes Type");
-                              } else {
-                                BlocProvider.of<AuthCubit>(context)
-                                    .saveUserData(
-                                  email: mailController.text,
-                                  firstName: firstNameController.text,
-                                  lastName: lastNameController.text,
-                                  gender: _selectedGender!,
-                                  height:
-                                      int.tryParse(heightController.text) ?? 0,
-                                  weight:
-                                      int.tryParse(weightController.text) ?? 0,
-                                  birthDate: birthDate!,
-                                  hasDiabetes: _isDiabetisi!,
-                                  diabetesType: _diabetesType!,
-                                );
-                              }
-                              context.go('/menu');
-                            } else {
-                              if (_selectedGender == "") {
-                                context
-                                    .showSnackbar("Please Choose Your Gender");
-                              } else if (heightController.text.isEmpty ||
-                                  weightController.text.isEmpty) {
-                                context.showSnackbar(
-                                    "Please Fill Your Height and Weight");
-                              } else if (birthDate == null) {
-                                context.showSnackbar(
-                                    "Please Input Your Birth Date");
-                              } else {
-                                setState(() {
-                                  currentStep++;
-                                });
-                              }
-                            }
+                                  }
+                                } else if (currentStep == 3) {
+                                  if (_diabetesType == "") {
+                                    context.showSnackbar(
+                                        "Please Fill Your Diabetes Type");
+                                  } else {
+                                    cubit.saveUserData(
+                                      email: mailController.text,
+                                      firstName: firstNameController.text,
+                                      lastName: lastNameController.text,
+                                      gender: _selectedGender!,
+                                      height:
+                                          int.tryParse(heightController.text) ??
+                                              0,
+                                      weight:
+                                          int.tryParse(weightController.text) ??
+                                              0,
+                                      birthDate: birthDate!,
+                                      hasDiabetes: _isDiabetisi!,
+                                      diabetesType: _diabetesType!,
+                                    );
+                                  }
+                                } else {
+                                  if (_selectedGender == "") {
+                                    context.showSnackbar(
+                                        "Please Choose Your Gender");
+                                  } else if (heightController.text.isEmpty ||
+                                      weightController.text.isEmpty) {
+                                    context.showSnackbar(
+                                        "Please Fill Your Height and Weight");
+                                  } else if (birthDate == null) {
+                                    context.showSnackbar(
+                                        "Please Input Your Birth Date");
+                                  } else {
+                                    setState(() {
+                                      currentStep++;
+                                    });
+                                  }
+                                }
+                              },
+                            );
                           },
                         ),
                         currentStep == 0 ? alreadyHadAccount() : Container(),
+                        Gap(20),
                       ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),
@@ -461,6 +476,7 @@ class _PaginatedSignupScreenState extends State<PaginatedSignupScreen> {
                 startIcon: Ionicons.calendar_outline,
                 endIcon: Ionicons.chevron_forward,
                 readOnlyField: true,
+                controller: birthDateController,
                 onTap: () => _selectDate(),
               ),
             ],
@@ -475,7 +491,7 @@ class _PaginatedSignupScreenState extends State<PaginatedSignupScreen> {
       return stepZero(context);
     } else if (currentStep == 1) {
       return stepOne(context);
-    } else if (currentStep == 1) {
+    } else if (currentStep == 2) {
       return stepTwo(context);
     } else {
       return stepThree(context);
@@ -507,6 +523,7 @@ class _PaginatedSignupScreenState extends State<PaginatedSignupScreen> {
     if (_pickedDate != null) {
       setState(() {
         birthDate = _pickedDate;
+        birthDateController.text = DateFormat('dd-MM-yyyy').format(_pickedDate);
       });
     }
   }

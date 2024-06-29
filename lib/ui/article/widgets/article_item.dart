@@ -2,11 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:nutrisee/core/data/model/article/article.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 
 class ArticleItem extends StatelessWidget {
-  const ArticleItem({super.key});
+  final Article article;
+
+  const ArticleItem({required this.article, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +45,15 @@ class ArticleItem extends StatelessWidget {
               ),
             ),
             clipBehavior: Clip.hardEdge,
-            child: Image.asset(
-              "assets/images/img_article.png",
-              fit: BoxFit.cover,
-            ),
+            child: article.urlToImage == ""
+                ? Image.asset(
+                    "assets/images/ic_placeholder.png",
+                    fit: BoxFit.cover,
+                  )
+                : Image.network(
+                    article.urlToImage!,
+                    fit: BoxFit.cover,
+                  ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -56,7 +64,7 @@ class ArticleItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "judul",
+                  article.title ?? 'No Title',
                   style: context.textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.w800,
                     fontSize: 14,
@@ -66,7 +74,7 @@ class ArticleItem extends StatelessWidget {
                 ),
                 const Gap(6),
                 Text(
-                  "Sayuran adalah  ",
+                  article.description ?? 'No Description',
                   style: context.textTheme.bodyLarge?.copyWith(
                     fontSize: 10,
                     overflow: TextOverflow.ellipsis,

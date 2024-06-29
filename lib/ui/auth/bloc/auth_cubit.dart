@@ -2,32 +2,36 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nutrisee/core/config/config.dart';
 import 'package:nutrisee/core/data/model/user/user_data.dart';
+import 'package:nutrisee/core/utils/session.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final session = Session();
   var userid;
 
   AuthCubit() : super(AuthInitial());
 
-  Future<void> login(String email, String password) async {
+  void login(String email, String password) async {
     try {
       emit(AuthLoading());
-      await _auth.signInWithEmailAndPassword(
+      UserCredential response = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      emit(AuthLoggedIn());
+      await session.save(Config.getUser, response.user!.uid);
+      emit(AuthSuccess());
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(AuthError(message: e.toString()));
     }
   }
 
-  Future<void> signup(String email, String password) async {
-    emit(AuthLoading());
+  void signup(String email, String password) async {
+    emit(RegisterLoading());
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -38,18 +42,22 @@ class AuthCubit extends Cubit<AuthState> {
       final User? firebaseUser = userCredential.user;
       if (firebaseUser != null) {
         userid = firebaseUser.uid;
-        emit(AuthLoggedIn());
+        emit(RegisterSuccess());
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        emit(const AuthError('The password provided is too weak.'));
+        emit(const AuthError(
+          message: 'The password provided is too weak.',
+        ));
       } else if (e.code == 'email-already-in-use') {
-        emit(const AuthError('The account already exists for that email.'));
+        emit(const AuthError(
+          message: 'The account already exists for that email.',
+        ));
       }
     }
   }
 
-  Future<void> saveUserData({
+  void saveUserData({
     required String email,
     required String firstName,
     required String lastName,
@@ -60,7 +68,7 @@ class AuthCubit extends Cubit<AuthState> {
     required bool hasDiabetes,
     String? diabetesType,
   }) async {
-    emit(AuthLoading());
+    emit(SaveDataLoading());
     try {
       final user = UserData(
         uid: userid,
@@ -73,12 +81,15 @@ class AuthCubit extends Cubit<AuthState> {
         birthDate: birthDate,
         hasDiabetes: hasDiabetes,
         diabetesType: diabetesType,
+        calories: 0,
       );
 
       await _firestore.collection('users').doc(userid).set(user.toMap());
-      emit(AuthLoggedIn());
+      emit(SaveDataSuccess());
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(AuthError(
+        message: e.toString(),
+      ));
     }
   }
 
@@ -86,9 +97,9 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(AuthLoading());
       await _auth.signOut();
-      emit(AuthLoggedOut());
+      emit(AuthSuccess());
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(AuthError(message: e.toString()));
     }
   }
 }

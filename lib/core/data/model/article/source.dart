@@ -1,21 +1,45 @@
 import 'package:equatable/equatable.dart';
 
-class Source extends Equatable {
-  final String? id;
-  final String? name;
+class Article extends Equatable {
+  final String? author;
+  final String? title;
+  final String? description;
+  final String? url;
+  final String? urlToImage;
+  final String? publishedAt;
+  final String? content;
 
-  const Source({this.id, this.name});
+  const Article({
+    this.author,
+    this.title,
+    this.description,
+    this.url,
+    this.urlToImage,
+    this.publishedAt,
+    this.content,
+  });
 
-  factory Source.fromJson(Map<String, dynamic> json) => Source(
-        id: json['id'] as String?,
-        name: json['name'] as String?,
+  factory Article.fromJson(Map<String, dynamic> json) => Article(
+        author: json['author'] as String?,
+        title: json['title'] as String?,
+        description: json['description'] as String?,
+        url: json['url'] as String?,
+        urlToImage: json['urlToImage'] as String?,
+        publishedAt: json['publishedAt'] as String?,
+        content: json['content'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
+        'author': author,
+        'title': title,
+        'description': description,
+        'url': url,
+        'urlToImage': urlToImage,
+        'publishedAt': publishedAt,
+        'content': content,
       };
 
   @override
-  List<Object?> get props => [id, name];
+  List<Object?> get props =>
+      [author, title, description, url, urlToImage, publishedAt, content];
 }

@@ -9,6 +9,7 @@ class UserData {
   final DateTime birthDate;
   final bool hasDiabetes;
   final String? diabetesType;
+  final int? calories;
 
   UserData({
     required this.uid,
@@ -21,6 +22,7 @@ class UserData {
     required this.birthDate,
     required this.hasDiabetes,
     this.diabetesType,
+    this.calories,
   });
 
   Map<String, dynamic> toMap() {
@@ -35,6 +37,7 @@ class UserData {
       'birthDate': birthDate.toIso8601String(),
       'hasDiabetes': hasDiabetes,
       'diabetesType': diabetesType,
+      'calories': calories,
     };
   }
 
@@ -50,6 +53,7 @@ class UserData {
       birthDate: DateTime.parse(map['birthDate']),
       hasDiabetes: map['hasDiabetes'],
       diabetesType: map['diabetesType'],
+      calories: map['calories'],
     );
   }
 }

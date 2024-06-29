@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:nutrisee/core/utils/status.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
@@ -70,10 +71,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   create: (context) => AuthCubit(),
                   child: BlocConsumer<AuthCubit, AuthState>(
                     listener: (context, state) {
-                      if (state is AuthLoggedIn) {
+                      if (state is AuthSuccess) {
                         context.go('/menu');
                       } else if (state is AuthError) {
-                        context.showSnackbar(state.message);
+                        context.showSnackbar(state.message ?? "");
                       }
                     },
                     builder: (context, state) {

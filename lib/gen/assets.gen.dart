@@ -75,6 +75,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/ic_ocr.png
   AssetGenImage get icOcr => const AssetGenImage('assets/images/ic_ocr.png');
 
+  /// File path: assets/images/ic_placeholder.png
+  AssetGenImage get icPlaceholder =>
+      const AssetGenImage('assets/images/ic_placeholder.png');
+
   /// File path: assets/images/ic_questioner.png
   AssetGenImage get icQuestioner =>
       const AssetGenImage('assets/images/ic_questioner.png');
@@ -157,6 +161,7 @@ class $AssetsImagesGen {
         icNutriscore,
         icNutrition,
         icOcr,
+        icPlaceholder,
         icQuestioner,
         icRemindMed,
         icRunning,

@@ -118,40 +118,13 @@ class _ResultBmiScreenState extends State<ResultBmiScreen> {
                     "Hasil Analisa",
                     style: context.textTheme.headlineLarge,
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      gradient: AppColors.orangeGradient,
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 50,
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.orange.shade100,
+                  descriptionResult == "loading"
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.primary,
                           ),
-                          child: Assets.images.icBulb.image(),
-                        ),
-                        Gap(12),
-                        Expanded(
-                          child: Text(
-                            descriptionResult,
-                            style: context.textTheme.bodyLarge?.copyWith(
-                              fontSize: 10,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        )
+                      : suggestionCard(descriptionResult, context),
                   cardProfile(
                     context,
                     bmiValue: widget.bmiData.bmiResult ?? 0.0,
@@ -172,6 +145,43 @@ class _ResultBmiScreenState extends State<ResultBmiScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Container suggestionCard(String descriptionResult, BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: AppColors.orangeGradient,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 50,
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.orange.shade100,
+            ),
+            child: Assets.images.icBulb.image(),
+          ),
+          Gap(12),
+          Expanded(
+            child: Text(
+              descriptionResult,
+              style: context.textTheme.bodyLarge?.copyWith(
+                fontSize: 10,
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.justify,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -462,7 +462,9 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
                   fontWeight: FontWeight.w600, color: AppColors.textBlack),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+            
+              },
               child: const Icon(
                 Icons.question_mark,
                 size: 18,

@@ -17,7 +17,7 @@ abstract class ApiService {
   Future<ApiResponse<User>> getUser(@Path('id') String userId);
 
   @GET('/top-headlines?country=id&category=health&apiKey={apikey}')
-  Future<Article> getArticle(
+  Future<ArticleData> getArticle(
     @Path('apiKey') String apiKey,
   );
 }

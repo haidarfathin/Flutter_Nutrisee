@@ -27,3 +27,9 @@ class AnalyzeBmiError extends ScanBmiState {
   @override
   List<Object> get props => [message];
 }
+
+class UpdateBmiLoading extends ScanBmiState {}
+
+class UpdateBmiSuccess extends ScanBmiState {}
+
+class UpdateBmiError extends ScanBmiState {}

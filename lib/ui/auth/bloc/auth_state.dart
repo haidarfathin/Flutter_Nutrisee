@@ -11,15 +11,21 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class AuthLoggedIn extends AuthState {}
-
-class AuthLoggedOut extends AuthState {}
+class AuthSuccess extends AuthState {}
 
 class AuthError extends AuthState {
-  final String message;
+  final String? message;
 
-  const AuthError(this.message);
+  const AuthError({required this.message});
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }
+
+class RegisterLoading extends AuthState {}
+
+class RegisterSuccess extends AuthState {}
+
+class SaveDataLoading extends AuthState {}
+
+class SaveDataSuccess extends AuthState {}

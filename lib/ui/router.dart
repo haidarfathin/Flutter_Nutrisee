@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nutrisee/ui/auth/screen/login_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nutrisee/ui/auth/screen/paginated_signup_screen.dart';
-import 'package:nutrisee/ui/auth/screen/signup_screen.dart';
 import 'package:nutrisee/ui/count_calories/screen/calories_screen.dart';
 import 'package:nutrisee/ui/count_calories/screen/count_calories_screen.dart';
 import 'package:nutrisee/ui/count_calories/screen/result_calories_screen.dart';
