@@ -43,13 +43,12 @@ class _MenuScreenState extends State<MenuScreen> {
         icon: Ionicons.newspaper,
         text: "Artikel",
       ),
-      const GButton(
+      GButton(
         icon: Ionicons.person,
-        leading: const CircleAvatar(
+        leading: CircleAvatar(
           radius: 14,
-          backgroundImage: NetworkImage(
-            'https://sooxt98.space/content/images/size/w100/2019/01/profile.png',
-          ),
+          backgroundColor: Colors.green.shade100,
+          backgroundImage: AssetImage("assets/images/ic_male_circle.png"),
         ),
         text: 'Profile',
       )
@@ -68,6 +67,7 @@ class _MenuScreenState extends State<MenuScreen> {
               backgroundColor: AppColors.primary,
               onPressed: () {
                 context.push("/scan-product");
+                // getImageFromCamera();
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -122,27 +122,3 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 }
-
-/*
- Container(
-        color: Colors.transparent,
-        height: 70,
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(30),
-            topLeft: Radius.circular(30),
-          ),
-          child: BottomNavigationBar(
-            selectedItemColor: AppColors.ancient,
-            unselectedItemColor: AppColors.ancientSwatch.shade300,
-            showUnselectedLabels: false,
-            backgroundColor: AppColors.ancientSwatch.shade50,
-            items: bottomNavBarItem,
-            currentIndex: currentScreen,
-            onTap: (index) => setState(
-              () => currentScreen = index,
-            ),
-          ),
-        ),
-      ),
- */

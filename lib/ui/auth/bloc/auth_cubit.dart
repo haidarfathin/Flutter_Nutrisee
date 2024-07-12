@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nutrisee/core/config/config.dart';
-import 'package:nutrisee/core/data/model/user/user_data.dart';
+import 'package:nutrisee/core/data/model/firestore/user_data.dart';
 import 'package:nutrisee/core/utils/session.dart';
 
 part 'auth_state.dart';

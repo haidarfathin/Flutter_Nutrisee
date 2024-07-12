@@ -141,7 +141,7 @@ class GaugeBmi extends StatelessWidget {
                 Icons.arrow_drop_up_rounded,
                 size: 30,
                 color:
-                    bmiValue >= 25 ? Colors.red.shade500 : Colors.transparent,
+                    bmiValue >= 30 ? Colors.red.shade500 : Colors.transparent,
               ),
             ],
           ),

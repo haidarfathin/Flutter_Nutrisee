@@ -1,3 +1,5 @@
+import 'package:nutrisee/core/data/model/firestore/scanned_products.dart';
+
 class UserData {
   final String uid;
   final String email;
@@ -10,6 +12,7 @@ class UserData {
   final bool hasDiabetes;
   final String? diabetesType;
   final int? calories;
+  final List<ScannedProduct>? scannedProducts;
 
   UserData({
     required this.uid,
@@ -23,6 +26,7 @@ class UserData {
     required this.hasDiabetes,
     this.diabetesType,
     this.calories,
+    this.scannedProducts,
   });
 
   Map<String, dynamic> toMap() {
@@ -38,6 +42,7 @@ class UserData {
       'hasDiabetes': hasDiabetes,
       'diabetesType': diabetesType,
       'calories': calories,
+      'scanned_products': scannedProducts?.map((e) => e.toMap()).toList(),
     };
   }
 
@@ -54,6 +59,9 @@ class UserData {
       hasDiabetes: map['hasDiabetes'],
       diabetesType: map['diabetesType'],
       calories: map['calories'],
+      scannedProducts: (map['scanned_products'] as List<dynamic>?)
+          ?.map((e) => ScannedProduct.fromMap(e as Map<String, dynamic>))
+          .toList(),
     );
   }
 }

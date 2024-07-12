@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:nutrisee/core/data/model/firestore/scanned_products.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
 
 class ScanItem extends StatelessWidget {
-  const ScanItem({super.key});
+  final ScannedProduct data;
+  const ScanItem({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
@@ -18,34 +19,57 @@ class ScanItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Assets.images.icDiabetesTest.image(),
+          Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+            child: Image.network(
+              data.image,
+              fit: BoxFit.cover,
+              width: 50,
+              height: 50,
+            ),
+          ),
+          Gap(14),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "19.30 - 15 Mei",
-                  style: context.textTheme.labelSmall,
-                ),
-                Text(
-                  "Susu Indomilk",
-                  style: context.textTheme.bodyLarge
-                      ?.copyWith(fontWeight: FontWeight.bold),
+                  data.name,
+                  style: context.textTheme.titleSmall
+                      ?.copyWith(fontWeight: FontWeight.w900),
                 ),
                 Gap(4),
-                Text(
-                  "220kkal",
-                  style: context.textTheme.bodySmall,
-                ),
+                data.isSugarHighest
+                    ? Text(
+                        "Gula: ${data.sugar}gr",
+                        style: context.textTheme.bodySmall
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      )
+                    : Text(
+                        "Garam: ${data.natrium}mg",
+                        style: context.textTheme.bodySmall
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      ),
               ],
             ),
           ),
-          Image.asset(
-            'assets/images/ic_nutriscore.png',
-          ),
+          showNutriScore(data.score),
         ],
       ),
     );
+  }
+}
+
+Image showNutriScore(String score) {
+  if (score.toLowerCase() == "a") {
+    return Assets.images.icScoreA.image(height: 55);
+  } else if (score.toLowerCase() == "b") {
+    return Assets.images.icScoreB.image(height: 55);
+  } else if (score.toLowerCase() == "c") {
+    return Assets.images.icScoreC.image(height: 55);
+  } else {
+    return Assets.images.icScoreD.image(height: 55);
   }
 }

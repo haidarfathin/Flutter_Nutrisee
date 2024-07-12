@@ -1,17 +1,53 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:gap/gap.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:nutrisee/core/data/model/article/listArticles.dart';
+import 'package:nutrisee/core/data/prompt.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
+import 'package:nutrisee/ui/history/cubit/history_cubit.dart';
 import 'package:nutrisee/ui/home/widget/item_menu.dart';
 import 'package:nutrisee/ui/home/widget/item_scan.dart';
 
 import '../../../core/widgets/app_colors.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String? helloPrompt;
+
+  ListArticles listArticles = ListArticles();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    generatePrompt();
+  }
+
+  final Gemini gemini = Gemini.instance;
+  Future<void> generatePrompt() async {
+    final result = await gemini.text(
+      Prompt.sayHelloToUser.replaceFirst('[user]', 'Jaka'),
+    );
+
+    final hello = result?.content?.parts?.last.text ?? 'No analysis available';
+    log(hello);
+    setState(() {
+      helloPrompt = hello;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +60,18 @@ class HomeScreen extends StatelessWidget {
       {
         "icon": Assets.images.icCount.image(),
         "title": "Hitung BMI",
-        "route": "/bmi",
+        "route": "/count-bmi",
       },
       {
         "icon": Assets.images.icDiabetesTest.image(),
         "title": "Risiko Diabetes",
         "route": "/diabetes-risk",
       },
-      {
-        "icon": Assets.images.icRemindMed.image(),
-        "title": "Pengingat Obat",
-        "route": "/meds",
-      }
+      // {
+      //   "icon": Assets.images.icRemindMed.image(),
+      //   "title": "Pengingat Obat",
+      //   "route": "/meds",
+      // }
     ];
 
     return Scaffold(
@@ -44,9 +80,9 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: AppColors.whiteBG,
         centerTitle: false,
         title: Text(
-          "Hi, Haidar",
+          "Nutrisee",
           style: context.textTheme.titleLarge
-              ?.copyWith(fontWeight: FontWeight.w800),
+              ?.copyWith(fontWeight: FontWeight.w800, color: AppColors.primary),
         ),
         actions: const [
           Padding(
@@ -134,7 +170,7 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Saran Nutrisi AI",
+                      "Saran Nutrisee AI",
                       style: context.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -160,20 +196,30 @@ class HomeScreen extends StatelessWidget {
                             child: Assets.images.icBulb.image(),
                           ),
                           const Gap(8),
-                          Expanded(
-                            flex: 4,
-                            child: Text(
-                              "Anda sudah mengonsumsi 40g gula hari ini, "
-                              "mendekati batas maksimal 50g (4 sdm). "
-                              "Cobalah untuk menghindari makanan dan "
-                              "minuman bergula!",
-                              style: context.textTheme.bodySmall?.copyWith(
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              textAlign: TextAlign.justify,
-                            ),
-                          ),
+                          helloPrompt == null
+                              ? const Expanded(
+                                  flex: 4,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Expanded(
+                                  flex: 4,
+                                  child: Text(
+                                    helloPrompt ?? "",
+                                    style:
+                                        context.textTheme.bodySmall?.copyWith(
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    textAlign: TextAlign.justify,
+                                  ),
+                                ),
                         ],
                       ),
                     )
@@ -201,12 +247,50 @@ class HomeScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    const Gap(12),
-                    const ScanItem(),
-                    const Gap(8),
-                    const ScanItem(),
                   ],
                 ),
+              ),
+            ),
+            BlocProvider(
+              create: (context) => HistoryCubit()..getUserHistory(),
+              child: BlocBuilder<HistoryCubit, HistoryState>(
+                builder: (context, state) {
+                  if (state is GetHistoryLoading) {
+                    return const SliverToBoxAdapter(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else if (state is GetHistorySuccess) {
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: ScanItem(
+                              data: state.scannedProduct[index],
+                            ),
+                          );
+                        },
+                        childCount: state.scannedProduct.length > 3
+                            ? 3
+                            : state.scannedProduct.length,
+                      ),
+                    );
+                  } else if (state is GetHistoryError) {
+                    return SliverToBoxAdapter(
+                      child: Center(
+                        child: Text("Error: ${state.message}"),
+                      ),
+                    );
+                  } else {
+                    return const SliverToBoxAdapter(
+                      child: Center(
+                        child: Text('No data'),
+                      ),
+                    );
+                  }
+                },
               ),
             ),
             SliverToBoxAdapter(
@@ -227,8 +311,9 @@ class HomeScreen extends StatelessWidget {
                       height: 200,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 3,
+                        itemCount: listArticles.articles.length,
                         itemBuilder: (context, index) {
+                          final article = listArticles.articles[index];
                           return Container(
                             width: 250,
                             margin: const EdgeInsets.only(right: 14),
@@ -240,12 +325,16 @@ class HomeScreen extends StatelessWidget {
                               children: [
                                 Container(
                                   height: 75,
-                                  decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.only(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(16),
                                       topRight: Radius.circular(16),
                                     ),
-                                    color: Colors.green,
+                                    image: DecorationImage(
+                                      image: NetworkImage(article['image_url']),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                                 Padding(
@@ -254,27 +343,34 @@ class HomeScreen extends StatelessWidget {
                                     horizontal: 16,
                                   ),
                                   child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Sayuran Yang Cocok Untuk Pengidap Diabetes",
-                                        style: context.textTheme.bodyLarge
+                                        article['title'],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge
                                             ?.copyWith(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w800,
-                                        ),
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                       const Gap(8),
                                       Text(
-                                        "Kamu harus cermat saat memilih "
-                                        "sayur dan buah untuk penderita diabetes. "
-                                        "Soalnya, tidak semua jenis buah aman buat "
-                                        "penderita diabetes,",
-                                        style: context.textTheme.bodySmall
-                                            ?.copyWith(fontSize: 10),
+                                        article['description'],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
+                                              fontSize: 10,
+                                            ),
                                         textAlign: TextAlign.justify,
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
-                                      )
+                                      ),
                                     ],
                                   ),
                                 )
@@ -284,6 +380,7 @@ class HomeScreen extends StatelessWidget {
                         },
                       ),
                     ),
+                    Gap(20),
                   ],
                 ),
               ),

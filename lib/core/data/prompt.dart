@@ -39,7 +39,7 @@ berikan respon dalam format JSON dengan struktur sebagai berikut:
   "description": [saran]
 }
 
-jika anda tidak bisa membaca tabel nilai gizi pada gambar yang diberikan,
+jika anda tidak mendeteksi kata informasi nilai gizi,
 kembalikan respon seperti berikut
 {
   "isNutritionFacts":false,
@@ -67,5 +67,9 @@ n hasil analisa berikut:
 - Rekomendasi aktivitas fisik yang sesuai.
 
 maksimal 20 kata
+""";
+
+  static const String sayHelloToUser = """
+sapalah pengguna dengan nama [user] dan ingatkan dia untuk terus menjaga asupan pola makan dan berolahraga, maksimal 30 kata
 """;
 }

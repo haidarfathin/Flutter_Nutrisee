@@ -73,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    state.data.gender,
+                                    state.data.gender.toUpperCase(),
                                     style:
                                         context.textTheme.bodyLarge?.copyWith(
                                       color: AppColors.textGray,
@@ -105,9 +105,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   top: 10,
                                 ),
                                 decoration: BoxDecoration(
+                                  color: Colors.green.shade100,
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: Assets.images.imgArticle.provider(),
+                                    image: AssetImage(
+                                      "assets/images/ic_male_circle.png",
+                                    ),
                                   ),
                                   shape: BoxShape.circle,
                                   border: const GradientBoxBorder(
@@ -180,22 +183,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  String calculateBMI(int height, int weight) {
-    var heightMeter = height / 100;
-    var heightKuadrat = heightMeter * heightMeter;
-    var bmi = weight / heightKuadrat;
-    bmi = roundDouble(bmi, 1);
-    if (bmi < 18.5) {
-      return "UNDERWEIGHT";
-    } else if (bmi >= 18.5 && bmi < 24.9) {
-      return "IDEAL";
-    } else if (bmi >= 25 && bmi < 29.9) {
-      return "OVERWEIGHT";
-    } else {
-      return "OBESE";
-    }
-  }
-
   Widget diabetesCard(
     BuildContext context, {
     required String diabetesType,
@@ -229,6 +216,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     required int calories,
     weight,
   }) {
+    var bmiResult = calculateBMI(height, weight);
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -249,7 +237,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   children: [
                     TextSpan(
-                      text: calculateBMI(height, weight),
+                      text: examineBMI(height, weight),
                       style: context.textTheme.titleLarge?.copyWith(
                         color: AppColors.whiteBG,
                       ),
@@ -267,8 +255,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
           const Gap(12),
-          const GaugeBmi(
-            bmiValue: 24.0,
+          GaugeBmi(
+            bmiValue: bmiResult,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -276,17 +264,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               itemData(
                 context,
                 "Umur",
-                "50",
+                calculateAge(birthDate).toString(),
               ),
               itemData(
                 context,
                 "Berat",
-                "75",
+                weight.toString(),
               ),
               itemData(
                 context,
                 "Tinggi",
-                "175",
+                height.toString(),
+              ),
+              itemData(
+                context,
+                "BMI",
+                bmiResult.toString(),
               ),
             ],
           ),
@@ -391,7 +384,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     String data,
   ) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           title,
@@ -436,4 +429,24 @@ int calculateBMR(
   }
 
   return bmr.toInt();
+}
+
+String examineBMI(int height, int weight) {
+  var bmi = calculateBMI(height, weight);
+  if (bmi < 18.5) {
+    return "UNDERWEIGHT";
+  } else if (bmi >= 18.5 && bmi < 24.9) {
+    return "IDEAL";
+  } else if (bmi >= 25 && bmi < 29.9) {
+    return "OVERWEIGHT";
+  } else {
+    return "OBESE";
+  }
+}
+
+double calculateBMI(int height, int weight) {
+  var heightMeter = height / 100;
+  var heightKuadrat = heightMeter * heightMeter;
+  var bmi = weight / heightKuadrat;
+  return bmi = roundDouble(bmi, 1);
 }

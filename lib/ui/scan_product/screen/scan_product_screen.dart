@@ -1,10 +1,16 @@
 import 'package:camera/camera.dart';
+import 'package:edge_detection/edge_detection.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/ui/scan_product/screen/product_result_screen.dart';
+import 'package:nutrisee/ui/scan_product/screen/scan_barcode_screen.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ScanProductScreen extends StatefulWidget {
   const ScanProductScreen({super.key});
@@ -18,6 +24,7 @@ class _ScanProductScreenState extends State<ScanProductScreen>
   CameraController? _cameraController;
   bool isCameraInit = false;
   late final List<CameraDescription> _cameras;
+  String? _imagePath;
 
   @override
   void initState() {
@@ -49,14 +56,12 @@ class _ScanProductScreenState extends State<ScanProductScreen>
   Future<void> onNewCameraSelected(CameraDescription description) async {
     final previousCameraController = _cameraController;
 
-    // Instantiating the camera controller
     final CameraController cameraController = CameraController(
       description,
       ResolutionPreset.high,
       imageFormatGroup: ImageFormatGroup.jpeg,
     );
 
-    // Initialize controller
     try {
       await cameraController.initialize();
       debugPrint('Camera initialized successfully');
@@ -64,10 +69,8 @@ class _ScanProductScreenState extends State<ScanProductScreen>
       debugPrint('Error initializing camera: $e');
     }
 
-    // Dispose the previous controller
     await previousCameraController?.dispose();
 
-    // Replace with the new controller
     if (mounted) {
       setState(() {
         _cameraController = cameraController;
@@ -75,7 +78,6 @@ class _ScanProductScreenState extends State<ScanProductScreen>
       });
     }
 
-    // Update UI if controller updated
     cameraController.addListener(() {
       if (mounted) setState(() {});
     });
@@ -95,11 +97,7 @@ class _ScanProductScreenState extends State<ScanProductScreen>
         try {
           final image = await _cameraController!.takePicture();
           if (!mounted) return;
-          await Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ProductResultScreen(imagePath: image.path),
-            ),
-          );
+          context.push('/result-product', extra: image);
         } catch (e) {
           debugPrint('Error capturing image: $e');
         }
@@ -142,22 +140,59 @@ class _ScanProductScreenState extends State<ScanProductScreen>
                       height: 100,
                       width: double.infinity,
                       color: AppColors.textBlack,
-                      child: InkWell(
-                        splashColor: Colors.white,
-                        onTap: () {
-                          onCapturedPressed();
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.greenSwatch.shade50,
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: InkWell(
+                              splashColor: Colors.white,
+                              onTap: () async {
+                                onCapturedPressed();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.greenSwatch.shade50,
+                                ),
+                                child: const Icon(
+                                  Ionicons.sparkles,
+                                  size: 30,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ),
                           ),
-                          child: const Icon(
-                            Ionicons.sparkles,
-                            color: AppColors.primary,
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: InkWell(
+                              splashColor: Colors.white,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BarcodeScannerScreen(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: 65,
+                                height: 50,
+                                margin: const EdgeInsets.only(right: 20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.orange.shade100,
+                                ),
+                                child: const Icon(
+                                  Ionicons.barcode,
+                                  size: 40,
+                                  color: Colors.orange,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   )

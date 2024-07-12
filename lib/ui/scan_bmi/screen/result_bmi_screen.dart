@@ -60,9 +60,9 @@ class _ResultBmiScreenState extends State<ResultBmiScreen> {
               title: const Text("Hasil BMI"),
               centerTitle: true,
               actions: [
-                IconButton.outlined(
+                IconButton(
                   onPressed: () {
-                    context.go('/bmi');
+                    context.pop();
                   },
                   icon: const Icon(
                     Icons.refresh,
@@ -119,9 +119,12 @@ class _ResultBmiScreenState extends State<ResultBmiScreen> {
                     style: context.textTheme.headlineLarge,
                   ),
                   descriptionResult == "loading"
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.primary,
+                      ? const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.primary,
+                            ),
                           ),
                         )
                       : suggestionCard(descriptionResult, context),
@@ -137,7 +140,7 @@ class _ResultBmiScreenState extends State<ResultBmiScreen> {
                     onPressed: () {
                       context.go('/menu');
                     },
-                    caption: "Update Profile",
+                    caption: "Kembali ke Beranda",
                     useIcon: false,
                   )
                 ],

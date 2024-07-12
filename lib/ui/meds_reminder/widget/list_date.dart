@@ -1,5 +1,6 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutrisee/core/data/model/task_day/task_day.dart';
 import 'package:nutrisee/core/utils/datetime_extension.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
@@ -14,18 +15,18 @@ class ListDate extends StatefulWidget {
 }
 
 class _ListDateState extends State<ListDate> {
+  final scroll = ScrollController(initialScrollOffset: (31 - 14.5) * 60);
+  DateTime? selectedDate;
+  List<TaskDay> listDate = [];
+
   @override
   void initState() {
     super.initState();
+    listDate = generate30day();
   }
-
-  final scroll = ScrollController(initialScrollOffset: (31 - 14.5) * 60);
-  DateTime? selectedDate;
 
   @override
   Widget build(BuildContext context) {
-    List<TaskDay> listDate = generate30day();
-
     return Container(
       height: 80,
       padding: const EdgeInsets.only(top: 12, left: 8, right: 12),
@@ -41,11 +42,10 @@ class _ListDateState extends State<ListDate> {
                 for (var element in listDate) {
                   element.selected = false;
                 }
+                dateItem.selected = true;
+                selectedDate = dateItem.date;
+                widget.dateSelected.call(dateItem.date);
               });
-              dateItem.selected = true;
-              final date = dateItem.date;
-              selectedDate = date;
-              widget.dateSelected.call(date ?? DateTime.now());
             },
             child: itemDay(dateItem, context),
           );
@@ -63,21 +63,14 @@ Widget itemDay(TaskDay data, BuildContext context) {
   bool useBorder = false;
   if (data.selected == true || data.date.toString() == todaySelected) {
     useBorder = true;
-    // print('fth clicked' + data.date.toString());
   }
 
-  if (data.date.dateFormat('EEE') == 'Sun') {
-    bgDate = Colors.redAccent;
-    textDate = Colors.red;
-  } else if (data.date.dateFormat('EEE') == 'Sat') {
-    bgDate = Colors.yellowAccent;
-    textDate = Colors.yellow;
-  } else if (data.date.dateFormat('DD') == todayDate) {
-    bgDate = Colors.greenAccent;
-    textDate = Colors.green;
+  if (data.date.dateFormat('DD') == todayDate) {
+    bgDate = Colors.green;
+    textDate = Colors.white;
   } else {
-    bgDate = Colors.grey;
-    textDate = Colors.black54;
+    bgDate = Colors.green.shade100;
+    textDate = Colors.green.shade700;
   }
   return Container(
     width: 60,
@@ -87,15 +80,15 @@ Widget itemDay(TaskDay data, BuildContext context) {
       color: bgDate,
       borderRadius: BorderRadius.circular(12),
       border: Border.all(
-        width: 2,
-        color: useBorder ? AppColors.textBlack : Colors.transparent,
+        width: 3,
+        color: useBorder ? AppColors.primary : Colors.transparent,
       ),
     ),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          data.date.dateFormat('EEE'),
+          data.date.dateFormat('MMM'),
           style: context.textTheme.bodyMedium?.copyWith(
             color: textDate,
             fontWeight: FontWeight.bold,

@@ -120,7 +120,7 @@ class _ResultCaloriesScreenState extends State<ResultCaloriesScreen> {
                     padding: const EdgeInsets.only(bottom: 20),
                     child: AppButton(
                       onPressed: () {
-                        context.go('/home');
+                        context.go('/menu');
                       },
                       caption: "Back to Home",
                     ),

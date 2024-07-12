@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:alarm/alarm.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +11,6 @@ import 'package:injectable/injectable.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:nutrisee/core/config/config.dart';
-import 'package:nutrisee/di/injection.config.dart';
 import 'firebase_options.dart';
 
 import 'base_app.dart';
@@ -34,11 +34,12 @@ void main() async {
   Gemini.init(
     apiKey: Config.geminiKey,
   );
+  Alarm.init();
   runApp(const App());
 }
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {

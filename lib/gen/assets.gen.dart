@@ -122,6 +122,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/ic_stop.png
   AssetGenImage get icStop => const AssetGenImage('assets/images/ic_stop.png');
 
+  /// File path: assets/images/ic_ukuran_celana.png
+  AssetGenImage get icUkuranCelana =>
+      const AssetGenImage('assets/images/ic_ukuran_celana.png');
+
   /// File path: assets/images/ic_veggies.png
   AssetGenImage get icVeggies =>
       const AssetGenImage('assets/images/ic_veggies.png');
@@ -173,6 +177,7 @@ class $AssetsImagesGen {
         icScoreD,
         icSleep,
         icStop,
+        icUkuranCelana,
         icVeggies,
         icWarning,
         icWater,

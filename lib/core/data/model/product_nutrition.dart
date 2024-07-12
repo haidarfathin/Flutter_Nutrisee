@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 
 class ProductNutrition {
-  int? sugar;
-  int? saturatedFat;
-  int? natrium;
-  int? sajianPerKemasan;
+  num? sugar;
+  num? saturatedFat;
+  num? natrium;
+  num? sajianPerKemasan;
   num? takaranSaji;
   String? description;
+  bool? isNutritionFacts;
 
   ProductNutrition({
     this.sugar,
@@ -16,22 +17,32 @@ class ProductNutrition {
     this.sajianPerKemasan,
     this.takaranSaji,
     this.description,
+    this.isNutritionFacts,
   });
 
   @override
   String toString() {
-    return 'ProductNutrition(sugar: $sugar, saturatedFat: $saturatedFat, natrium: $natrium, sajianPerKemasan: $sajianPerKemasan, takaranSaji: $takaranSaji, description: $description)';
+    return 'ProductNutrition(sugar: $sugar, saturatedFat: $saturatedFat, natrium: $natrium, sajianPerKemasan: $sajianPerKemasan, takaranSaji: $takaranSaji, description: $description,)';
   }
 
   // Factory constructor to create a ProductNutrition object from a Map
   factory ProductNutrition.fromMap(Map<String, dynamic> data) {
+    num? sugar = data['gula'] as num?;
+    num? saturatedFat = data['lemak_jenuh'] as num?;
+    num? natrium = data['garam'] as num?;
+    num? takaranSaji = data['takaran_saji'] as num?;
+    num? sajianPerKemasan = data['sajian_per_kemasan'] as num?;
+    bool isNutritionFacts =
+        (takaranSaji == 0 && sajianPerKemasan == 0) ? false : true;
+
     return ProductNutrition(
-      sugar: data['gula'] as int?,
-      saturatedFat: data['lemak_jenuh'] as int?,
-      natrium: data['garam'] as int?,
-      sajianPerKemasan: data['sajian_per_kemasan'] as int?,
-      takaranSaji: data['takaran_saji'] as num?,
+      sugar: sugar,
+      saturatedFat: saturatedFat,
+      natrium: natrium,
+      sajianPerKemasan: sajianPerKemasan,
+      takaranSaji: takaranSaji,
       description: data['description'] as String?,
+      isNutritionFacts: isNutritionFacts,
     );
   }
 
@@ -43,6 +54,7 @@ class ProductNutrition {
         'sajian_per_kemasan': sajianPerKemasan,
         'takaran_saji': takaranSaji,
         'description': description,
+        'isNutritionFacts': isNutritionFacts
       };
 
   /// `dart:convert`
@@ -72,5 +84,6 @@ class ProductNutrition {
       natrium.hashCode ^
       sajianPerKemasan.hashCode ^
       takaranSaji.hashCode ^
+      isNutritionFacts.hashCode ^
       description.hashCode;
 }

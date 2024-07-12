@@ -36,9 +36,9 @@ class _ExaminationCardState extends State<ExaminationCard> {
 
   @override
   Widget build(BuildContext context) {
-    int gula = widget.nutritionData.sugar ?? 0;
-    int garam = widget.nutritionData.natrium ?? 0;
-    int sajian = widget.nutritionData.sajianPerKemasan ?? 0;
+    int gula = widget.nutritionData.sugar?.toInt() ?? 0;
+    int garam = widget.nutritionData.natrium?.toInt() ?? 0;
+    int sajian = widget.nutritionData.sajianPerKemasan?.toInt() ?? 0;
     return LayoutBuilder(
       builder: (context, constraints) {
         return Row(
@@ -50,7 +50,7 @@ class _ExaminationCardState extends State<ExaminationCard> {
               child: InkWell(
                 onTap: () {
                   String speakText =
-                      "Kandungan gula ini sangat tinggi, yaitu $gula gram, saya sarankan untuk tidak mengonsumsi ini berlebihan";
+                      "Kandungan $kandungan produk ini sangat tinggi, yaitu $nilaiKandungan gram, saya sarankan untuk tidak mengonsumsi ini berlebihan";
                   speak(speakText);
                 },
                 child: examineImage(garam, gula, sajian),
@@ -73,9 +73,9 @@ class _ExaminationCardState extends State<ExaminationCard> {
                   Text(
                     examineNutritionTitle(garam, gula, sajian) !=
                             "Produk Aman Dikonsumsi"
-                        ? "Kandungan $kandungan pada produk ini "
-                            "sebesar ${nilaiKandungan}gr ($persamaan)!"
-                        : "Produk ini mengandung $nilaiKandungan gula yang tergolong "
+                        ? "Kandungan $kandungan dalam satu sajian pada produk ini "
+                            "sebesar $nilaiKandungan gr ($persamaan)!"
+                        : "Produk ini mengandung $nilaiKandungan $kandungan yang tergolong "
                             "cukup rendah untuk dikonsumsi. Tetap jaga asupan gula "
                             "dan garam anda.",
                     style: context.textTheme.bodyLarge?.copyWith(
@@ -92,6 +92,14 @@ class _ExaminationCardState extends State<ExaminationCard> {
     );
   }
 
+  String chooseGram(String kandungan) {
+    if (kandungan == "Garam") {
+      return "mg";
+    } else {
+      return "gr";
+    }
+  }
+
   Widget examineImage(int garamValue, int gulaValue, int sajian) {
     double garam = (garamValue / 1000.0) * sajian;
     double gula = gulaValue.toDouble() * sajian;
@@ -101,9 +109,15 @@ class _ExaminationCardState extends State<ExaminationCard> {
     if (title == "Kandungan Garam Tinggi") {
       if (garam >= 0.5 && garam <= 1.0) {
         Vibration.vibrate(pattern: [500, 1000, 500, 1000]);
+        String speakText =
+            "Kandungan Garam produk ini cukup tinggi, yaitu $nilaiKandungan gram, saya sarankan untuk tidak mengonsumsi ini berlebihan";
+        speak(speakText);
         return Assets.images.icWarning.image();
       } else if (garam > 1.0) {
         Vibration.vibrate(pattern: [500, 2000, 500, 2000, 500, 2000]);
+        String speakText =
+            "Kandungan Garam produk ini sangat tinggi, yaitu $nilaiKandungan gram, saya sarankan untuk tidak mengonsumsi ini dan mengganti pilihan produk yang lebih sehat";
+        speak(speakText);
         return Assets.images.icStop.image();
       } else {
         return Assets.images.icApprove.image();
@@ -111,9 +125,15 @@ class _ExaminationCardState extends State<ExaminationCard> {
     } else if (title == "Kandungan Gula Tinggi") {
       if (gula >= 12.5 && gula <= 30.0) {
         Vibration.vibrate(pattern: [500, 1000, 500, 1000]);
+        String speakText =
+            "Kandungan Gula produk ini cukup tinggi, yaitu $nilaiKandungan gram, saya sarankan untuk tidak mengonsumsi ini berlebihan";
+        speak(speakText);
         return Assets.images.icWarning.image();
       } else if (gula > 30.0) {
         Vibration.vibrate(pattern: [500, 2000, 500, 2000, 500, 2000]);
+        String speakText =
+            "Kandungan Gula produk ini sangat tinggi, yaitu $nilaiKandungan gram, saya sarankan untuk tidak mengonsumsi ini dan mengganti pilihan produk yang lebih sehat";
+        speak(speakText);
         return Assets.images.icStop.image();
       } else {
         return Assets.images.icApprove.image();
@@ -134,13 +154,13 @@ class _ExaminationCardState extends State<ExaminationCard> {
     double proporsiGaram = garam / 2;
     double proporsiGula = gula / 50;
     double persamaanGaram = roundDouble((garamValue * sajian) / 2000, 1);
-    double persamaanGula = roundDouble((gula / 12.5), 1);
+    double persamaanGula = roundDouble((gulaValue / 15), 1);
 
     if (proporsiGaram > proporsiGula) {
       if (proporsiGaram >= 0.25) {
         kandungan = "Garam";
         nilaiKandungan = garam;
-        persamaan = "$persamaanGaram sdt";
+        persamaan = "${persamaanGaram.toInt()} sdt";
         return "Kandungan Garam Tinggi";
       } else {
         nilaiKandungan = gula;
@@ -150,7 +170,7 @@ class _ExaminationCardState extends State<ExaminationCard> {
       if (proporsiGula >= 0.25) {
         kandungan = "Gula";
         nilaiKandungan = gula;
-        persamaan = "$persamaanGula sdt";
+        persamaan = "${persamaanGula.toInt()} sdm";
         return "Kandungan Gula Tinggi";
       } else {
         nilaiKandungan = gula;

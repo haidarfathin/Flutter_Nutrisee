@@ -6,11 +6,13 @@ import 'package:go_router/go_router.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
+import 'package:nutrisee/core/widgets/app_alert_dialog.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_textfield.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/core/widgets/app_radio.dart';
+import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:nutrisee/ui/diabetes_risk/widget/questioner_card.dart';
 
 class PaginatedDiabetesTest extends StatefulWidget {
@@ -463,7 +465,16 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
             ),
             InkWell(
               onTap: () {
-            
+                context.showCustomDialog(
+                  content: infoContentDialog(
+                    image: Assets.images.icUkuranCelana.provider(),
+                    context: context,
+                    title: "Cara Mengetahui Lingkar Pinggang",
+                    onConfirm: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                );
               },
               child: const Icon(
                 Icons.question_mark,

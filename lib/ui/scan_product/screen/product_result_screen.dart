@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nutrisee/core/data/model/product_nutrition.dart';
@@ -10,14 +10,15 @@ import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
-import 'package:nutrisee/ui/scan_product/bloc/product_bloc.dart';
+import 'package:nutrisee/gen/assets.gen.dart';
+import 'package:nutrisee/ui/scan_product/bloc/scan_product_cubit.dart';
 import 'package:nutrisee/ui/scan_product/screen/detail_result_screen.dart';
 import 'package:nutrisee/ui/scan_product/widget/examination_card.dart';
 import 'package:nutrisee/ui/scan_product/widget/nutrition_container.dart';
 
 class ProductResultScreen extends StatefulWidget {
-  final String imagePath;
-  const ProductResultScreen({super.key, required this.imagePath});
+  final XFile imageFile;
+  const ProductResultScreen({super.key, required this.imageFile});
 
   @override
   State<ProductResultScreen> createState() => _ProductResultScreenState();
@@ -28,7 +29,7 @@ class _ProductResultScreenState extends State<ProductResultScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          ProductBloc(Gemini.instance)..add(AnalyzeProduct(widget.imagePath)),
+          ScanProductCubit()..analyzeProduct(widget.imageFile.path),
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Hasil Analisa Produk"),
@@ -40,7 +41,7 @@ class _ProductResultScreenState extends State<ProductResultScreen> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [Image.file(File(widget.imagePath))],
+                children: [Image.file(File(widget.imageFile.path))],
               ),
               DraggableScrollableSheet(
                 minChildSize: 0.18,
@@ -61,20 +62,42 @@ class _ProductResultScreenState extends State<ProductResultScreen> {
                         left: 20,
                         right: 20,
                       ),
-                      child: BlocBuilder<ProductBloc, ProductState>(
+                      child: BlocBuilder<ScanProductCubit, ScanProductState>(
                         builder: (context, state) {
+                          log("Current state: $state");
                           if (state is AnalyzeProductLoading) {
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
                           } else if (state is AnalyzeProductSuccess) {
-                            log(state.productNutrition.toString());
-                            return contentContainer(
-                              context,
-                              scrollController,
-                              state.productNutrition,
-                              widget.imagePath,
-                            );
+                            if (state.productNutrition.isNutritionFacts ==
+                                true) {
+                              log(state.productNutrition.toString());
+                              return contentContainer(
+                                context,
+                                scrollController,
+                                state.productNutrition,
+                                widget.imageFile,
+                              );
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Assets.images.icWarning
+                                        .image(width: 60, height: 60),
+                                    const Gap(14),
+                                    Text(
+                                      "Tampaknya ini bukanlah gambar tabel nilai gizi, coba arahkan kamera ke tabel nilai gizi produk kemasan makanan dan minuman",
+                                      style: context.textTheme.titleMedium,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
                           } else if (state is AnalyzeProductError) {
                             return Center(
                               child: Text(state.error),
@@ -101,7 +124,7 @@ Widget contentContainer(
   BuildContext context,
   ScrollController controller,
   ProductNutrition nutrition,
-  String imagePath,
+  XFile imageFile,
 ) {
   var garam = nutrition.natrium! * nutrition.sajianPerKemasan!;
   var gula = nutrition.sugar! * nutrition.sajianPerKemasan!;
@@ -178,7 +201,7 @@ Widget contentContainer(
                       MaterialPageRoute(
                         builder: (context) => DetailResultScreen(
                           nutritionData: nutrition,
-                          imagePath: imagePath,
+                          imageFile: imageFile,
                         ),
                       ),
                     );

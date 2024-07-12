@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:nutrisee/core/config/config.dart';
-import 'package:nutrisee/core/data/model/user/user_data.dart';
+import 'package:nutrisee/core/data/model/firestore/user_data.dart';
 import 'package:nutrisee/di/injection.dart';
 
 class Session {
