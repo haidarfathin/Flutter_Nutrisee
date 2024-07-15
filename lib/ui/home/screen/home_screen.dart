@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/data/model/article/listArticles.dart';
@@ -80,18 +81,26 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColors.whiteBG,
         centerTitle: false,
         title: Text(
-          "Nutrisee",
+          "Glukosaw",
           style: context.textTheme.titleLarge
               ?.copyWith(fontWeight: FontWeight.w800, color: AppColors.primary),
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: AppTheme.marginHorizontal),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              context.push('/profile');
+            },
             child: Icon(
-              Ionicons.notifications,
-              color: AppColors.secondary,
+              Icons.person,
+              color: Colors.white,
             ),
-          ),
+            style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(5),
+              backgroundColor: AppColors.secondary, // <-- Button color
+              foregroundColor: Colors.white, // <-- Splash color
+            ),
+          )
         ],
       ),
       backgroundColor: AppColors.whiteBG,
@@ -106,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: const EdgeInsets.only(bottom: 10),
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 decoration: BoxDecoration(
-                  gradient: AppColors.greenGradient,
+                  gradient: AppColors.orangeGradient,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(

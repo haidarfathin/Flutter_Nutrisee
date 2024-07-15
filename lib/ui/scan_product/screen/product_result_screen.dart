@@ -192,24 +192,24 @@ Widget contentContainer(
                   ),
                 ),
               ),
-              const Gap(12),
-              Expanded(
-                child: AppButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailResultScreen(
-                          nutritionData: nutrition,
-                          imageFile: imageFile,
-                        ),
-                      ),
-                    );
-                  },
-                  caption: "Detail",
-                  useIcon: false,
-                ),
-              ),
+              // const Gap(12),
+              // Expanded(
+              //   child: AppButton(
+              //     onPressed: () {
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) => DetailResultScreen(
+              //             nutritionData: nutrition,
+              //             imageFile: imageFile,
+              //           ),
+              //         ),
+              //       );
+              //     },
+              //     caption: "Detail",
+              //     useIcon: false,
+              //   ),
+              // ),
             ],
           ),
         ),

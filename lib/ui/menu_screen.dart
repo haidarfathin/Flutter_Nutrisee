@@ -48,7 +48,7 @@ class _MenuScreenState extends State<MenuScreen> {
         leading: CircleAvatar(
           radius: 14,
           backgroundColor: Colors.green.shade100,
-          backgroundImage: AssetImage("assets/images/ic_male_circle.png"),
+          backgroundImage: const AssetImage("assets/images/ic_male_circle.png"),
         ),
         text: 'Profile',
       )
@@ -71,54 +71,54 @@ class _MenuScreenState extends State<MenuScreen> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                    color: Color(0xff049913),
+                    color: AppColors.secondary,
                     borderRadius: BorderRadius.circular(12)),
                 padding: const EdgeInsets.all(12.0),
                 child: Assets.images.icOcr.image(),
               ),
             )
           : null,
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
-        ),
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xff90C788),
-                Color(0xff049913),
-              ],
-              stops: [0.3, 1.0],
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-            ),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-          child: GNav(
-            gap: 10,
-            color: AppColors.whiteBG,
-            padding: const EdgeInsets.all(12),
-            activeColor: AppColors.whiteBG,
-            tabBackgroundColor: AppColors.primary.withOpacity(0.6),
-            textStyle: context.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 10,
-              color: Colors.white,
-            ),
-            onTabChange: (index) {
-              setState(() {
-                currentScreen = index;
-              });
-            },
-            tabs: navbarItem,
-          ),
-        ),
-      ),
+      // bottomNavigationBar: Container(
+      //   decoration: const BoxDecoration(
+      //     color: Colors.white,
+      //     borderRadius: BorderRadius.only(
+      //       topLeft: Radius.circular(30),
+      //       topRight: Radius.circular(30),
+      //     ),
+      //   ),
+      //   child: Container(
+      //     decoration: const BoxDecoration(
+      //       gradient: LinearGradient(
+      //         colors: [
+      //           Color(0xff90C788),
+      //           Color(0xff049913),
+      //         ],
+      //         stops: [0.3, 1.0],
+      //         begin: Alignment.bottomLeft,
+      //         end: Alignment.topRight,
+      //       ),
+      //     ),
+      //     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      //     child: GNav(
+      //       gap: 10,
+      //       color: AppColors.whiteBG,
+      //       padding: const EdgeInsets.all(12),
+      //       activeColor: AppColors.whiteBG,
+      //       tabBackgroundColor: AppColors.primary.withOpacity(0.6),
+      //       textStyle: context.textTheme.bodyLarge?.copyWith(
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 10,
+      //         color: Colors.white,
+      //       ),
+      //       onTabChange: (index) {
+      //         setState(() {
+      //           currentScreen = index;
+      //         });
+      //       },
+      //       tabs: navbarItem,
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

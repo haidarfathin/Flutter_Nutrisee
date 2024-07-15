@@ -67,8 +67,8 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
-                    title: Text("Produk Belum Tersedia"),
-                    content: Text(
+                    title: const Text("Produk Belum Tersedia"),
+                    content: const Text(
                         "Ingin berkontribusi dengan menambahkan produk baru?"),
                     actions: [
                       TextButton(
