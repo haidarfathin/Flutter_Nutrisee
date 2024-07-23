@@ -1,4 +1,6 @@
+import 'package:edge_detection/edge_detection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:ionicons/ionicons.dart';
@@ -9,16 +11,28 @@ import 'package:nutrisee/ui/article/screen/article_screen.dart';
 import 'package:nutrisee/ui/history/screen/history_screen.dart';
 import 'package:nutrisee/ui/home/screen/home_screen.dart';
 import 'package:nutrisee/ui/profile/screen/profile_screen.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MenuScreen extends StatefulWidget {
-  const MenuScreen({Key? key}) : super(key: key);
+  final int screen; // Parameter untuk menentukan layar yang akan ditampilkan
+
+  const MenuScreen({Key? key, this.screen = 0}) : super(key: key);
 
   @override
   State<MenuScreen> createState() => _MenuScreenState();
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  var currentScreen = 0;
+  late int currentScreen;
+
+  @override
+  void initState() {
+    super.initState();
+    currentScreen =
+        widget.screen; // Inisialisasi layar saat ini dengan parameter
+  }
 
   List<Widget> get screens {
     return const <Widget>[
@@ -57,6 +71,42 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> getImageFromCamera() async {
+      bool isCameraGranted = await Permission.camera.request().isGranted;
+      if (!isCameraGranted) {
+        isCameraGranted =
+            await Permission.camera.request() == PermissionStatus.granted;
+      }
+
+      if (!isCameraGranted) {
+        return;
+      }
+
+      String imagePath = join((await getApplicationSupportDirectory()).path,
+          "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
+
+      bool success = false;
+
+      try {
+        success = await EdgeDetection.detectEdge(
+          imagePath,
+          canUseGallery: true,
+          androidScanTitle: 'Scan Nutrition Table',
+          androidCropTitle: 'Crop',
+          androidCropBlackWhiteTitle: 'Black White',
+          androidCropReset: 'Reset',
+        );
+        print("success: $success");
+      } catch (e) {
+        print(e);
+      }
+
+      if (!mounted) return;
+      if (success) {
+        context.push("/result-product", extra: XFile(imagePath));
+      }
+    }
+
     return Scaffold(
       body: IndexedStack(
         index: currentScreen,
@@ -65,7 +115,7 @@ class _MenuScreenState extends State<MenuScreen> {
       floatingActionButton: currentScreen == 0
           ? FloatingActionButton(
               backgroundColor: AppColors.primary,
-              onPressed: () {
+              onPressed: () async {
                 context.push("/scan-product");
                 // getImageFromCamera();
               },

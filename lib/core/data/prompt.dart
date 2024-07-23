@@ -61,7 +61,7 @@ Anda adalah seorang ahli gizi, Analisa BMI berdasarkan nilai BMI dan kategori bm
 BMI: [bmi_value]
 Kategori BMI: [category]
 
-n hasil analisa berikut:
+hasil analisa berikut:
 - Kategori BMI (Underweight, Ideal weight, Overweight, atau Obese)
 - Saran singkat untuk menjaga atau mencapai BMI ideal.
 - Rekomendasi aktivitas fisik yang sesuai.

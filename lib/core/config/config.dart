@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 class Config {
   static const baseUrl = 'hhttps://newsapi.org/v2';
   static const apiKey = 'ff111c0a436344aca361e1d6f0826659';
-  static const geminiKey = "AIzaSyAR0_63vEuG3mpV48zKLiS4_jxtBGUgiyA";
+  static const geminiKey = "AIzaSyAht-5qeqaeWHNuYCo6pbny51nx27gRrnU";
   static const notificationChannelId = 'nutrisee_channel_id';
   static const notificationChannelName = 'nutrisee notification';
   static const notificationChannelDesc = 'nutrisee notification';

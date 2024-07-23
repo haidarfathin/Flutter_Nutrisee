@@ -117,7 +117,7 @@ class _AddBarcodeScreenState extends State<AddBarcodeScreen> {
                       .then((_) {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => MenuScreen()),
+                      MaterialPageRoute(builder: (context) => const MenuScreen()),
                     );
                   }).catchError((error) {
                     ScaffoldMessenger.of(context).showSnackBar(

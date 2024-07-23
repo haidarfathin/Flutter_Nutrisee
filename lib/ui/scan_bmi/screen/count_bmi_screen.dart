@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
+import 'package:nutrisee/core/widgets/app_alert_dialog.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
+import 'package:nutrisee/core/widgets/app_snackbar.dart';
 import 'package:nutrisee/core/widgets/app_textfield.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:nutrisee/ui/auth/widget/diebetisi_radio.dart';
@@ -19,7 +21,6 @@ class CountBmiScreen extends StatefulWidget {
 }
 
 class _CountBmiScreenState extends State<CountBmiScreen> {
-  final _formKey = GlobalKey<FormState>();
   String? _selectedGender;
   TextEditingController heightController = TextEditingController();
   TextEditingController weightController = TextEditingController();
@@ -40,91 +41,75 @@ class _CountBmiScreenState extends State<CountBmiScreen> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(top: 20, left: 24, right: 24),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Gap(20),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DiabetisiRadio(
-                            image: Assets.images.icMale.image(),
-                            title: "Pria",
-                            isSelected: _selectedGender == "pria",
-                            onTap: () =>
-                                setState(() => _selectedGender = "pria"),
-                          ),
-                        ),
-                        Gap(20),
-                        Expanded(
-                          child: DiabetisiRadio(
-                            image: Assets.images.icFemale.image(),
-                            title: "Wanita",
-                            isSelected: _selectedGender == "wanita",
-                            onTap: () =>
-                                setState(() => _selectedGender = "wanita"),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Gap(20),
-                    AppTextField(
-                      keyboardType: TextInputType.number,
-                      title: "Tinggi Badan",
-                      hint: "000",
-                      controller: heightController,
-                      endIcon: Text(
-                        "cm",
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          color: AppColors.textGray,
-                          fontWeight: FontWeight.bold,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Gap(20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DiabetisiRadio(
+                          image: Assets.images.icMale.image(),
+                          title: "Pria",
+                          isSelected: _selectedGender == "pria",
+                          onTap: () => setState(() => _selectedGender = "pria"),
                         ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Field ini harus diisi';
-                        }
-                        return null;
-                      },
-                    ),
-                    const Gap(12),
-                    AppTextField(
-                      keyboardType: TextInputType.number,
-                      title: "Berat Badan",
-                      hint: "000",
-                      controller: weightController,
-                      endIcon: Text(
-                        "kg",
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          color: AppColors.textGray,
-                          fontWeight: FontWeight.bold,
+                      const Gap(20),
+                      Expanded(
+                        child: DiabetisiRadio(
+                          image: Assets.images.icFemale.image(),
+                          title: "Wanita",
+                          isSelected: _selectedGender == "wanita",
+                          onTap: () =>
+                              setState(() => _selectedGender = "wanita"),
                         ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Field ini harus diisi';
-                        }
-                        return null;
-                      },
-                    ),
-                    Gap(12),
-                    AppTextField(
-                      keyboardType: TextInputType.number,
-                      title: "Lingkar Pinggang",
-                      hint: "000",
-                      controller: waistController,
-                      endIcon: Text(
-                        "cm",
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          color: AppColors.textGray,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ],
+                  ),
+                  const Gap(20),
+                  AppTextField(
+                    keyboardType: TextInputType.number,
+                    title: "Tinggi Badan",
+                    hint: "000",
+                    controller: heightController,
+                    endIcon: Text(
+                      "cm",
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        color: AppColors.textGray,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  const Gap(12),
+                  AppTextField(
+                    keyboardType: TextInputType.number,
+                    title: "Berat Badan",
+                    hint: "000",
+                    controller: weightController,
+                    endIcon: Text(
+                      "kg",
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        color: AppColors.textGray,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const Gap(12),
+                  AppTextField(
+                    keyboardType: TextInputType.number,
+                    title: "Lingkar Pinggang",
+                    hint: "000",
+                    controller: waistController,
+                    endIcon: Text(
+                      "cm",
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        color: AppColors.textGray,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -134,9 +119,9 @@ class _CountBmiScreenState extends State<CountBmiScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: AppButton(
-                    onPressed: () {
+                    onPressed: () async {
                       double height =
                           double.tryParse(heightController.text) ?? 0.0;
                       double weight =
@@ -144,22 +129,29 @@ class _CountBmiScreenState extends State<CountBmiScreen> {
                       double waist =
                           double.tryParse(waistController.text) ?? 0.0;
                       var bmiResult = calculateBMI(height, weight);
-                      var whrResult;
-                      if (waistController.text != "") {
+                      double whrResult = 0.0;
+                      if (waistController.text.isNotEmpty) {
                         whrResult = calculateWHR(waist, height);
+                      } else if (heightController.text.isEmpty) {
+                        context.showSnackbar("Please Enter your Height");
+                      } else if (weightController.text.isEmpty) {
+                        context.showSnackbar("Please Enter your Weight");
+                      } else {
+                        await context.showCustomDialog(
+                            content: loadingContentDialog(context: context));
+                        context.push(
+                          '/result-bmi',
+                          extra: BMI(
+                            useImage: false,
+                            isMale: _selectedGender == "pria" ? true : false,
+                            height: height,
+                            weight: weight,
+                            waist: waist,
+                            bmiResult: bmiResult,
+                            whrResult: whrResult,
+                          ),
+                        );
                       }
-                      context.push(
-                        '/result-bmi',
-                        extra: BMI(
-                          useImage: false,
-                          isMale: _selectedGender == "pria" ? true : false,
-                          height: height,
-                          weight: weight,
-                          waist: waist,
-                          bmiResult: bmiResult,
-                          whrResult: whrResult,
-                        ),
-                      );
                     },
                     caption: "Hitung BMI",
                   ),

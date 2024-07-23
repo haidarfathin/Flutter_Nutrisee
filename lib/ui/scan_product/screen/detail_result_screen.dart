@@ -12,10 +12,10 @@ import 'package:nutrisee/core/widgets/app_alert_dialog.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_snackbar.dart';
-import 'package:nutrisee/core/widgets/app_textfield.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:nutrisee/ui/history/screen/history_screen.dart';
+import 'package:nutrisee/ui/menu_screen.dart';
 import 'package:nutrisee/ui/scan_product/bloc/scan_product_cubit.dart';
 import 'package:nutrisee/ui/scan_product/widget/nutrition_container.dart';
 import 'package:nutrisee/ui/scan_product/widget/tips_card.dart';
@@ -278,14 +278,19 @@ class _DetailResultScreenState extends State<DetailResultScreen> {
                       listener: (context, state) {
                         if (state is ProductAddLoading) {
                           context.showCustomDialog(
-                            content: loadingContentDialog(context: context),
+                            content: loadingContentDialog(
+                                context: context, message: "Menyimpan produk"),
                           );
                         } else if (state is ProductAddedSuccess) {
                           Navigator.of(context).pop();
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HistoryScreen()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MenuScreen(
+                                screen: 1,
+                              ),
+                            ),
+                          );
                         } else if (state is ProductAddError) {
                           Navigator.of(context).pop();
                           context.showSnackbar(state.error);

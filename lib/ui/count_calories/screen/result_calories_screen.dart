@@ -22,7 +22,7 @@ class _ResultCaloriesScreenState extends State<ResultCaloriesScreen> {
     return Scaffold(
       backgroundColor: AppColors.whiteBG,
       appBar: AppBar(
-        title: Text("Hasil Kalori Harian"),
+        title: const Text("Hasil Kalori Harian"),
         scrolledUnderElevation: 0,
         centerTitle: true,
         actions: [
@@ -30,7 +30,7 @@ class _ResultCaloriesScreenState extends State<ResultCaloriesScreen> {
             onPressed: () {
               context.go('/calories');
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.refresh,
             ),
           ),
@@ -47,7 +47,7 @@ class _ResultCaloriesScreenState extends State<ResultCaloriesScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Assets.images.icCalories.image(),
-                  Gap(16),
+                  const Gap(16),
                   Container(
                     width: double.maxFinite,
                     alignment: Alignment.center,
@@ -66,7 +66,7 @@ class _ResultCaloriesScreenState extends State<ResultCaloriesScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Gap(16),
+                        const Gap(16),
                         Row(
                           children: [
                             Expanded(
@@ -76,7 +76,7 @@ class _ResultCaloriesScreenState extends State<ResultCaloriesScreen> {
                                 "BMR",
                               ),
                             ),
-                            Gap(24),
+                            const Gap(24),
                             Expanded(
                               child: itemCalories(
                                 context,
@@ -89,7 +89,7 @@ class _ResultCaloriesScreenState extends State<ResultCaloriesScreen> {
                       ],
                     ),
                   ),
-                  Gap(16),
+                  const Gap(16),
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -97,7 +97,7 @@ class _ResultCaloriesScreenState extends State<ResultCaloriesScreen> {
                       style: context.textTheme.titleMedium,
                     ),
                   ),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     "Tubuh Anda akan membakar ${widget.dataCalories['BMR']!.toInt()} kalori (${(widget.dataCalories['BMR']! * 4.184).toInt()}kj) "
                     "setiap hari untuk menjalankan fungsi-fungsi yang "
@@ -154,7 +154,7 @@ class _ResultCaloriesScreenState extends State<ResultCaloriesScreen> {
             data.toString(),
             style: context.textTheme.titleLarge,
           ),
-          Gap(8),
+          const Gap(8),
           Text(
             title,
             style: context.textTheme.bodyLarge?.copyWith(

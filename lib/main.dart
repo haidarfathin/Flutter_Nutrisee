@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:alarm/alarm.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,7 +33,6 @@ void main() async {
   Gemini.init(
     apiKey: Config.geminiKey,
   );
-  Alarm.init();
   runApp(const App());
 }
 

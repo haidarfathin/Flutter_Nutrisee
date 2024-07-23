@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
@@ -21,18 +20,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
   final cubit = HistoryCubit();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     cubit.getUserHistory();
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        await Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MenuScreen()));
-        return false;
+    return PopScope(
+      onPopInvoked: (canPop) async {
+        await Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const MenuScreen()));
       },
       child: BlocProvider(
         create: (context) => cubit..getUserHistory(),
@@ -99,7 +96,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       ],
                                     ),
                                   ),
-                                  Gap(12),
+                                  const Gap(12),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -111,7 +108,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 11),
                                       ),
-                                      Gap(10),
+                                      const Gap(10),
                                       Row(
                                         children: [
                                           Container(
@@ -160,7 +157,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                               ],
                                             ),
                                           ),
-                                          Gap(14),
+                                          const Gap(14),
                                           Container(
                                             width: 80,
                                             padding: const EdgeInsets.all(10),
@@ -214,11 +211,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 ],
                               );
                             } else if (state is GetHistoryLoading) {
-                              return Center(
+                              return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             } else {
-                              return Center(
+                              return const Center(
                                 child: Text('Error loading data'),
                               );
                             }

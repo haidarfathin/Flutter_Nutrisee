@@ -15,6 +15,8 @@ import 'package:nutrisee/core/data/model/product_nutrition.dart';
 import 'package:nutrisee/core/data/prompt.dart';
 import 'package:nutrisee/core/utils/session.dart';
 
+import '../../../core/utils/image_compress.dart';
+
 part 'scan_product_state.dart';
 
 class ScanProductCubit extends Cubit<ScanProductState> {
@@ -28,6 +30,8 @@ class ScanProductCubit extends Cubit<ScanProductState> {
     emit(AnalyzeProductLoading());
     try {
       final file = File(imagePath);
+
+      // final compressedImage = await ImageCompress().compressFile(file);
       final bytes = file.readAsBytesSync();
 
       final result = await gemini.textAndImage(

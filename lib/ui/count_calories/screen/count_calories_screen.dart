@@ -361,9 +361,9 @@ Map<String, double> calculateBMR(
 ) {
   double bmr;
   if (gender == "pria") {
-    bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+    bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
   } else {
-    bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+    bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
   }
 
   double activityMultiplier;

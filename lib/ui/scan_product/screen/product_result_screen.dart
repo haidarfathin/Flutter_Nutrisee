@@ -27,10 +27,11 @@ class ProductResultScreen extends StatefulWidget {
 class _ProductResultScreenState extends State<ProductResultScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider( 
       create: (context) =>
           ScanProductCubit()..analyzeProduct(widget.imageFile.path),
       child: Scaffold(
+        backgroundColor: AppColors.black,
         appBar: AppBar(
           title: const Text("Hasil Analisa Produk"),
           scrolledUnderElevation: 0,

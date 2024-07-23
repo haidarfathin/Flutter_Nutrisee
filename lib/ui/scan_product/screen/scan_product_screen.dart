@@ -1,16 +1,11 @@
 import 'package:camera/camera.dart';
-import 'package:edge_detection/edge_detection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
-import 'package:nutrisee/ui/scan_product/screen/product_result_screen.dart';
 import 'package:nutrisee/ui/scan_product/screen/scan_barcode_screen.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ScanProductScreen extends StatefulWidget {
   const ScanProductScreen({super.key});

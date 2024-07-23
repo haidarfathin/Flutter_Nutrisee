@@ -45,7 +45,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <service android:name="com.gdelataillade.alarm.services.NotificationOnKillService" />
+        <!-- <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="potrait"
+            android:theme="@style/Theme.AppCompat.light.NoActionBar"/>
+        <service android:name="com.gdelataillade.alarm.services.NotificationOnKillService" /> -->
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
