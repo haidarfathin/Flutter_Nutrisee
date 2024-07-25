@@ -121,7 +121,7 @@ class _MenuScreenState extends State<MenuScreen> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                    color: Color(0xff049913),
+                    color:  Color(0xff049913),
                     borderRadius: BorderRadius.circular(12)),
                 padding: const EdgeInsets.all(12.0),
                 child: Assets.images.icOcr.image(),
