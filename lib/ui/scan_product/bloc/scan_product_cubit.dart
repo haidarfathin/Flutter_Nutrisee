@@ -8,7 +8,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:nutrisee/core/config/config.dart';
 import 'package:nutrisee/core/data/model/firestore/barcode_product.dart';
 import 'package:nutrisee/core/data/model/firestore/scanned_products.dart';
 import 'package:nutrisee/core/data/model/product_nutrition.dart';
@@ -23,7 +24,6 @@ class ScanProductCubit extends Cubit<ScanProductState> {
   ScanProductCubit() : super(ScanProductInitial());
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final session = Session();
-  final gemini = Gemini.instance;
   UploadTask? uploadTask;
 
   void analyzeProduct(String imagePath) async {
@@ -34,20 +34,30 @@ class ScanProductCubit extends Cubit<ScanProductState> {
       // final compressedImage = await ImageCompress().compressFile(file);
       final bytes = file.readAsBytesSync();
 
-      final result = await gemini.textAndImage(
-        text: Prompt.jsonProductPrompt,
-        images: [bytes],
+      // final result = await gemini.textAndImage(
+      //   text: Prompt.jsonProductPrompt,
+      //   images: [bytes],
+      // );
+
+      final model = GenerativeModel(
+        model: 'gemini-1.5-flash',
+        apiKey: Config.geminiKey,
       );
 
-      log('Result: ${result?.content?.parts?.last.text}');
+      final prompt = TextPart(Prompt.jsonProductPrompt);
+      final imageParts = [DataPart('image/jpeg', bytes)];
+      final response = await model.generateContent([
+        Content.multi([prompt, ...imageParts])
+      ]);
 
-      final rawText = result?.content?.parts?.last.text ?? '{}';
-      final response = json.decode(rawText);
-      final productNutrition = ProductNutrition.fromMap(response);
+      final rawText = response.text.toString();
+      log(response.text.toString());
+      final jsonResponse = json.decode(rawText);
+      final productNutrition = ProductNutrition.fromMap(jsonResponse);
       log(productNutrition.toString());
       emit(AnalyzeProductSuccess(productNutrition));
     } catch (e) {
-      // emit(AnalyzeProductError("Gagal mengekstrak nutrisi dari gambar: $e"));
+      emit(AnalyzeProductError("Gagal mengekstrak nutrisi dari gambar: $e"));
     }
   }
 
@@ -59,6 +69,7 @@ class ScanProductCubit extends Cubit<ScanProductState> {
     required double natrium,
     required double sugar,
     required double fat,
+    required DateTime timestamp
   }) async {
     emit(ProductAddLoading());
     try {
@@ -90,6 +101,7 @@ class ScanProductCubit extends Cubit<ScanProductState> {
         natrium: natrium,
         sugar: sugar,
         fat: fat,
+        timeStamp: timestamp,
       );
 
       DocumentReference userDocRef =

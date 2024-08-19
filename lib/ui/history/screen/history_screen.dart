@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+import 'package:nutrisee/core/data/model/firestore/scanned_products.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
@@ -18,18 +20,43 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen> {
   final cubit = HistoryCubit();
+
   @override
   void initState() {
     super.initState();
     cubit.getUserHistory();
   }
 
+  List<ScannedProduct> _getTodayScannedProducts(List<ScannedProduct> products) {
+    final today = DateTime.now();
+    return products.where((product) {
+      return product.timeStamp.year == today.year &&
+          product.timeStamp.month == today.month &&
+          product.timeStamp.day == today.day;
+    }).toList();
+  }
+
+  List<ScannedProduct> _getPreviousScannedProducts(
+      List<ScannedProduct> products) {
+    final today = DateTime.now();
+    return products.where((product) {
+      return !(product.timeStamp.year == today.year &&
+          product.timeStamp.month == today.month &&
+          product.timeStamp.day == today.day);
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvoked: (canPop) async {
-        await Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const MenuScreen()));
+    return WillPopScope(
+      onWillPop: () async {
+        await Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const MenuScreen(
+                      screen: 0,
+                    )));
+        return false;
       },
       child: BlocProvider(
         create: (context) => cubit..getUserHistory(),
@@ -244,19 +271,87 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           ),
                         );
                       } else if (state is GetHistorySuccess) {
-                        return SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 12),
-                                child: ScanItem(
-                                  data: state.scannedProduct[index],
-                                ),
-                              );
-                            },
-                            childCount: state.scannedProduct.length,
+                        final todayProducts =
+                            _getTodayScannedProducts(state.scannedProduct);
+                        if (todayProducts.isEmpty) {
+                          return SliverToBoxAdapter(
+                            child: Center(
+                              child: Text('No products scanned today'),
+                            ),
+                          );
+                        } else {
+                          return SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 12),
+                                  child: ScanItem(
+                                    data: todayProducts[index],
+                                  ),
+                                );
+                              },
+                              childCount: todayProducts.length,
+                            ),
+                          );
+                        }
+                      } else if (state is GetHistoryError) {
+                        return SliverToBoxAdapter(
+                          child: Center(
+                            child: Text("Error: ${state.message}"),
                           ),
                         );
+                      } else {
+                        return const SliverToBoxAdapter(
+                          child: Center(
+                            child: Text('No data'),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20, bottom: 10),
+                      child: Text(
+                        "Hari Sebelumnya",
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                    ),
+                  ),
+                  BlocBuilder<HistoryCubit, HistoryState>(
+                    builder: (context, state) {
+                      if (state is GetHistoryLoading) {
+                        return const SliverToBoxAdapter(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      } else if (state is GetHistorySuccess) {
+                        final previousProducts =
+                            _getPreviousScannedProducts(state.scannedProduct);
+                        if (previousProducts.isEmpty) {
+                          return const SliverToBoxAdapter(
+                            child: Center(
+                              child: Text('No products scanned previously'),
+                            ),
+                          );
+                        } else {
+                          return SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 12),
+                                  child: ScanItem(
+                                    data: previousProducts[index],
+                                  ),
+                                );
+                              },
+                              childCount: previousProducts.length,
+                            ),
+                          );
+                        }
                       } else if (state is GetHistoryError) {
                         return SliverToBoxAdapter(
                           child: Center(

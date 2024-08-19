@@ -7,7 +7,7 @@ class ProductNutrition {
   num? natrium;
   num? sajianPerKemasan;
   num? takaranSaji;
-  String? description;
+
   bool? isNutritionFacts;
 
   ProductNutrition({
@@ -16,13 +16,12 @@ class ProductNutrition {
     this.natrium,
     this.sajianPerKemasan,
     this.takaranSaji,
-    this.description,
     this.isNutritionFacts,
   });
 
   @override
   String toString() {
-    return 'ProductNutrition(sugar: $sugar, saturatedFat: $saturatedFat, natrium: $natrium, sajianPerKemasan: $sajianPerKemasan, takaranSaji: $takaranSaji, description: $description,)';
+    return 'ProductNutrition(sugar: $sugar, saturatedFat: $saturatedFat, natrium: $natrium, sajianPerKemasan: $sajianPerKemasan, takaranSaji: $takaranSaji,)';
   }
 
   // Factory constructor to create a ProductNutrition object from a Map
@@ -41,7 +40,6 @@ class ProductNutrition {
       natrium: natrium,
       sajianPerKemasan: sajianPerKemasan,
       takaranSaji: takaranSaji,
-      description: data['description'] as String?,
       isNutritionFacts: isNutritionFacts,
     );
   }
@@ -53,7 +51,6 @@ class ProductNutrition {
         'natrium': natrium,
         'sajian_per_kemasan': sajianPerKemasan,
         'takaran_saji': takaranSaji,
-        'description': description,
         'isNutritionFacts': isNutritionFacts
       };
 
@@ -84,6 +81,5 @@ class ProductNutrition {
       natrium.hashCode ^
       sajianPerKemasan.hashCode ^
       takaranSaji.hashCode ^
-      isNutritionFacts.hashCode ^
-      description.hashCode;
+      isNutritionFacts.hashCode;
 }

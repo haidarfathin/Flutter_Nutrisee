@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
-import 'package:nutrisee/core/widgets/app_colors.dart';
 
 class NutritionContainer extends StatelessWidget {
   final double kandungan;
@@ -20,7 +20,7 @@ class NutritionContainer extends StatelessWidget {
       case 'garam':
         return 2000.0;
       case 'lemak':
-        return 70.0;
+        return 13.0;
       default:
         return 100.0;
     }
@@ -32,25 +32,22 @@ class NutritionContainer extends StatelessWidget {
     final double proportionalHeight = (kandungan / batasHarian) * 150;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          alignment: Alignment.center,
+          alignment: Alignment.topCenter,
           width: 100,
           child: Text(
             title,
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w900,
               fontSize: 11,
-              color: kandungan > (0.5 * batasHarian)
-                  ? Colors.redAccent.shade700
-                  : AppColors.textGray,
+              color: examineBackground(kandungan, title),
             ),
             textAlign: TextAlign.center,
           ),
         ),
-        Gap(12),
-        Container(
+        const Gap(8),
+        SizedBox(
           width: MediaQuery.of(context).size.width / 3 - 30,
           height: 150,
           child: Stack(
@@ -59,15 +56,9 @@ class NutritionContainer extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 5,
-                        offset: const Offset(0, 2),
-                      ),
-                    ]),
+                  borderRadius: BorderRadius.circular(20),
+                  color: examineBackground(kandungan, title).withOpacity(0.5),
+                ),
                 child: Container(
                   height: proportionalHeight,
                   decoration: BoxDecoration(
@@ -76,20 +67,20 @@ class NutritionContainer extends StatelessWidget {
                 ),
               ),
               Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: Text(
-                    title.toLowerCase() == "garam"
-                        ? "${kandungan.toInt()}mg"
-                        : "${kandungan.toInt()}gr",
-                    style: context.textTheme.bodyLarge?.copyWith(
-                      color: proportionalHeight <= 20
-                          ? AppColors.textBlack
-                          : Colors.white,
-                      fontWeight: FontWeight.w700,
+                alignment: Alignment.center,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      kandungan.toInt().toString(),
+                      style: GoogleFonts.bebasNeue(
+                        color: Colors.black54,
+                        fontSize: 45,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               )
             ],
@@ -101,25 +92,25 @@ class NutritionContainer extends StatelessWidget {
 
   Color examineBackground(double kandungan, String title) {
     if (title == "Gula") {
-      if (kandungan >= 10 && kandungan < 35) {
+      if (kandungan >= 10 && kandungan < 15) {
         return Colors.orange.shade400;
-      } else if (kandungan >= 35) {
+      } else if (kandungan >= 15) {
         return Colors.red.shade400;
       } else {
         return Colors.green.shade400;
       }
     } else if (title == "Garam") {
-      if (kandungan >= 200 && kandungan < 1500) {
+      if (kandungan >= 200 && kandungan < 1000) {
         return Colors.orange.shade400;
-      } else if (kandungan >= 1500) {
+      } else if (kandungan >= 1000) {
         return Colors.red.shade400;
       } else {
         return Colors.green.shade400;
       }
     } else if (title == "Lemak Jenuh") {
-      if (kandungan >= 10 && kandungan < 50) {
+      if (kandungan >= 2 && kandungan < 5) {
         return Colors.orange.shade400;
-      } else if (kandungan >= 50) {
+      } else if (kandungan >= 5) {
         return Colors.red.shade400;
       } else {
         return Colors.green.shade400;

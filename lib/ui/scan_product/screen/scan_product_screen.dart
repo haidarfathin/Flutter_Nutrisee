@@ -5,7 +5,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
-import 'package:nutrisee/ui/scan_product/screen/scan_barcode_screen.dart';
+import 'package:nutrisee/ui/scan_product/screen/scan_barcode/scan_barcode_screen.dart';
 
 class ScanProductScreen extends StatefulWidget {
   const ScanProductScreen({super.key});

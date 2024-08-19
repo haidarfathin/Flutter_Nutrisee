@@ -64,6 +64,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/ic_male.png
   AssetGenImage get icMale => const AssetGenImage('assets/images/ic_male.png');
 
+  /// File path: assets/images/ic_male_circle.png
+  AssetGenImage get icMaleCircle =>
+      const AssetGenImage('assets/images/ic_male_circle.png');
+
   /// File path: assets/images/ic_nutriscore.png
   AssetGenImage get icNutriscore =>
       const AssetGenImage('assets/images/ic_nutriscore.png');
@@ -146,6 +150,18 @@ class $AssetsImagesGen {
   AssetGenImage get imgArticle =>
       const AssetGenImage('assets/images/img_article.png');
 
+  /// File path: assets/images/score-a.png
+  AssetGenImage get scoreA => const AssetGenImage('assets/images/score-a.png');
+
+  /// File path: assets/images/score-b.png
+  AssetGenImage get scoreB => const AssetGenImage('assets/images/score-b.png');
+
+  /// File path: assets/images/score-d.png
+  AssetGenImage get scoreD => const AssetGenImage('assets/images/score-d.png');
+
+  /// File path: assets/images/score_c.png
+  AssetGenImage get scoreC => const AssetGenImage('assets/images/score_c.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
         icApprove,
@@ -162,6 +178,7 @@ class $AssetsImagesGen {
         icLauncher,
         icLogo,
         icMale,
+        icMaleCircle,
         icNutriscore,
         icNutrition,
         icOcr,
@@ -182,7 +199,11 @@ class $AssetsImagesGen {
         icWarning,
         icWater,
         icWomenEat,
-        imgArticle
+        imgArticle,
+        scoreA,
+        scoreB,
+        scoreD,
+        scoreC
       ];
 }
 

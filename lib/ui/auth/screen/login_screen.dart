@@ -1,13 +1,10 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:nutrisee/core/utils/status.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
@@ -15,7 +12,6 @@ import 'package:nutrisee/core/widgets/app_snackbar.dart';
 import 'package:nutrisee/core/widgets/app_textfield.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
-import 'package:nutrisee/ui/auth/auth.dart';
 import 'package:nutrisee/ui/auth/bloc/auth_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,8 +26,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController emailController =
+        TextEditingController(text: kDebugMode ? 'jaka@mail.com' : "");
+    final TextEditingController passwordController =
+        TextEditingController(text: kDebugMode ? 'jaka123' : "");
 
     return Scaffold(
       backgroundColor: AppColors.whiteBG,

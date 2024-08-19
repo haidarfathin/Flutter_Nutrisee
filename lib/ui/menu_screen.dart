@@ -62,7 +62,7 @@ class _MenuScreenState extends State<MenuScreen> {
         leading: CircleAvatar(
           radius: 14,
           backgroundColor: Colors.green.shade100,
-          backgroundImage: AssetImage("assets/images/ic_male_circle.png"),
+          backgroundImage: const AssetImage("assets/images/ic_male_circle.png"),
         ),
         text: 'Profile',
       )
@@ -117,11 +117,10 @@ class _MenuScreenState extends State<MenuScreen> {
               backgroundColor: AppColors.primary,
               onPressed: () async {
                 context.push("/scan-product");
-                // getImageFromCamera();
               },
               child: Container(
                 decoration: BoxDecoration(
-                    color:  Color(0xff049913),
+                    color: Color(0xff049913),
                     borderRadius: BorderRadius.circular(12)),
                 padding: const EdgeInsets.all(12.0),
                 child: Assets.images.icOcr.image(),

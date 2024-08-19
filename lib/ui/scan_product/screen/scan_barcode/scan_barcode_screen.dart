@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:nutrisee/core/data/model/firestore/barcode_product.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
-import 'package:nutrisee/ui/scan_product/screen/add_barcode_screen.dart';
-import 'package:nutrisee/ui/scan_product/screen/detail_barcode_product.dart';
+import 'package:nutrisee/ui/scan_product/screen/scan_barcode/add_barcode_screen.dart';
+import 'package:nutrisee/ui/scan_product/screen/scan_barcode/detail_barcode_product.dart';
 
 class BarcodeScannerScreen extends StatefulWidget {
   const BarcodeScannerScreen({super.key});

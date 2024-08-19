@@ -36,7 +36,6 @@ berikan respon dalam format JSON dengan struktur sebagai berikut:
   "garam": [total garam/natrium/sodium (int)],
   "takaran_saji": [nilai takaran saji (int)],
   "sajian_per_kemasan": [nilai sajian per kemasan (int)],
-  "description": [saran]
 }
 
 jika anda tidak mendeteksi kata informasi nilai gizi,
@@ -48,7 +47,6 @@ kembalikan respon seperti berikut
   "garam": 0,
   "takaran_saji": 0,
   "sajian_per_kemasan":0,
-  "description": ""
 }
 
 hanya kembalikan format JSON saja

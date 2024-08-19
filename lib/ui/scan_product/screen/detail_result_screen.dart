@@ -283,7 +283,7 @@ class _DetailResultScreenState extends State<DetailResultScreen> {
                           );
                         } else if (state is ProductAddedSuccess) {
                           Navigator.of(context).pop();
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const MenuScreen(
@@ -317,6 +317,7 @@ class _DetailResultScreenState extends State<DetailResultScreen> {
                                   natrium: garam.toDouble(),
                                   sugar: gula.toDouble(),
                                   fat: lemak.toDouble(),
+                                  timestamp: DateTime.now(),
                                 );
                           },
                           caption: "Kembali ke Beranda",

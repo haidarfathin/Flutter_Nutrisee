@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ScannedProduct {
   final String image;
   final bool isSugarHighest;
@@ -6,6 +8,7 @@ class ScannedProduct {
   final num natrium;
   final num sugar;
   final num fat;
+  final DateTime timeStamp;
 
   ScannedProduct({
     required this.image,
@@ -15,6 +18,7 @@ class ScannedProduct {
     required this.natrium,
     required this.sugar,
     required this.fat,
+    required this.timeStamp,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +30,7 @@ class ScannedProduct {
       'natrium': natrium,
       'sugar': sugar,
       'fat': fat,
+      'timeStamp': timeStamp,
     };
   }
 
@@ -38,6 +43,7 @@ class ScannedProduct {
       natrium: map['natrium'],
       sugar: map['sugar'],
       fat: map['fat'],
+      timeStamp: (map['timeStamp'] as Timestamp).toDate(),
     );
   }
 }
