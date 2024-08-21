@@ -57,20 +57,19 @@ class ScanProductCubit extends Cubit<ScanProductState> {
       log(productNutrition.toString());
       emit(AnalyzeProductSuccess(productNutrition));
     } catch (e) {
-      emit(AnalyzeProductError("Gagal mengekstrak nutrisi dari gambar: $e"));
+      // emit(AnalyzeProductError("Gagal mengekstrak nutrisi dari gambar: $e"));
     }
   }
 
-  void saveScannedProduct({
-    required XFile image,
-    required bool isSugarHighest,
-    required String name,
-    required String score,
-    required double natrium,
-    required double sugar,
-    required double fat,
-    required DateTime timestamp
-  }) async {
+  void saveScannedProduct(
+      {required XFile image,
+      required bool isSugarHighest,
+      required String name,
+      required String score,
+      required double natrium,
+      required double sugar,
+      required double fat,
+      required DateTime timestamp}) async {
     emit(ProductAddLoading());
     try {
       final userId = FirebaseAuth.instance.currentUser!.uid;

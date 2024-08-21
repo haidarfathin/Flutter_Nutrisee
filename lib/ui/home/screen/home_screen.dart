@@ -31,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     generatePrompt();
   }
@@ -80,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColors.whiteBG,
         centerTitle: false,
         title: Text(
-          "Nutrisee",
+          "Glukosaw",
           style: context.textTheme.titleLarge
               ?.copyWith(fontWeight: FontWeight.w800, color: AppColors.primary),
         ),
@@ -125,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const Gap(4),
                           Text(
-                            "Mari jaga asupan\nnutrisi kita!",
+                            "Mari jaga asupan\ngula kita!",
                             style: context.textTheme.bodyLarge?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
@@ -170,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Saran Nutrisee AI",
+                      "Saran Minsaw AI",
                       style: context.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -293,98 +292,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ),
-            SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Artikel Terbaru",
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const Gap(8),
-                    SizedBox(
-                      height: 200,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: listArticles.articles.length,
-                        itemBuilder: (context, index) {
-                          final article = listArticles.articles[index];
-                          return Container(
-                            width: 250,
-                            margin: const EdgeInsets.only(right: 14),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: Colors.white,
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 75,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(16),
-                                      topRight: Radius.circular(16),
-                                    ),
-                                    image: DecorationImage(
-                                      image: NetworkImage(article['image_url']),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12,
-                                    horizontal: 16,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        article['title'],
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge
-                                            ?.copyWith(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w800,
-                                            ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      const Gap(8),
-                                      Text(
-                                        article['description'],
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall
-                                            ?.copyWith(
-                                              fontSize: 10,
-                                            ),
-                                        textAlign: TextAlign.justify,
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    Gap(20),
-                  ],
-                ),
-              ),
-            )
           ],
         ),
       ),

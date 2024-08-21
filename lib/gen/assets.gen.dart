@@ -16,6 +16,10 @@ class $AssetsImagesGen {
   AssetGenImage get icApprove =>
       const AssetGenImage('assets/images/ic_approve.png');
 
+  /// File path: assets/images/ic_brand.png
+  AssetGenImage get icBrand =>
+      const AssetGenImage('assets/images/ic_brand.png');
+
   /// File path: assets/images/ic_bulb.png
   AssetGenImage get icBulb => const AssetGenImage('assets/images/ic_bulb.png');
 
@@ -165,6 +169,7 @@ class $AssetsImagesGen {
   /// List of all assets
   List<AssetGenImage> get values => [
         icApprove,
+        icBrand,
         icBulb,
         icCalories,
         icCameraPermission,

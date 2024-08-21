@@ -72,7 +72,7 @@ class _ExaminationCardState extends State<ExaminationCard> {
                     examineNutritionTitle(garam, gula, sajian) !=
                             "Produk Aman Dikonsumsi"
                         ? "Kandungan $kandungan dalam satu sajian pada produk ini "
-                            "sebesar ${nilaiKandungan.toInt()} gr ($persamaan)!"
+                            "sebesar ${nilaiKandungan.toInt().toString() + chooseGram(kandungan)} ($persamaan)!"
                         : "Produk ini mengandung $nilaiKandungan $kandungan yang tergolong "
                             "cukup rendah untuk dikonsumsi. Tetap jaga asupan gula "
                             "dan garam anda.",

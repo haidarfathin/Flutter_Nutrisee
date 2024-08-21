@@ -137,8 +137,8 @@ class _CountBmiScreenState extends State<CountBmiScreen> {
                       } else if (weightController.text.isEmpty) {
                         context.showSnackbar("Please Enter your Weight");
                       } else {
-                        await context.showCustomDialog(
-                            content: loadingContentDialog(context: context));
+                        // await context.showCustomDialog(
+                        //     content: loadingContentDialog(context: context));
                         context.push(
                           '/result-bmi',
                           extra: BMI(
