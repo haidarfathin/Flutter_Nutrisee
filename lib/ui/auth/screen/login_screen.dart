@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Assets.images.icLogo.image(height: 15),
+                Assets.images.icLogo.image(height: 30),
                 const Gap(24),
                 Text(
                   "Masuk",

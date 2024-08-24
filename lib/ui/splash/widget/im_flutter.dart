@@ -8,7 +8,7 @@ class ImLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Assets.images.icLogo.image(height: 50),
+      child: Assets.images.icBrand.image(height: 150),
     );
   }
 }
