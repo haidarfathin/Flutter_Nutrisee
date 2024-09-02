@@ -23,7 +23,7 @@ import 'splash/screen/splash_screen.dart';
 var router = GoRouter(routes: [
   GoRoute(
     path: '/',
-    builder: (context, state) => const HomeScreen(),
+    builder: (context, state) => const SplashScreen(),
   ),
   GoRoute(
     path: '/menu',

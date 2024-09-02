@@ -106,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: Colors.green.shade100,
-                                  image: DecorationImage(
+                                  image: const DecorationImage(
                                     fit: BoxFit.cover,
                                     image: AssetImage(
                                       "assets/images/ic_male_circle.png",
