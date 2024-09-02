@@ -242,7 +242,7 @@ class _DetailResultScreenState extends State<DetailResultScreen> {
                   ),
                   const Gap(20),
                   Text(
-                    "Tips",
+                    "Nutrient Levels",
                     style: context.textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
@@ -439,3 +439,5 @@ double roundDouble(double value, int places) {
   double mod = pow(10.0, places).toDouble();
   return ((value * mod).round().toDouble() / mod);
 }
+
+

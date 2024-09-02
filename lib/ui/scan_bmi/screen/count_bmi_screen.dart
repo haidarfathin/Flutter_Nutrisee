@@ -95,20 +95,6 @@ class _CountBmiScreenState extends State<CountBmiScreen> {
                       ),
                     ),
                   ),
-                  const Gap(12),
-                  AppTextField(
-                    keyboardType: TextInputType.number,
-                    title: "Lingkar Pinggang",
-                    hint: "000",
-                    controller: waistController,
-                    endIcon: Text(
-                      "cm",
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textGray,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

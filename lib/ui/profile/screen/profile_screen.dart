@@ -6,19 +6,15 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:nutrisee/core/utils/session.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_snackbar.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
-import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:nutrisee/ui/auth/bloc/auth_cubit.dart';
 import 'package:nutrisee/ui/profile/cubit/profile_cubit.dart';
 import 'package:nutrisee/ui/profile/widget/gauge_bmi.dart';
-import 'package:nutrisee/ui/profile/widget/item_profile.dart';
 import 'package:nutrisee/ui/scan_product/screen/detail_result_screen.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

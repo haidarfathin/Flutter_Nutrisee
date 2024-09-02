@@ -72,6 +72,10 @@ class $AssetsImagesGen {
   AssetGenImage get icMaleCircle =>
       const AssetGenImage('assets/images/ic_male_circle.png');
 
+  /// File path: assets/images/ic_nodata.png
+  AssetGenImage get icNodata =>
+      const AssetGenImage('assets/images/ic_nodata.png');
+
   /// File path: assets/images/ic_nutriscore.png
   AssetGenImage get icNutriscore =>
       const AssetGenImage('assets/images/ic_nutriscore.png');
@@ -184,6 +188,7 @@ class $AssetsImagesGen {
         icLogo,
         icMale,
         icMaleCircle,
+        icNodata,
         icNutriscore,
         icNutrition,
         icOcr,

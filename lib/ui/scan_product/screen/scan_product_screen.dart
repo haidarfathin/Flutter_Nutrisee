@@ -163,13 +163,13 @@ class _ScanProductScreenState extends State<ScanProductScreen>
                             child: InkWell(
                               splashColor: Colors.white,
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const BarcodeScannerScreen(),
-                                  ),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) =>
+                                // const BarcodeScannerScreen(),
+                                //   ),
+                                // );
                               },
                               child: Container(
                                 width: 65,

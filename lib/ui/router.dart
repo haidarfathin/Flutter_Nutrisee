@@ -106,10 +106,6 @@ var router = GoRouter(routes: [
       );
     },
   ),
-  GoRoute(
-    path: "/meds",
-    builder: (context, state) => MedsReminderScreen(),
-  ),
 ]);
 
 Widget get errorPage => const Center(

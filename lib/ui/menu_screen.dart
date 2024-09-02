@@ -1,6 +1,6 @@
-import 'package:edge_detection/edge_detection.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:ionicons/ionicons.dart';
@@ -11,9 +11,7 @@ import 'package:nutrisee/ui/article/screen/article_screen.dart';
 import 'package:nutrisee/ui/history/screen/history_screen.dart';
 import 'package:nutrisee/ui/home/screen/home_screen.dart';
 import 'package:nutrisee/ui/profile/screen/profile_screen.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MenuScreen extends StatefulWidget {
   final int screen; // Parameter untuk menentukan layar yang akan ditampilkan
@@ -71,40 +69,14 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> getImageFromCamera() async {
-      bool isCameraGranted = await Permission.camera.request().isGranted;
-      if (!isCameraGranted) {
-        isCameraGranted =
-            await Permission.camera.request() == PermissionStatus.granted;
-      }
-
-      if (!isCameraGranted) {
-        return;
-      }
-
-      String imagePath = join((await getApplicationSupportDirectory()).path,
-          "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
-
-      bool success = false;
-
-      try {
-        success = await EdgeDetection.detectEdge(
-          imagePath,
-          canUseGallery: true,
-          androidScanTitle: 'Scan Nutrition Table',
-          androidCropTitle: 'Crop',
-          androidCropBlackWhiteTitle: 'Black White',
-          androidCropReset: 'Reset',
-        );
-        print("success: $success");
-      } catch (e) {
-        print(e);
-      }
-
-      if (!mounted) return;
-      if (success) {
-        context.push("/result-product", extra: XFile(imagePath));
-      }
+    XFile? selectedImage;
+    Future pickImageFromCamera() async {
+      final returnedImage =
+          await ImagePicker().pickImage(source: ImageSource.camera);
+      if (returnedImage == null) return;
+      setState(() {
+        selectedImage = XFile(returnedImage.path);
+      });
     }
 
     return Scaffold(
@@ -116,7 +88,8 @@ class _MenuScreenState extends State<MenuScreen> {
           ? FloatingActionButton(
               backgroundColor: AppColors.primary,
               onPressed: () async {
-                context.push("/scan-product");
+                await pickImageFromCamera();
+                context.push("/result-product", extra: selectedImage);
               },
               child: Container(
                 decoration: BoxDecoration(

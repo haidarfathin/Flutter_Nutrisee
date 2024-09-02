@@ -12,6 +12,7 @@ import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:nutrisee/ui/history/cubit/history_cubit.dart';
+import 'package:nutrisee/ui/history/screen/history_screen.dart';
 import 'package:nutrisee/ui/home/widget/item_menu.dart';
 import 'package:nutrisee/ui/home/widget/item_scan.dart';
 
@@ -83,15 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
           style: context.textTheme.titleLarge
               ?.copyWith(fontWeight: FontWeight.w800, color: AppColors.primary),
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: AppTheme.marginHorizontal),
-            child: Icon(
-              Ionicons.notifications,
-              color: AppColors.secondary,
-            ),
-          ),
-        ],
+      
       ),
       backgroundColor: AppColors.whiteBG,
       body: Padding(
@@ -240,9 +233,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        Text(
-                          "Lihat Semua",
-                          style: context.textTheme.bodySmall,
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HistoryScreen(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "Lihat Semua",
+                            style: context.textTheme.bodySmall,
+                          ),
                         )
                       ],
                     ),
