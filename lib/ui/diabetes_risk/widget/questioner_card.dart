@@ -68,15 +68,11 @@ class QuestionerCard extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(50),
                                 border: Border.all(
                                   width: 2,
-                                  color: options[index].isPositive
-                                      ? AppColors.greenSwatch.shade100
-                                      : AppColors.orangeSwatch.shade400,
+                                  color: AppColors.primary,
                                 ),
                                 color:
                                     selectedOption == options[index].isPositive
-                                        ? (options[index].isPositive
-                                            ? Colors.green.shade50
-                                            : AppColors.orangeSwatch.shade50)
+                                        ? AppColors.primary
                                         : Colors.white,
                               ),
                               child: Text(
@@ -86,9 +82,10 @@ class QuestionerCard extends StatelessWidget {
                                     .bodyLarge
                                     ?.copyWith(
                                       fontWeight: FontWeight.bold,
-                                      color: options[index].isPositive
-                                          ? Colors.green.shade700
-                                          : AppColors.orangeSwatch.shade400,
+                                      color: (selectedOption ==
+                                              options[index].isPositive)
+                                          ? Colors.white
+                                          : AppColors.primary,
                                     ),
                               ),
                             ),

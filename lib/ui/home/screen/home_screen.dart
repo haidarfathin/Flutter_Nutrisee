@@ -4,18 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:gap/gap.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/data/model/article/listArticles.dart';
 import 'package:nutrisee/core/data/prompt.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
+import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
+import 'package:nutrisee/ui/auth/bloc/auth_cubit.dart';
 import 'package:nutrisee/ui/history/cubit/history_cubit.dart';
 import 'package:nutrisee/ui/home/widget/item_menu.dart';
 import 'package:nutrisee/ui/home/widget/item_scan.dart';
-
-import '../../../core/widgets/app_colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,9 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    generatePrompt();
   }
 
   final Gemini gemini = Gemini.instance;
@@ -84,15 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
           style: context.textTheme.titleLarge
               ?.copyWith(fontWeight: FontWeight.w800, color: AppColors.primary),
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: AppTheme.marginHorizontal),
-            child: Icon(
-              Ionicons.notifications,
-              color: AppColors.secondary,
-            ),
-          ),
-        ],
       ),
       backgroundColor: AppColors.whiteBG,
       body: Padding(
@@ -163,6 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+/*
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
@@ -227,6 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+           */
             SliverToBoxAdapter(
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 10),

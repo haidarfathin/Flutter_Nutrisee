@@ -9,10 +9,10 @@ import 'package:nutrisee/core/data/model/product_nutrition.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
-import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:nutrisee/ui/scan_product/bloc/scan_product_cubit.dart';
 import 'package:nutrisee/ui/scan_product/screen/detail_result_screen.dart';
+// import 'package:nutrisee/ui/scan_product/screen/detail_result_screen.dart';
 import 'package:nutrisee/ui/scan_product/widget/examination_card.dart';
 import 'package:nutrisee/ui/scan_product/widget/nutrition_container.dart';
 

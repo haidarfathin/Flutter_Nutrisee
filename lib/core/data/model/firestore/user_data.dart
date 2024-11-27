@@ -11,7 +11,10 @@ class UserData {
   final DateTime birthDate;
   final bool hasDiabetes;
   final String? diabetesType;
-  final int? calories;
+  final bool hasHipertensi;
+  final Map<String, dynamic>? dataTensi;
+  final double? bmr;
+  final double? tdee;
   final List<ScannedProduct>? scannedProducts;
 
   UserData({
@@ -24,8 +27,11 @@ class UserData {
     required this.weight,
     required this.birthDate,
     required this.hasDiabetes,
+    required this.hasHipertensi,
     this.diabetesType,
-    this.calories,
+    this.dataTensi,
+    this.bmr,
+    this.tdee,
     this.scannedProducts,
   });
 
@@ -40,8 +46,11 @@ class UserData {
       'weight': weight,
       'birthDate': birthDate.toIso8601String(),
       'hasDiabetes': hasDiabetes,
+      'hasHipertensi': hasHipertensi,
       'diabetesType': diabetesType,
-      'calories': calories,
+      'bmr': bmr,
+      'tdee': tdee,
+      'dataTensi': dataTensi,
       'scanned_products': scannedProducts?.map((e) => e.toMap()).toList(),
     };
   }
@@ -57,8 +66,11 @@ class UserData {
       weight: map['weight'],
       birthDate: DateTime.parse(map['birthDate']),
       hasDiabetes: map['hasDiabetes'],
+      hasHipertensi: map['hasHipertensi'],
+      dataTensi: map['dataTensi'],
       diabetesType: map['diabetesType'],
-      calories: map['calories'],
+      bmr: map['bmr'],
+      tdee: map['tdee'],
       scannedProducts: (map['scanned_products'] as List<dynamic>?)
           ?.map((e) => ScannedProduct.fromMap(e as Map<String, dynamic>))
           .toList(),

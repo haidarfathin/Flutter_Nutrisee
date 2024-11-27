@@ -16,8 +16,6 @@ import 'package:nutrisee/core/data/model/product_nutrition.dart';
 import 'package:nutrisee/core/data/prompt.dart';
 import 'package:nutrisee/core/utils/session.dart';
 
-import '../../../core/utils/image_compress.dart';
-
 part 'scan_product_state.dart';
 
 class ScanProductCubit extends Cubit<ScanProductState> {
@@ -51,26 +49,30 @@ class ScanProductCubit extends Cubit<ScanProductState> {
       ]);
 
       final rawText = response.text.toString();
-      log(response.text.toString());
-      final jsonResponse = json.decode(rawText);
+      final jsonString =
+          rawText.replaceAll('```json', '').replaceAll('```', '').trim();
+
+      log(jsonString); // Untuk debugging
+
+      final jsonResponse = json.decode(jsonString);
       final productNutrition = ProductNutrition.fromMap(jsonResponse);
       log(productNutrition.toString());
+
       emit(AnalyzeProductSuccess(productNutrition));
     } catch (e) {
       emit(AnalyzeProductError("Gagal mengekstrak nutrisi dari gambar: $e"));
     }
   }
 
-  void saveScannedProduct({
-    required XFile image,
-    required bool isSugarHighest,
-    required String name,
-    required String score,
-    required double natrium,
-    required double sugar,
-    required double fat,
-    required DateTime timestamp
-  }) async {
+  void saveScannedProduct(
+      {required XFile image,
+      required bool isSugarHighest,
+      required String name,
+      required String score,
+      required double natrium,
+      required double sugar,
+      required double fat,
+      required DateTime timestamp}) async {
     emit(ProductAddLoading());
     try {
       final userId = FirebaseAuth.instance.currentUser!.uid;

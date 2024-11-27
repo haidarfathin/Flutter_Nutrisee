@@ -6,19 +6,16 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:nutrisee/core/utils/session.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_snackbar.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
-import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:nutrisee/ui/auth/bloc/auth_cubit.dart';
 import 'package:nutrisee/ui/profile/cubit/profile_cubit.dart';
 import 'package:nutrisee/ui/profile/widget/gauge_bmi.dart';
-import 'package:nutrisee/ui/profile/widget/item_profile.dart';
 import 'package:nutrisee/ui/scan_product/screen/detail_result_screen.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
+// import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -90,12 +87,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   const Gap(12),
                                   state.data.hasDiabetes == false
-                                      ? Container()
-                                      : diabetesCard(
+                                      ? medicalCard(
                                           context,
-                                          diabetesType:
-                                              state.data.diabetesType ?? "",
+                                          text: "Hipertensi",
+                                          backgroundColor: Colors.red.shade300,
+                                          foregroundColor: Colors.white,
                                         )
+                                      : medicalCard(
+                                          context,
+                                          text:
+                                              "Diabetes (${state.data.diabetesType})",
+                                          backgroundColor:
+                                              state.data.diabetesType ==
+                                                      'Tipe 1'
+                                                  ? Colors.yellow.shade700
+                                                  : Colors.orange.shade800,
+                                          foregroundColor: Colors.white,
+                                        ),
                                 ],
                               ),
                               Container(
@@ -128,7 +136,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             weight: state.data.weight,
                             birthDate: state.data.birthDate,
                             gender: state.data.gender,
-                            calories: state.data.calories ?? 0,
+                            bmr: state.data.bmr ?? 0,
+                            tdee: state.data.tdee ?? 0,
                           ),
                           const Gap(20),
                           itemSetting(
@@ -183,9 +192,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget diabetesCard(
+  Widget medicalCard(
     BuildContext context, {
-    required String diabetesType,
+    required String text,
+    Color? backgroundColor,
+    Color? foregroundColor,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -194,13 +205,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.orange.shade200,
-      ),
+          borderRadius: BorderRadius.circular(20),
+          color: backgroundColor ?? Colors.grey.shade300),
       child: Text(
-        "Penderita Diabetes (Tipe $diabetesType)",
+        text,
         style: context.textTheme.titleSmall?.copyWith(
-          color: Colors.orange.shade900,
+          color: foregroundColor?.withOpacity(0.8) ??
+              Colors.black.withOpacity(0.8),
           fontSize: 10,
           fontWeight: FontWeight.bold,
         ),
@@ -213,7 +224,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     required DateTime birthDate,
     required String gender,
     required int height,
-    required int calories,
+    required double bmr,
+    required double tdee,
     weight,
   }) {
     var bmiResult = calculateBMI(height, weight);
@@ -289,15 +301,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               itemKalori(
                   context,
-                  calculateBMR(
-                    gender,
-                    height.toDouble(),
-                    weight.toDouble(),
-                    calculateAge(birthDate),
-                  ).toString(),
+                  // calculateBMR(
+                  //   gender,
+                  //   height.toDouble(),
+                  //   weight.toDouble(),
+                  //   calculateAge(birthDate),
+                  // ).toString(),
+                  bmr.toInt().toString(),
                   "BMR"),
               const Gap(14),
-              itemKalori(context, calories.toString(), "Kalori/hari"),
+              itemKalori(context, tdee.toInt().toString(), "Kalori/hari"),
             ],
           )
         ],

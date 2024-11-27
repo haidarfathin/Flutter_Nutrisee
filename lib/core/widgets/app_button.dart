@@ -57,8 +57,11 @@ class AppButton extends StatelessWidget {
                       Center(
                         child: Text(caption,
                             style: captionStyle ??
-                                context.textTheme.titleLarge
-                                    ?.copyWith(color: Colors.white)),
+                                context.textTheme.bodyLarge?.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                )),
                       ),
                       useIcon
                           ? Container(

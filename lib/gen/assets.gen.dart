@@ -54,6 +54,10 @@ class $AssetsImagesGen {
   AssetGenImage get icHealthyFood =>
       const AssetGenImage('assets/images/ic_healthy_food.png');
 
+  /// File path: assets/images/ic_hipertensi.png
+  AssetGenImage get icHipertensi =>
+      const AssetGenImage('assets/images/ic_hipertensi.png');
+
   /// File path: assets/images/ic_launcher.png
   AssetGenImage get icLauncher =>
       const AssetGenImage('assets/images/ic_launcher.png');
@@ -175,6 +179,7 @@ class $AssetsImagesGen {
         icFemale,
         icFood,
         icHealthyFood,
+        icHipertensi,
         icLauncher,
         icLogo,
         icMale,

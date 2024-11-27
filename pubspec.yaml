@@ -5,17 +5,14 @@ version: "1.0.0+1"
 environment:
   sdk: ">=2.19.0 <3.0.0"
 dependencies:
-  alarm: ^3.1.4
   bloc_concurrency: ^0.2.0
   camera: ^0.11.0+1
-  change_app_package_name: ^1.1.0
   cloud_firestore: ^5.0.1
   copy_with_extension: ^5.0.4
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
   dio: ^5.4.3+1
   dropdown_button2: ^2.3.9
-  edge_detection: ^1.1.3
   equatable: ^2.0.3
   event_bus: ^2.0.0
   firebase_auth: ^5.1.0
@@ -36,23 +33,20 @@ dependencies:
   get_it: ^7.2.0
   go_router: ^14.1.4
   google_fonts: ^6.2.1
-  google_generative_ai: ^0.4.4
+  google_generative_ai: ^0.4.6
   google_nav_bar: ^5.0.6
   gradient_borders: ^1.0.0
   im_stepper: ^1.0.1+1
-  image_cropper: ^7.1.0
   image_picker: ^1.0.4
-  infinite_scroll_pagination: ^4.0.0
   injectable: ^2.3.0
+  intl: ^0.19.0
   ionicons: ^0.2.2
   json_annotation: ^4.8.1
-  mobile_scanner: ^5.1.1
   path: ^1.9.0
   path_provider: ^2.0.11
-  permission_handler: ^11.0.0
+  permission_handler: ^11.3.1
   retrofit: ^4.1.0
   rxdart: ^0.27.5
-  syncfusion_flutter_gauges: ^25.2.5
   uuid: ^4.0.0
   vibration: ^1.9.0
 dev_dependencies:

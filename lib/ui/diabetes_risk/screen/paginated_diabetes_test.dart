@@ -29,13 +29,13 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
   TextEditingController birthDateController = TextEditingController();
 
   String? _selectedGender;
-  ValueNotifier<bool?> _2ndRelativeDiabetes = ValueNotifier<bool?>(null);
-  ValueNotifier<bool?> _1stRelativeDiabetes = ValueNotifier<bool?>(null);
-  ValueNotifier<bool?> _historyHighBloodGlucose = ValueNotifier<bool?>(null);
-  ValueNotifier<bool?> _consumeBloodPressureMedication =
+  final ValueNotifier<bool?> _secondRelativeDiabetes = ValueNotifier<bool?>(null);
+  final ValueNotifier<bool?> _firstRelativeDiabetes = ValueNotifier<bool?>(null);
+  final ValueNotifier<bool?> _historyHighBloodGlucose = ValueNotifier<bool?>(null);
+  final ValueNotifier<bool?> _consumeBloodPressureMedication =
       ValueNotifier<bool?>(null);
-  ValueNotifier<bool?> _frequentPhysicalActivty = ValueNotifier<bool?>(null);
-  ValueNotifier<bool?> _dailyConsumptionVeggies = ValueNotifier<bool?>(null);
+  final ValueNotifier<bool?> _frequentPhysicalActivty = ValueNotifier<bool?>(null);
+  final ValueNotifier<bool?> _dailyConsumptionVeggies = ValueNotifier<bool?>(null);
 
   final List<String> lingkarPinggangOptions = [
     '< 80cm',
@@ -217,10 +217,10 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
     return Column(
       children: [
         QuestionerCard(
-          selectedOptionNotifier: _2ndRelativeDiabetes,
+          selectedOptionNotifier: _secondRelativeDiabetes,
           onOptionsSelected: (isPositive) {
             setState(() {
-              _2ndRelativeDiabetes.value = isPositive;
+              _secondRelativeDiabetes.value = isPositive;
             });
           },
           captions:
@@ -238,10 +238,10 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
         ),
         const Gap(12),
         QuestionerCard(
-          selectedOptionNotifier: _1stRelativeDiabetes,
+          selectedOptionNotifier: _firstRelativeDiabetes,
           onOptionsSelected: (isPositive) {
             setState(() {
-              _1stRelativeDiabetes.value = isPositive;
+              _firstRelativeDiabetes.value = isPositive;
             });
           },
           captions:
@@ -594,9 +594,9 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
       score += 0;
     }
 
-    if (_1stRelativeDiabetes.value == true) {
+    if (_firstRelativeDiabetes.value == true) {
       score += 5;
-    } else if (_2ndRelativeDiabetes.value == true) {
+    } else if (_secondRelativeDiabetes.value == true) {
       score += 3;
     } else {
       score += 0; // No history

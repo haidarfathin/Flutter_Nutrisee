@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
@@ -130,31 +131,137 @@ Widget infoContentDialog({
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          margin: const EdgeInsets.only(bottom: 15),
-          width: 70,
-          height: 70,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: image,
+        GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.red,
+                    width: 1.5,
+                  )),
+              child: const Icon(
+                Icons.close,
+                color: Colors.red,
+              ),
             ),
           ),
         ),
+        const Gap(10),
         Text(
           title,
-          style: context.textTheme.bodyLarge?.copyWith(
-            fontSize: 18,
+          style: context.textTheme.bodySmall?.copyWith(
+            fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: AppColors.textBlack,
+            color: AppColors.primary,
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 30),
-        AppButton(
-          onPressed: onConfirm,
-          color: AppColors.primary,
-          caption: "OK",
+        const Gap(20),
+        SizedBox(
+          height: 300,
+          child: Table(
+            border: TableBorder.all(color: Colors.grey), // Add borders
+            columnWidths: const {
+              0: FlexColumnWidth(2), // Adjust column width
+              1: FlexColumnWidth(1),
+            },
+            children: [
+              // Header Row
+              TableRow(
+                decoration: BoxDecoration(color: Colors.grey[300]),
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Lingkar\nPinggang (cm)',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Ukuran Celana',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+              // Data Rows
+              const TableRow(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('< 80', textAlign: TextAlign.center),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('< 30', textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
+              const TableRow(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('80-88', textAlign: TextAlign.center),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('31-34', textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
+              const TableRow(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('89-93', textAlign: TextAlign.center),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('35-36', textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
+              const TableRow(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('94-102', textAlign: TextAlign.center),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('37-40', textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
+              const TableRow(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('> 102', textAlign: TextAlign.center),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('> 40', textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     ),

@@ -31,11 +31,11 @@ Berikan saran terkait kandungan nutrisi tersebut dengan maksimal 20 kata.
 berikan respon dalam format JSON dengan struktur sebagai berikut:
 {
   "isNutritionFacts":true,
-  "gula": [total gula/sugar(int)],
-  "lemak_jenuh": [total saturated fat/lemak jenuh (int)],
-  "garam": [total garam/natrium/sodium (int)],
-  "takaran_saji": [nilai takaran saji (int)],
-  "sajian_per_kemasan": [nilai sajian per kemasan (int)],
+  "gula": total gula/sugar(int),
+  "lemak_jenuh": total saturated fat/lemak jenuh (int),
+  "garam": total garam/natrium/sodium (int),
+  "takaran_saji": nilai takaran saji (int),
+  "sajian_per_kemasan": nilai sajian per kemasan (int),
 }
 
 jika anda tidak mendeteksi kata informasi nilai gizi,
@@ -49,7 +49,7 @@ kembalikan respon seperti berikut
   "sajian_per_kemasan":0,
 }
 
-hanya kembalikan format JSON saja
+just return the object json without any explanation
 
 """;
 

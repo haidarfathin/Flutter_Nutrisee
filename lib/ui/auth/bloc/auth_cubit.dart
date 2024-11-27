@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,6 +44,7 @@ class AuthCubit extends Cubit<AuthState> {
       final User? firebaseUser = userCredential.user;
       if (firebaseUser != null) {
         userid = firebaseUser.uid;
+        await session.save(Config.getUser, userid);
         emit(RegisterSuccess());
       }
     } on FirebaseAuthException catch (e) {
@@ -66,7 +69,11 @@ class AuthCubit extends Cubit<AuthState> {
     required int weight,
     required DateTime birthDate,
     required bool hasDiabetes,
+    bool hasHipertensi = false,
     String? diabetesType,
+    double? bmr,
+    double? tdee,
+    Map<String, dynamic>? dataTensi,
   }) async {
     emit(SaveDataLoading());
     try {
@@ -80,10 +87,13 @@ class AuthCubit extends Cubit<AuthState> {
         weight: weight,
         birthDate: birthDate,
         hasDiabetes: hasDiabetes,
+        hasHipertensi: hasHipertensi,
         diabetesType: diabetesType,
-        calories: 0,
+        bmr: bmr,
+        tdee: tdee,
+        dataTensi: dataTensi,
       );
-
+      log(user.toString());
       await _firestore.collection('users').doc(userid).set(user.toMap());
       emit(SaveDataSuccess());
     } catch (e) {

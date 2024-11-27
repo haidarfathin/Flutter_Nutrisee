@@ -5,7 +5,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
-import 'package:nutrisee/ui/scan_product/screen/scan_barcode/scan_barcode_screen.dart';
+// import 'package:nutrisee/ui/scan_product/screen/scan_barcode/scan_barcode_screen.dart';
 
 class ScanProductScreen extends StatefulWidget {
   const ScanProductScreen({super.key});
@@ -158,35 +158,35 @@ class _ScanProductScreenState extends State<ScanProductScreen>
                               ),
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: InkWell(
-                              splashColor: Colors.white,
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const BarcodeScannerScreen(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: 65,
-                                height: 50,
-                                margin: const EdgeInsets.only(right: 20),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: Colors.orange.shade100,
-                                ),
-                                child: const Icon(
-                                  Ionicons.barcode,
-                                  size: 40,
-                                  color: Colors.orange,
-                                ),
-                              ),
-                            ),
-                          ),
+                          // Align(
+                          //   alignment: Alignment.centerRight,
+                          //   child: InkWell(
+                          //     splashColor: Colors.white,
+                          //     onTap: () {
+                          //       Navigator.push(
+                          //         context,
+                          //         MaterialPageRoute(
+                          //           builder: (context) =>
+                          //               const BarcodeScannerScreen(),
+                          //         ),
+                          //       );
+                          //     },
+                          //     child: Container(
+                          //       width: 65,
+                          //       height: 50,
+                          //       margin: const EdgeInsets.only(right: 20),
+                          //       decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(12),
+                          //         color: Colors.orange.shade100,
+                          //       ),
+                          //       child: const Icon(
+                          //         Ionicons.barcode,
+                          //         size: 40,
+                          //         color: Colors.orange,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
