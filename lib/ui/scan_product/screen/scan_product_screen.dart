@@ -1,10 +1,14 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
+import 'package:nutrisee/core/widgets/app_alert_dialog.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
+import 'package:nutrisee/core/widgets/app_snackbar.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
+import 'package:nutrisee/ui/scan_product/bloc/scan_product_cubit.dart';
 // import 'package:nutrisee/ui/scan_product/screen/scan_barcode/scan_barcode_screen.dart';
 
 class ScanProductScreen extends StatefulWidget {
@@ -87,115 +91,113 @@ class _ScanProductScreenState extends State<ScanProductScreen>
 
   @override
   Widget build(BuildContext context) {
-    void onCapturedPressed() async {
-      if (_cameraController != null && _cameraController!.value.isInitialized) {
-        try {
-          final image = await _cameraController!.takePicture();
-          if (!mounted) return;
-          context.push('/result-product', extra: image);
-        } catch (e) {
-          debugPrint('Error capturing image: $e');
-        }
-      }
-    }
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Pindai Produk Kemasan"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {},
-          )
-        ],
-        scrolledUnderElevation: 0,
-      ),
-      backgroundColor: AppColors.textBlack,
-      body: SafeArea(
-        child: isCameraInit
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30),
+        appBar: AppBar(
+          title: const Text("Pindai Produk Kemasan"),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () {},
+            )
+          ],
+          scrolledUnderElevation: 0,
+        ),
+        backgroundColor: AppColors.textBlack,
+        body: SafeArea(
+          child: isCameraInit
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        clipBehavior: Clip.hardEdge,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(30),
+                            bottomRight: Radius.circular(30),
+                          ),
                         ),
+                        child: CameraPreview(_cameraController!),
                       ),
-                      child: CameraPreview(_cameraController!),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      height: 100,
-                      width: double.infinity,
-                      color: AppColors.textBlack,
-                      child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: InkWell(
-                              splashColor: Colors.white,
-                              onTap: () async {
-                                onCapturedPressed();
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColors.greenSwatch.shade50,
-                                ),
-                                child: const Icon(
-                                  Ionicons.sparkles,
-                                  size: 30,
-                                  color: AppColors.primary,
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: 100,
+                        width: double.infinity,
+                        color: AppColors.textBlack,
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: InkWell(
+                                splashColor: Colors.white,
+                                onTap: () async {
+                                  if (_cameraController != null &&
+                                      _cameraController!.value.isInitialized) {
+                                    try {
+                                      final image = await _cameraController!
+                                          .takePicture();
+                                      if (!mounted) return;
+                                      context.push('/result-product',
+                                          extra: image);
+                                    } catch (e) {
+                                      debugPrint('Error capturing image: $e');
+                                    }
+                                  }
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.greenSwatch.shade50,
+                                  ),
+                                  child: const Icon(
+                                    Ionicons.sparkles,
+                                    size: 30,
+                                    color: AppColors.primary,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          // Align(
-                          //   alignment: Alignment.centerRight,
-                          //   child: InkWell(
-                          //     splashColor: Colors.white,
-                          //     onTap: () {
-                          //       Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //           builder: (context) =>
-                          //               const BarcodeScannerScreen(),
-                          //         ),
-                          //       );
-                          //     },
-                          //     child: Container(
-                          //       width: 65,
-                          //       height: 50,
-                          //       margin: const EdgeInsets.only(right: 20),
-                          //       decoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(12),
-                          //         color: Colors.orange.shade100,
-                          //       ),
-                          //       child: const Icon(
-                          //         Ionicons.barcode,
-                          //         size: 40,
-                          //         color: Colors.orange,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
+                            // Align(
+                            //   alignment: Alignment.centerRight,
+                            //   child: InkWell(
+                            //     splashColor: Colors.white,
+                            //     onTap: () {
+                            //       Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) =>
+                            //               const BarcodeScannerScreen(),
+                            //         ),
+                            //       );
+                            //     },
+                            //     child: Container(
+                            //       width: 65,
+                            //       height: 50,
+                            //       margin: const EdgeInsets.only(right: 20),
+                            //       decoration: BoxDecoration(
+                            //         borderRadius: BorderRadius.circular(12),
+                            //         color: Colors.orange.shade100,
+                            //       ),
+                            //       child: const Icon(
+                            //         Ionicons.barcode,
+                            //         size: 40,
+                            //         color: Colors.orange,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              )
-            : onCameraLateInit(context),
-      ),
-    );
+                    )
+                  ],
+                )
+              : onCameraLateInit(context),
+        ));
   }
 }
 

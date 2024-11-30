@@ -7,14 +7,16 @@ import 'package:go_router/go_router.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
+import 'package:nutrisee/core/widgets/app_alert_dialog.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_snackbar.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
+import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:nutrisee/ui/auth/bloc/auth_cubit.dart';
 import 'package:nutrisee/ui/profile/cubit/profile_cubit.dart';
 import 'package:nutrisee/ui/profile/widget/gauge_bmi.dart';
-import 'package:nutrisee/ui/scan_product/screen/detail_result_screen.dart';
+import 'package:nutrisee/ui/scan_product/utils/nutrition_utils.dart';
 // import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -25,6 +27,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final cubit = ProfileCubit();
+
+  @override
+  void initState() {
+    super.initState();
+    cubit.fetchProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,12 +45,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           'Profile',
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppTheme.marginHorizontal,
-        ),
-        child: BlocProvider(
-          create: (context) => ProfileCubit()..fetchProfile(),
+      body: BlocProvider.value(
+        value: cubit,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppTheme.marginHorizontal,
+          ),
           child: BlocBuilder<ProfileCubit, ProfileState>(
             builder: (context, state) {
               if (state is GetProfileLoading) {
@@ -86,24 +96,203 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                   ),
                                   const Gap(12),
-                                  state.data.hasDiabetes == false
-                                      ? medicalCard(
-                                          context,
-                                          text: "Hipertensi",
-                                          backgroundColor: Colors.red.shade300,
-                                          foregroundColor: Colors.white,
+                                  Row(
+                                    children: [
+                                      if (state.data.hasHipertensi)
+                                        SizedBox(
+                                          width: 170,
+                                          child: medicalCard(
+                                            context,
+                                            text: "Hipertensi",
+                                            backgroundColor:
+                                                Colors.red.shade900,
+                                            foregroundColor: Colors.white,
+                                          ),
                                         )
-                                      : medicalCard(
-                                          context,
-                                          text:
-                                              "Diabetes (${state.data.diabetesType})",
-                                          backgroundColor:
-                                              state.data.diabetesType ==
-                                                      'Tipe 1'
-                                                  ? Colors.yellow.shade700
-                                                  : Colors.orange.shade800,
-                                          foregroundColor: Colors.white,
+                                      else if (state.data.hasDiabetes)
+                                        SizedBox(
+                                          width: 170,
+                                          child: medicalCard(
+                                            context,
+                                            text:
+                                                "Diabetes (Tipe ${state.data.diabetesType})",
+                                            backgroundColor:
+                                                state.data.diabetesType == '1'
+                                                    ? Colors.yellow.shade700
+                                                    : Colors.orange.shade800,
+                                            foregroundColor: Colors.white,
+                                          ),
+                                        )
+                                      else
+                                        SizedBox(
+                                          width: 170,
+                                          child: medicalCard(
+                                            context,
+                                            text: "Tidak ada riwayat",
+                                            backgroundColor: Colors.black,
+                                            foregroundColor: Colors.white,
+                                          ),
                                         ),
+                                      BlocListener<ProfileCubit, ProfileState>(
+                                        listener: (context, state) {
+                                          if (state is ChangeSickSuccess) {
+                                            context.showSnackbar(
+                                              "Berhasil mengubah data",
+                                              isPositive: true,
+                                            );
+                                            cubit
+                                                .fetchProfile(); // Refresh profile
+                                            Navigator.of(context)
+                                                .pop(); // Tutup dialog
+                                          } else if (state is ChangeSickError) {
+                                            context.showSnackbar(
+                                              state.message ??
+                                                  "Gagal mengupdate, Mohon Coba lagi",
+                                            );
+                                            Navigator.of(context)
+                                                .pop(); // Tutup dialog
+                                          } else if (state
+                                              is ChangeSickLoading) {
+                                            // Tampilkan loading dialog
+                                            context.pushReplacement('/profile');
+                                          }
+                                        },
+                                        child: IconButton(
+                                          icon: Text(
+                                            "Ubah",
+                                            style: context.textTheme.bodySmall
+                                                ?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 11,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            context.showCustomDialog(
+                                              content: Container(
+                                                padding:
+                                                    const EdgeInsets.all(20),
+                                                height: 310,
+                                                width: 200,
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Edit Riwayat Penyakit",
+                                                      style: context
+                                                          .textTheme.bodyLarge
+                                                          ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    const Gap(14),
+                                                    InkWell(
+                                                      splashColor: Colors.amber,
+                                                      onTap: () {
+                                                        context
+                                                            .read<
+                                                                ProfileCubit>()
+                                                            .changeMedicalIssue(
+                                                                '2');
+                                                      },
+                                                      child: SizedBox(
+                                                        height: 50,
+                                                        child: medicalCard(
+                                                          context,
+                                                          text:
+                                                              "Diabetes (Tipe 1)",
+                                                          backgroundColor:
+                                                              Colors.yellow
+                                                                  .shade700,
+                                                          foregroundColor:
+                                                              Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const Gap(10),
+                                                    InkWell(
+                                                      splashColor: Colors
+                                                          .orange.shade200,
+                                                      onTap: () {
+                                                        context
+                                                            .read<
+                                                                ProfileCubit>()
+                                                            .changeMedicalIssue(
+                                                                '3');
+                                                      },
+                                                      child: SizedBox(
+                                                        height: 50,
+                                                        child: medicalCard(
+                                                          context,
+                                                          text:
+                                                              "Diabetes (Tipe 2)",
+                                                          backgroundColor:
+                                                              Colors.orange
+                                                                  .shade800,
+                                                          foregroundColor:
+                                                              Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const Gap(10),
+                                                    InkWell(
+                                                      splashColor:
+                                                          Colors.red.shade300,
+                                                      onTap: () {
+                                                        context
+                                                            .read<
+                                                                ProfileCubit>()
+                                                            .changeMedicalIssue(
+                                                                '1');
+                                                      },
+                                                      child: SizedBox(
+                                                        height: 50,
+                                                        child: medicalCard(
+                                                          context,
+                                                          text: "Hipertensi",
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .red.shade800,
+                                                          foregroundColor:
+                                                              Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const Gap(10),
+                                                    InkWell(
+                                                      splashColor:
+                                                          Colors.red.shade300,
+                                                      onTap: () {
+                                                        context
+                                                            .read<
+                                                                ProfileCubit>()
+                                                            .changeMedicalIssue(
+                                                                '4');
+                                                      },
+                                                      child: SizedBox(
+                                                        height: 50,
+                                                        child: medicalCard(
+                                                          context,
+                                                          text: "Hapus Riwayat",
+                                                          backgroundColor:
+                                                              Colors.grey
+                                                                  .shade200,
+                                                          foregroundColor:
+                                                              Colors.black87,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          color: Colors.orange,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
                               Container(
@@ -112,20 +301,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 margin: const EdgeInsets.only(
                                   top: 10,
                                 ),
+                                padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   color: Colors.green.shade100,
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage(
-                                      "assets/images/ic_male_circle.png",
-                                    ),
-                                  ),
                                   shape: BoxShape.circle,
                                   border: const GradientBoxBorder(
-                                    width: 5,
+                                    width: 10,
                                     gradient: AppColors.greenGradient,
                                   ),
                                 ),
+                                child:
+                                    (state.data.gender.toLowerCase() == "pria")
+                                        ? Assets.images.icMale.image()
+                                        : Assets.images.icFemale.image(),
                               ),
                             ],
                           ),
@@ -179,9 +367,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 );
               } else {
+                log("MASHIK");
                 return const Center(
                   child: CircularProgressIndicator(
-                    color: Colors.blue,
+                    color: Colors.red,
                   ),
                 );
               }
@@ -200,7 +389,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        vertical: 8,
+        vertical: 6,
         horizontal: 12,
       ),
       alignment: Alignment.center,
@@ -212,7 +401,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         style: context.textTheme.titleSmall?.copyWith(
           color: foregroundColor?.withOpacity(0.8) ??
               Colors.black.withOpacity(0.8),
-          fontSize: 10,
+          fontSize: 11,
           fontWeight: FontWeight.bold,
         ),
       ),

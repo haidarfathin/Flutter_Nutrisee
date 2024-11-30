@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nutrisee/core/data/model/article/listArticles.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
@@ -14,6 +15,8 @@ class DiabetesResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ListArticles listArticles = ListArticles();
+
     return Scaffold(
       backgroundColor: AppColors.whiteBG,
       appBar: AppBar(
@@ -123,84 +126,82 @@ class DiabetesResultScreen extends StatelessWidget {
                     ),
                   ),
                   const Gap(20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Artikel Terbaru",
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const Gap(8),
-                      SizedBox(
-                        height: 200,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 3,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              width: 250,
-                              margin: const EdgeInsets.only(right: 14),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 75,
-                                    decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(16),
-                                        topRight: Radius.circular(16),
-                                      ),
-                                      color: Colors.green,
-                                    ),
+                  SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: listArticles.articles.length,
+                      itemBuilder: (context, index) {
+                        final article = listArticles.articles[index];
+                        return Container(
+                          width: 250,
+                          margin: const EdgeInsets.only(right: 14),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: Colors.white,
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 75,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(16),
+                                    topRight: Radius.circular(16),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 12,
-                                      horizontal: 16,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "Sayuran Yang Cocok Untuk Pengidap Diabetes",
-                                          style: context.textTheme.bodyLarge
-                                              ?.copyWith(
+                                  image: DecorationImage(
+                                    image: NetworkImage(article['image_url']),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                  horizontal: 16,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      article['title'],
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w800,
                                           ),
-                                        ),
-                                        const Gap(8),
-                                        Text(
-                                          "Kamu harus cermat saat memilih "
-                                          "sayur dan buah untuk penderita diabetes. "
-                                          "Soalnya, tidak semua jenis buah aman buat "
-                                          "penderita diabetes,",
-                                          style: context.textTheme.bodySmall
-                                              ?.copyWith(fontSize: 10),
-                                          textAlign: TextAlign.justify,
-                                          maxLines: 3,
-                                          overflow: TextOverflow.ellipsis,
-                                        )
-                                      ],
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+                                    const Gap(8),
+                                    Text(
+                                      article['description'],
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            fontSize: 10,
+                                          ),
+                                      textAlign: TextAlign.justify,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   const Gap(20),
                   AppButton(
                     onPressed: () {
-                      context.go("/menu");
+                      context.go("/home");
                     },
                     caption: "Kembali ke Beranda",
                     useIcon: false,

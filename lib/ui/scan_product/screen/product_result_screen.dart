@@ -5,15 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nutrisee/core/data/model/firestore/user_data.dart';
 import 'package:nutrisee/core/data/model/product_nutrition.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
+import 'package:nutrisee/core/widgets/app_alert_dialog.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:nutrisee/ui/scan_product/bloc/scan_product_cubit.dart';
 import 'package:nutrisee/ui/scan_product/screen/detail_result_screen.dart';
-// import 'package:nutrisee/ui/scan_product/screen/detail_result_screen.dart';
+import 'package:nutrisee/ui/scan_product/utils/nutrition_utils.dart';
 import 'package:nutrisee/ui/scan_product/widget/examination_card.dart';
+import 'package:nutrisee/ui/scan_product/widget/medical_card.dart';
 import 'package:nutrisee/ui/scan_product/widget/nutrition_container.dart';
 
 class ProductResultScreen extends StatefulWidget {
@@ -47,7 +50,7 @@ class _ProductResultScreenState extends State<ProductResultScreen> {
               ),
               Container(
                 alignment: Alignment.center,
-                height: 400,
+                height: 450,
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -56,7 +59,8 @@ class _ProductResultScreenState extends State<ProductResultScreen> {
                 child: BlocBuilder<ScanProductCubit, ScanProductState>(
                   builder: (context, state) {
                     log("Current state: $state");
-                    if (state is AnalyzeProductLoading) {
+                    if (state is AnalyzeProductLoading ||
+                        state is GetProfileLoading) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
@@ -67,6 +71,7 @@ class _ProductResultScreenState extends State<ProductResultScreen> {
                           context,
                           state.productNutrition,
                           widget.imageFile,
+                          state.userData,
                         );
                       } else {
                         return Padding(
@@ -91,10 +96,11 @@ class _ProductResultScreenState extends State<ProductResultScreen> {
                       return Center(
                         child: Text(state.error),
                       );
+                    } else {
+                      return const Center(
+                        child: Text('No data'),
+                      );
                     }
-                    return const Center(
-                      child: Text('No data'),
-                    );
                   },
                 ),
               )
@@ -110,18 +116,93 @@ Widget contentContainer(
   BuildContext context,
   ProductNutrition nutrition,
   XFile imageFile,
+  UserData userData,
 ) {
-  var garam = nutrition.natrium! * nutrition.sajianPerKemasan!;
-  var gula = nutrition.sugar! * nutrition.sajianPerKemasan!;
-  var lemak = nutrition.saturatedFat! * nutrition.sajianPerKemasan!;
+  double garam = (nutrition.natrium! * nutrition.sajianPerKemasan!) / 1000;
+  double gula = nutrition.sugar! * nutrition.sajianPerKemasan!.toDouble();
+  double lemak = (nutrition.saturatedFat!.toDouble() *
+          nutrition.sajianPerKemasan!.toDouble()) /
+      10;
+  bool userHasDiabetes = userData.hasDiabetes;
+  bool userHasHipertensi = userData.hasHipertensi;
+  double tdeeUser = userData.tdee ?? 0;
 
   return Padding(
     padding: const EdgeInsets.all(20),
     child: CustomScrollView(
       physics: const NeverScrollableScrollPhysics(),
       slivers: [
+        if (userHasHipertensi)
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                MedicalCard(
+                  text: "Penderita Hipertensi",
+                  backgroundColor: Colors.red.shade400,
+                  foregroundColor: Colors.white,
+                ),
+                IconButton(
+                  onPressed: () {
+                    context.showCustomDialog(
+                      content: infoContentDialog(
+                        context: context,
+                        onConfirm: () => context.pop(),
+                        title: "Batas konsumsi garam harian < 1.5gr",
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.info_outline_rounded,
+                    color: Colors.white,
+                  ),
+                  color: Colors.red.shade800,
+                )
+              ],
+            ),
+          )
+        else if (userHasDiabetes)
+          SliverToBoxAdapter(
+            child: Row(
+              children: [
+                Expanded(
+                  child: MedicalCard(
+                    text: "Penderita Diabetes",
+                    backgroundColor: Colors.orange.shade500,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    context.showCustomDialog(
+                      content: infoContentDialog(
+                        context: context,
+                        onConfirm: () => context.pop(),
+                        title: "Batas konsumsi gula harian < 25gr",
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.info_rounded,
+                    size: 30,
+                  ),
+                  color: Colors.black,
+                )
+              ],
+            ),
+          )
+        else
+          SliverToBoxAdapter(
+            child: Container(),
+          ),
         SliverToBoxAdapter(
-          child: ExaminationCard(nutritionData: nutrition),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 14),
+            child: ExaminationCard(
+              nutritionData: nutrition,
+              hasHipertensi: userHasHipertensi,
+              hasDiabetes: userHasDiabetes,
+            ),
+          ),
         ),
         SliverToBoxAdapter(
           child: Padding(
@@ -130,7 +211,7 @@ Widget contentContainer(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 NutritionContainer(
-                  kandungan: gula.toDouble(),
+                  kandungan: gula,
                   title: "Gula",
                 ),
                 NutritionContainer(
@@ -138,7 +219,7 @@ Widget contentContainer(
                   title: "Lemak Jenuh",
                 ),
                 NutritionContainer(
-                  kandungan: garam.toDouble(),
+                  kandungan: garam,
                   title: "Garam",
                 ),
               ],
@@ -155,6 +236,7 @@ Widget contentContainer(
                   Expanded(
                     child: AppButton(
                       onPressed: () {
+                        NutritionUtils.stopTTS();
                         context.pop();
                       },
                       caption: "Ulangi",
@@ -172,12 +254,15 @@ Widget contentContainer(
                   Expanded(
                     child: AppButton(
                       onPressed: () {
+                        NutritionUtils.stopTTS();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => DetailResultScreen(
                               nutritionData: nutrition,
                               imageFile: imageFile,
+                              hasDiabetes: userData.hasDiabetes ?? false,
+                              hasHipertensi: userData.hasHipertensi ?? false,
                             ),
                           ),
                         );

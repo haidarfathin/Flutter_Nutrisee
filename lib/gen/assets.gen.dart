@@ -58,9 +58,17 @@ class $AssetsImagesGen {
   AssetGenImage get icHipertensi =>
       const AssetGenImage('assets/images/ic_hipertensi.png');
 
+  /// File path: assets/images/ic_history.png
+  AssetGenImage get icHistory =>
+      const AssetGenImage('assets/images/ic_history.png');
+
   /// File path: assets/images/ic_launcher.png
   AssetGenImage get icLauncher =>
       const AssetGenImage('assets/images/ic_launcher.png');
+
+  /// File path: assets/images/ic_launcher_background.png
+  AssetGenImage get icLauncherBackground =>
+      const AssetGenImage('assets/images/ic_launcher_background.png');
 
   /// File path: assets/images/ic_logo.png
   AssetGenImage get icLogo => const AssetGenImage('assets/images/ic_logo.png');
@@ -130,10 +138,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/ic_stop.png
   AssetGenImage get icStop => const AssetGenImage('assets/images/ic_stop.png');
 
-  /// File path: assets/images/ic_ukuran_celana.png
-  AssetGenImage get icUkuranCelana =>
-      const AssetGenImage('assets/images/ic_ukuran_celana.png');
-
   /// File path: assets/images/ic_veggies.png
   AssetGenImage get icVeggies =>
       const AssetGenImage('assets/images/ic_veggies.png');
@@ -180,7 +184,9 @@ class $AssetsImagesGen {
         icFood,
         icHealthyFood,
         icHipertensi,
+        icHistory,
         icLauncher,
+        icLauncherBackground,
         icLogo,
         icMale,
         icMaleCircle,
@@ -199,7 +205,6 @@ class $AssetsImagesGen {
         icScoreD,
         icSleep,
         icStop,
-        icUkuranCelana,
         icVeggies,
         icWarning,
         icWater,

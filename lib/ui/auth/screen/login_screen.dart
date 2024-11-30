@@ -27,9 +27,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController emailController =
-        TextEditingController(text: kDebugMode ? 'jaka@mail.com' : "");
+        TextEditingController(text: kDebugMode ? '1@mail.com' : "");
     final TextEditingController passwordController =
-        TextEditingController(text: kDebugMode ? 'jaka123' : "");
+        TextEditingController(text: kDebugMode ? '12345678' : "");
 
     return Scaffold(
       backgroundColor: AppColors.whiteBG,
@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: BlocConsumer<AuthCubit, AuthState>(
                     listener: (context, state) {
                       if (state is AuthSuccess) {
-                        context.go('/menu');
+                        context.go('/home');
                       } else if (state is AuthError) {
                         context.showSnackbar(state.message ?? "");
                       }

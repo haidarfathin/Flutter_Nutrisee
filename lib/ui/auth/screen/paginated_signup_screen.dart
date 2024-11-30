@@ -87,7 +87,7 @@ class _PaginatedSignupScreenState extends State<PaginatedSignupScreen> {
                     } else if (state is AuthError) {
                       context.showSnackbar(state.message ?? "");
                     } else if (state is SaveDataSuccess) {
-                      context.go("/menu");
+                      context.go(" /home");
                     }
                   },
                   child: SliverFillRemaining(

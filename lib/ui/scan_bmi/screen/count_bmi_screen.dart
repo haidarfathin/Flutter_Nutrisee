@@ -129,16 +129,14 @@ class _CountBmiScreenState extends State<CountBmiScreen> {
                       double waist =
                           double.tryParse(waistController.text) ?? 0.0;
                       var bmiResult = calculateBMI(height, weight);
-                      double whrResult = 0.0;
-                      if (waistController.text.isNotEmpty) {
-                        whrResult = calculateWHR(waist, height);
-                      } else if (heightController.text.isEmpty) {
+
+                      if (heightController.text.isEmpty) {
                         context.showSnackbar("Please Enter your Height");
                       } else if (weightController.text.isEmpty) {
                         context.showSnackbar("Please Enter your Weight");
                       } else {
-                        await context.showCustomDialog(
-                            content: loadingContentDialog(context: context));
+                        // await context.showCustomDialog(
+                        //     content: loadingContentDialog(context: context));
                         context.push(
                           '/result-bmi',
                           extra: BMI(
@@ -148,14 +146,15 @@ class _CountBmiScreenState extends State<CountBmiScreen> {
                             weight: weight,
                             waist: waist,
                             bmiResult: bmiResult,
-                            whrResult: whrResult,
+                            whrResult: calculateWHR(waist ?? 0, height),
                           ),
                         );
                       }
                     },
                     caption: "Hitung BMI",
                   ),
-                )
+                ),
+                
               ],
             ),
           )

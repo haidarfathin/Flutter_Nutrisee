@@ -24,23 +24,15 @@ class ProductNutrition {
     return 'ProductNutrition(sugar: $sugar, saturatedFat: $saturatedFat, natrium: $natrium, sajianPerKemasan: $sajianPerKemasan, takaranSaji: $takaranSaji,)';
   }
 
-  // Factory constructor to create a ProductNutrition object from a Map
   factory ProductNutrition.fromMap(Map<String, dynamic> data) {
-    num? sugar = data['gula'] as num?;
-    num? saturatedFat = data['lemak_jenuh'] as num?;
-    num? natrium = data['garam'] as num?;
-    num? takaranSaji = data['takaran_saji'] as num?;
-    num? sajianPerKemasan = data['sajian_per_kemasan'] as num?;
-    bool isNutritionFacts =
-        (takaranSaji == 0 && sajianPerKemasan == 0) ? false : true;
-
     return ProductNutrition(
-      sugar: sugar,
-      saturatedFat: saturatedFat,
-      natrium: natrium,
-      sajianPerKemasan: sajianPerKemasan,
-      takaranSaji: takaranSaji,
-      isNutritionFacts: isNutritionFacts,
+      sugar:
+          (data['gula'] as num?)?.toDouble() ?? 0.0, // Nilai default jika null
+      saturatedFat: (data['lemak_jenuh'] as num?)?.toDouble() ?? 0.0,
+      natrium: (data['garam'] as num?)?.toDouble() ?? 0.0,
+      takaranSaji: (data['takaran_saji'] as num?)?.toDouble() ?? 1.0,
+      sajianPerKemasan: (data['sajian_per_kemasan'] as num?)?.toDouble() ?? 1.0,
+      isNutritionFacts: data['isNutritionFacts'] == true,
     );
   }
 

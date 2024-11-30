@@ -18,9 +18,9 @@ class NutritionContainer extends StatelessWidget {
       case 'gula':
         return 50.0;
       case 'garam':
-        return 2000.0;
-      case 'lemak':
-        return 13.0;
+        return 2.0;
+      case 'lemak jenuh':
+        return 3.0;
       default:
         return 100.0;
     }
@@ -73,7 +73,7 @@ class NutritionContainer extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      kandungan.toInt().toString(),
+                      formatAngka(kandungan),
                       style: GoogleFonts.bebasNeue(
                         color: Colors.black54,
                         fontSize: 45,
@@ -90,6 +90,14 @@ class NutritionContainer extends StatelessWidget {
     );
   }
 
+  String formatAngka(double nilai) {
+    if (nilai == nilai.toInt()) {
+      return nilai.toInt().toString();
+    }
+
+    return nilai.toStringAsFixed(1);
+  }
+
   Color examineBackground(double kandungan, String title) {
     if (title == "Gula") {
       if (kandungan >= 10 && kandungan < 15) {
@@ -100,17 +108,17 @@ class NutritionContainer extends StatelessWidget {
         return Colors.green.shade400;
       }
     } else if (title == "Garam") {
-      if (kandungan >= 200 && kandungan < 1000) {
+      if (kandungan >= 0.2 && kandungan < 1) {
         return Colors.orange.shade400;
-      } else if (kandungan >= 1000) {
+      } else if (kandungan >= 1) {
         return Colors.red.shade400;
       } else {
         return Colors.green.shade400;
       }
     } else if (title == "Lemak Jenuh") {
-      if (kandungan >= 2 && kandungan < 5) {
+      if (kandungan >= 2 && kandungan < 3) {
         return Colors.orange.shade400;
-      } else if (kandungan >= 5) {
+      } else if (kandungan >= 3) {
         return Colors.red.shade400;
       } else {
         return Colors.green.shade400;

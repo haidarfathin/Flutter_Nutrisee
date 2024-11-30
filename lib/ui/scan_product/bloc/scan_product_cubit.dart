@@ -12,6 +12,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:nutrisee/core/config/config.dart';
 import 'package:nutrisee/core/data/model/firestore/barcode_product.dart';
 import 'package:nutrisee/core/data/model/firestore/scanned_products.dart';
+import 'package:nutrisee/core/data/model/firestore/user_data.dart';
 import 'package:nutrisee/core/data/model/product_nutrition.dart';
 import 'package:nutrisee/core/data/prompt.dart';
 import 'package:nutrisee/core/utils/session.dart';
@@ -58,7 +59,18 @@ class ScanProductCubit extends Cubit<ScanProductState> {
       final productNutrition = ProductNutrition.fromMap(jsonResponse);
       log(productNutrition.toString());
 
-      emit(AnalyzeProductSuccess(productNutrition));
+      //get user data
+      final userId = await session.read(Config.getUser);
+      log("userid $userId");
+
+      if (userId != null) {
+        DocumentSnapshot userDoc =
+            await firestore.collection("users").doc(userId).get();
+        UserData userData =
+            UserData.fromMap(userDoc.data() as Map<String, dynamic>);
+        log(userData.toString());
+        emit(AnalyzeProductSuccess(productNutrition, userData));
+      }
     } catch (e) {
       emit(AnalyzeProductError("Gagal mengekstrak nutrisi dari gambar: $e"));
     }
@@ -69,9 +81,10 @@ class ScanProductCubit extends Cubit<ScanProductState> {
       required bool isSugarHighest,
       required String name,
       required String score,
-      required double natrium,
+      required double salt,
       required double sugar,
       required double fat,
+      required double sajian,
       required DateTime timestamp}) async {
     emit(ProductAddLoading());
     try {
@@ -100,7 +113,9 @@ class ScanProductCubit extends Cubit<ScanProductState> {
         isSugarHighest: isSugarHighest,
         name: name,
         score: score,
-        natrium: natrium,
+        salt: salt,
+        totalSalt: salt * sajian,
+        totalSugar: sugar * sajian,
         sugar: sugar,
         fat: fat,
         timeStamp: timestamp,

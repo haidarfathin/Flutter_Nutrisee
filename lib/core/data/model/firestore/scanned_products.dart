@@ -5,8 +5,10 @@ class ScannedProduct {
   final bool isSugarHighest;
   final String name;
   final String score;
-  final num natrium;
+  final num salt;
+  final double totalSalt;
   final num sugar;
+  final double totalSugar;
   final num fat;
   final DateTime timeStamp;
 
@@ -15,8 +17,10 @@ class ScannedProduct {
     required this.isSugarHighest,
     required this.name,
     required this.score,
-    required this.natrium,
+    required this.salt,
     required this.sugar,
+    required this.totalSugar,
+    required this.totalSalt,
     required this.fat,
     required this.timeStamp,
   });
@@ -27,10 +31,12 @@ class ScannedProduct {
       'isSugarHighest': isSugarHighest,
       'name': name,
       'score': score,
-      'natrium': natrium,
+      'salt': salt,
       'sugar': sugar,
       'fat': fat,
       'timeStamp': timeStamp,
+      'totalSugar': totalSugar,
+      'totalSalt': totalSalt,
     };
   }
 
@@ -40,10 +46,12 @@ class ScannedProduct {
       isSugarHighest: map['isSugarHighest'],
       name: map['name'],
       score: map['score'],
-      natrium: map['natrium'],
+      salt: map['salt'],
       sugar: map['sugar'],
       fat: map['fat'],
       timeStamp: (map['timeStamp'] as Timestamp).toDate(),
+      totalSugar: map['totalSugar'],
+      totalSalt: map['totalSalt'],
     );
   }
 }

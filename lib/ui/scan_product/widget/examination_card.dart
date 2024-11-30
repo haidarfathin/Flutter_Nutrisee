@@ -6,14 +6,17 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nutrisee/core/data/model/product_nutrition.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
-import 'package:nutrisee/gen/assets.gen.dart';
-import 'package:vibration/vibration.dart';
+import 'package:nutrisee/ui/scan_product/utils/nutrition_utils.dart';
 
 class ExaminationCard extends StatefulWidget {
   final ProductNutrition nutritionData;
+  final bool hasHipertensi;
+  final bool hasDiabetes;
   const ExaminationCard({
     super.key,
     required this.nutritionData,
+    required this.hasHipertensi,
+    required this.hasDiabetes,
   });
 
   @override
@@ -36,10 +39,25 @@ class _ExaminationCardState extends State<ExaminationCard> {
 
   @override
   Widget build(BuildContext context) {
-    int gula = widget.nutritionData.sugar?.toInt() ?? 0;
-    int garam = widget.nutritionData.natrium?.toInt() ?? 0;
-    int lemak = widget.nutritionData.saturatedFat?.toInt() ?? 0;
-    int sajian = widget.nutritionData.sajianPerKemasan?.toInt() ?? 0;
+    double gula = widget.nutritionData.sugar?.toDouble() ?? 0;
+    double garam = widget.nutritionData.natrium?.toDouble() ?? 0;
+    double lemak = widget.nutritionData.saturatedFat?.toDouble() ?? 0;
+    double sajian = widget.nutritionData.sajianPerKemasan?.toDouble() ?? 0;
+
+    if (gula * sajian > (garam * sajian / 1000)) {
+      setState(() {
+        kandungan = "Gula";
+        nilaiKandungan = gula * sajian;
+        persamaan = "${(gula * sajian / 15).ceil()} sdm";
+      });
+    } else {
+      setState(() {
+        kandungan = "Garam";
+        nilaiKandungan = garam * sajian / 1000;
+        persamaan = "${((garam * sajian / 1000) / 5).ceil()} sdt";
+      });
+    }
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return Row(
@@ -48,10 +66,12 @@ class _ExaminationCardState extends State<ExaminationCard> {
           children: [
             Flexible(
               flex: 1,
-              child: examineImage(
+              child: NutritionUtils.examineImage(
                 garam,
                 gula,
                 sajian,
+                widget.hasHipertensi,
+                widget.hasDiabetes,
               ),
             ),
             const Gap(14),
@@ -61,7 +81,13 @@ class _ExaminationCardState extends State<ExaminationCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    examineNutritionTitle(garam, gula, sajian),
+                    NutritionUtils.examineNutritionTitle(
+                      garam,
+                      gula,
+                      sajian,
+                      widget.hasHipertensi,
+                      widget.hasDiabetes,
+                    ),
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
@@ -69,9 +95,15 @@ class _ExaminationCardState extends State<ExaminationCard> {
                   ),
                   const Gap(4),
                   Text(
-                    examineNutritionTitle(garam, gula, sajian) !=
+                    NutritionUtils.examineNutritionTitle(
+                              garam,
+                              gula,
+                              sajian,
+                              widget.hasHipertensi,
+                              widget.hasDiabetes,
+                            ) !=
                             "Produk Aman Dikonsumsi"
-                        ? "Kandungan $kandungan dalam satu sajian pada produk ini "
+                        ? "Kandungan $kandungan pada produk ini "
                             "sebesar ${nilaiKandungan.toInt()} gr ($persamaan)!"
                         : "Produk ini mengandung $nilaiKandungan $kandungan yang tergolong "
                             "cukup rendah untuk dikonsumsi. Tetap jaga asupan gula "
@@ -97,7 +129,7 @@ class _ExaminationCardState extends State<ExaminationCard> {
       return "gr";
     }
   }
-
+/*
   Widget examineImage(int garamValue, int gulaValue, int sajian) {
     double garam = (garamValue / 1000.0) * sajian;
     double gula = gulaValue.toDouble() * sajian;
@@ -183,9 +215,6 @@ class _ExaminationCardState extends State<ExaminationCard> {
       return "Produk Aman Dikonsumsi";
     }
   }
-}
 
-double roundDouble(double value, int places) {
-  double mod = pow(10.0, places).toDouble();
-  return ((value * mod).round().toDouble() / mod);
+*/
 }

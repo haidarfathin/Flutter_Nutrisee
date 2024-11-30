@@ -8,7 +8,7 @@
 
 
    <application
-        android:label="nutrisee"
+        android:label="Glukosaw"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

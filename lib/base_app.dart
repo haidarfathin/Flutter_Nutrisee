@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 class BaseApp extends StatefulWidget {
   final Widget? child;
 
-  const BaseApp({Key? key, this.child}) : super(key: key);
+  const BaseApp({super.key, this.child});
 
   @override
   State<BaseApp> createState() => _BaseAppState();

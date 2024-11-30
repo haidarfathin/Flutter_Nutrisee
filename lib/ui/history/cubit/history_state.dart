@@ -12,24 +12,42 @@ class HistoryInitial extends HistoryState {}
 class GetHistoryLoading extends HistoryState {}
 
 class GetHistorySuccess extends HistoryState {
+  final int totalScanned;
+  final int totalHighSugar;
+  final int totalHighSalt;
+  final double todaySugar;
+  final double todaySalt;
+  final double weeklySugar;
+  final double weeklySalt;
   final List<ScannedProduct> scannedProduct;
-  final int? totalScanned;
-  final int? totalHighSugar;
-  final int? totalHighNatrium;
+  final List<ScannedProduct> todayScannedProducts;
+  final Map<String, List<ScannedProduct>> weeklyGroupedProducts;
 
-  GetHistorySuccess(
-    this.totalScanned,
-    this.totalHighSugar,
-    this.totalHighNatrium, {
+  const GetHistorySuccess({
+    required this.totalScanned,
+    required this.totalHighSugar,
+    required this.totalHighSalt,
+    required this.todaySugar,
+    required this.todaySalt,
+    required this.weeklySugar,
+    required this.weeklySalt,
     required this.scannedProduct,
+    required this.todayScannedProducts,
+    required this.weeklyGroupedProducts,
   });
 
   @override
   List<Object> get props => [
+        totalScanned,
+        totalHighSugar,
+        totalHighSalt,
+        todaySugar,
+        todaySalt,
+        weeklySalt,
+        weeklySugar,
         scannedProduct,
-        totalScanned ?? 0,
-        totalHighNatrium ?? 0,
-        totalHighSugar ?? 0,
+        todayScannedProducts,
+        weeklyGroupedProducts,
       ];
 }
 
@@ -39,6 +57,5 @@ class GetHistoryError extends HistoryState {
   const GetHistoryError({required this.message});
 
   @override
-  // TODO: implement props
   List<Object> get props => [message];
 }

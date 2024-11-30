@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:nutrisee/ui/article/screen/article_screen.dart';
 import 'package:nutrisee/ui/auth/screen/login_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nutrisee/ui/auth/screen/paginated_signup_screen.dart';
@@ -9,13 +10,12 @@ import 'package:nutrisee/ui/count_calories/screen/result_calories_screen.dart';
 import 'package:nutrisee/ui/diabetes_risk/screen/diabetes_result_screen.dart';
 import 'package:nutrisee/ui/diabetes_risk/screen/diabetes_risk_screen.dart';
 import 'package:nutrisee/ui/diabetes_risk/screen/paginated_diabetes_test.dart';
+import 'package:nutrisee/ui/history/screen/history_screen.dart';
 import 'package:nutrisee/ui/home/screen/home_screen.dart';
 import 'package:nutrisee/ui/meds_reminder/screen/meds_reminder_screen.dart';
-import 'package:nutrisee/ui/menu_screen.dart';
 import 'package:nutrisee/ui/profile/screen/profile_screen.dart';
 import 'package:nutrisee/ui/scan_bmi/screen/count_bmi_screen.dart';
 import 'package:nutrisee/ui/scan_bmi/screen/result_bmi_screen.dart';
-import 'package:nutrisee/ui/scan_bmi/screen/scan_bmi_screen.dart';
 import 'package:nutrisee/ui/scan_product/screen/product_result_screen.dart';
 import 'package:nutrisee/ui/scan_product/screen/scan_product_screen.dart';
 import 'splash/screen/splash_screen.dart';
@@ -24,10 +24,6 @@ var router = GoRouter(routes: [
   GoRoute(
     path: '/',
     builder: (context, state) => const SplashScreen(),
-  ),
-  GoRoute(
-    path: '/menu',
-    builder: (context, state) => const MenuScreen(),
   ),
   GoRoute(
     path: '/login',
@@ -44,6 +40,14 @@ var router = GoRouter(routes: [
   GoRoute(
     path: '/profile',
     builder: (context, state) => const ProfileScreen(),
+  ),
+  GoRoute(
+    path: '/article',
+    builder: (context, state) => const ArticleScreen(),
+  ),
+  GoRoute(
+    path: '/history',
+    builder: (context, state) => const HistoryScreen(),
   ),
   GoRoute(
     path: '/diabetes-risk',
@@ -88,10 +92,6 @@ var router = GoRouter(routes: [
         dataCalories: data,
       );
     },
-  ),
-  GoRoute(
-    path: "/bmi",
-    builder: (context, state) => const ScanBmiScreen(),
   ),
   GoRoute(
     path: "/count-bmi",

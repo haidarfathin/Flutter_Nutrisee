@@ -34,20 +34,33 @@ Widget loadingContentDialog({
   String message = "Memuat",
 }) {
   return Container(
-    margin: const EdgeInsets.all(20),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(height: 24),
-        const CircularProgressIndicator(),
-        const SizedBox(height: 16),
-        Text(message),
-        const SizedBox(height: 24),
-      ],
-    ),
-  );
+      width: 80,
+      height: 80,
+      margin: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.green.shade100,
+      ),
+      child: const Center(
+        child: CircularProgressIndicator(
+          color: AppColors.primary,
+        ),
+      ));
 }
+
+// Column(
+//       mainAxisSize: MainAxisSize.min,
+//       crossAxisAlignment: CrossAxisAlignment.center,
+//       children: [
+//         const SizedBox(height: 24),
+//         const CircularProgressIndicator(
+//           color: AppColors.primary,
+//         ),
+//         const SizedBox(height: 16),
+//         Text(message),
+//         const SizedBox(height: 24),
+//       ],
+//     ),
 
 Widget alertContentDialog({
   required BuildContext context,
@@ -120,7 +133,37 @@ Widget alertContentDialog({
 }
 
 Widget infoContentDialog({
-  required ImageProvider image,
+  required BuildContext context,
+  required String title,
+  required Function() onConfirm,
+}) {
+  return Container(
+    margin: const EdgeInsets.all(20),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          title,
+          style: context.textTheme.bodyLarge?.copyWith(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textBlack,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 30),
+        AppButton(
+          onPressed: onConfirm,
+          color: AppColors.primary,
+          caption: "OK",
+        ),
+      ],
+    ),
+  );
+}
+
+Widget sizeContentDialog({
   required BuildContext context,
   required String title,
   required Function() onConfirm,

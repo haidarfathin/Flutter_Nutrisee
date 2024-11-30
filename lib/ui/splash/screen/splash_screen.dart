@@ -22,8 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void _checkLoginStatus() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      // User is signed in, navigate to the menu
-      context.go('/menu');
+      context.go('/home');
     } else {
       // No user is signed in, navigate to the login screen
       Future.delayed(const Duration(seconds: 1), () => context.go('/login'));

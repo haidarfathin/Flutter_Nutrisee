@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:nutrisee/core/utils/theme_extension.dart';
 import 'package:nutrisee/core/utils/translation.dart';
+import 'package:nutrisee/core/widgets/app_alert_dialog.dart';
 import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
+import 'package:nutrisee/core/widgets/app_snackbar.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
 import 'package:intl/intl.dart';
+import 'package:nutrisee/ui/count_calories/cubit/calorie_cubit.dart';
 
 class ResultCaloriesScreen extends StatefulWidget {
   final Map<String, double> dataCalories;
@@ -109,7 +113,7 @@ class _ResultCaloriesScreenState extends State<ResultCaloriesScreen> {
                               ),
                               TextSpan(
                                 text:
-                                    "${NumberFormat('#,###').format(widget.dataCalories['BMR']!.toInt())} kkal",
+                                    "${NumberFormat('#,###').format(bmrValue)} kkal",
                                 style: TextStyle(
                                   color: Colors.orange.shade800,
                                   fontWeight: FontWeight.w800,
@@ -357,7 +361,7 @@ class _ResultCaloriesScreenState extends State<ResultCaloriesScreen> {
                           child: AppButton(
                             useIcon: false,
                             onPressed: () {
-                              context.go('/menu');
+                              context.go(' /home');
                             },
                             color: Colors.transparent,
                             border: Border.all(
@@ -374,12 +378,47 @@ class _ResultCaloriesScreenState extends State<ResultCaloriesScreen> {
                         ),
                         const Gap(12),
                         Expanded(
-                          child: AppButton(
-                            useIcon: false,
-                            onPressed: () {
-                              context.go('/menu');
-                            },
-                            caption: "Simpan",
+                          child: BlocProvider(
+                            create: (context) => CalorieCubit(),
+                            child: BlocConsumer<CalorieCubit, CalorieState>(
+                              listener: (context, state) {
+                                if (state is SaveCalorieLoading) {
+                                  context.showCustomDialog(
+                                    content: loadingContentDialog(
+                                        context: context,
+                                        message: "Menyimpan produk"),
+                                  );
+                                } else if (state is SaveCalorieSuccess) {
+                                  context.showCustomDialog(
+                                    content: infoContentDialog(
+                                      context: context,
+                                      title:
+                                          "BMR dan TDEE anda telah diupdate!",
+                                      onConfirm: () {
+                                        context.go('/home');
+                                      },
+                                    ),
+                                  );
+                                } else if (state is SaveCalorieError) {
+                                  Navigator.of(context).pop();
+                                  context
+                                      .showSnackbar(state.message ?? "error");
+                                }
+                              },
+                              builder: (context, state) {
+                                return AppButton(
+                                  useIcon: false,
+                                  onPressed: () {
+                                    context
+                                        .read<CalorieCubit>()
+                                        .saveUserCalories(
+                                            bmr: bmrValue.toDouble(),
+                                            tdee: tdeeValue.toDouble());
+                                  },
+                                  caption: "Simpan",
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ],

@@ -29,13 +29,18 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
   TextEditingController birthDateController = TextEditingController();
 
   String? _selectedGender;
-  final ValueNotifier<bool?> _secondRelativeDiabetes = ValueNotifier<bool?>(null);
-  final ValueNotifier<bool?> _firstRelativeDiabetes = ValueNotifier<bool?>(null);
-  final ValueNotifier<bool?> _historyHighBloodGlucose = ValueNotifier<bool?>(null);
+  final ValueNotifier<bool?> _secondRelativeDiabetes =
+      ValueNotifier<bool?>(null);
+  final ValueNotifier<bool?> _firstRelativeDiabetes =
+      ValueNotifier<bool?>(null);
+  final ValueNotifier<bool?> _historyHighBloodGlucose =
+      ValueNotifier<bool?>(null);
   final ValueNotifier<bool?> _consumeBloodPressureMedication =
       ValueNotifier<bool?>(null);
-  final ValueNotifier<bool?> _frequentPhysicalActivty = ValueNotifier<bool?>(null);
-  final ValueNotifier<bool?> _dailyConsumptionVeggies = ValueNotifier<bool?>(null);
+  final ValueNotifier<bool?> _frequentPhysicalActivty =
+      ValueNotifier<bool?>(null);
+  final ValueNotifier<bool?> _dailyConsumptionVeggies =
+      ValueNotifier<bool?>(null);
 
   final List<String> lingkarPinggangOptions = [
     '< 80cm',
@@ -466,8 +471,7 @@ class _PaginatedDiabetesTestState extends State<PaginatedDiabetesTest> {
             InkWell(
               onTap: () {
                 context.showCustomDialog(
-                  content: infoContentDialog(
-                    image: Assets.images.icUkuranCelana.provider(),
+                  content: sizeContentDialog(
                     context: context,
                     title: "Cara Mengetahui Lingkar Pinggang",
                     onConfirm: () {

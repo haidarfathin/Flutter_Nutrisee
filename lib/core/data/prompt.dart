@@ -28,14 +28,14 @@ jumlah gula/sugar, garam/sodium, lemak jenuh, takaran saji dan jumlah sajian
 per kemasan yang tertera pada gambar tabel nilai gizi yang diberikan. 
 Berikan saran terkait kandungan nutrisi tersebut dengan maksimal 20 kata.
 
-berikan respon dalam format JSON dengan struktur sebagai berikut:
+berikan respon dalam format JSON dengan struktur dan tipe data sebagai berikut:
 {
   "isNutritionFacts":true,
-  "gula": total gula/sugar(int),
-  "lemak_jenuh": total saturated fat/lemak jenuh (int),
-  "garam": total garam/natrium/sodium (int),
-  "takaran_saji": nilai takaran saji (int),
-  "sajian_per_kemasan": nilai sajian per kemasan (int),
+  "gula": total gula/sugar(double),
+  "lemak_jenuh": total saturated fat/lemak jenuh (double),
+  "garam": total garam/natrium/sodium (double),
+  "takaran_saji": nilai takaran saji (double),
+  "sajian_per_kemasan": nilai sajian per kemasan (double),
 }
 
 jika anda tidak mendeteksi kata informasi nilai gizi,

@@ -43,12 +43,12 @@ class ScanItem extends StatelessWidget {
                 Gap(4),
                 data.isSugarHighest
                     ? Text(
-                        "Gula: ${data.sugar}gr",
+                        "Gula: ${data.totalSugar}gr",
                         style: context.textTheme.bodySmall
                             ?.copyWith(fontWeight: FontWeight.w600),
                       )
                     : Text(
-                        "Garam: ${data.natrium}mg",
+                        "Garam: ${data.salt}mg",
                         style: context.textTheme.bodySmall
                             ?.copyWith(fontWeight: FontWeight.w600),
                       ),

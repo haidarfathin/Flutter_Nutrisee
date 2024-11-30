@@ -12,7 +12,7 @@ import 'package:nutrisee/core/widgets/app_button.dart';
 import 'package:nutrisee/core/widgets/app_colors.dart';
 import 'package:nutrisee/core/widgets/app_theme.dart';
 import 'package:nutrisee/gen/assets.gen.dart';
-import 'package:nutrisee/ui/menu_screen.dart';
+//
 import 'package:nutrisee/ui/profile/widget/gauge_bmi.dart';
 import 'package:nutrisee/ui/scan_bmi/bloc/scan_bmi_bloc.dart';
 import 'package:nutrisee/ui/scan_bmi/screen/count_bmi_screen.dart';
@@ -77,7 +77,7 @@ class _ResultBmiScreenState extends State<ResultBmiScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Gap(20),
+                  const Gap(20),
                   Stack(
                     alignment: Alignment.center,
                     children: [
@@ -135,14 +135,15 @@ class _ResultBmiScreenState extends State<ResultBmiScreen> {
                     weight: widget.bmiData.weight,
                     waist: widget.bmiData.waist,
                   ),
-                  Gap(20),
+                  const Spacer(),
                   AppButton(
                     onPressed: () {
-                      context.go('/menu');
+                      context.go('/home');
                     },
                     caption: "Kembali ke Beranda",
                     useIcon: false,
-                  )
+                  ),
+                  const Gap(14),
                 ],
               ),
             ),
@@ -172,7 +173,7 @@ class _ResultBmiScreenState extends State<ResultBmiScreen> {
             ),
             child: Assets.images.icBulb.image(),
           ),
-          Gap(12),
+          const Gap(12),
           Expanded(
             child: Text(
               descriptionResult,

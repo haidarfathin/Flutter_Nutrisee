@@ -13,8 +13,9 @@ class AnalyzeProductLoading extends ScanProductState {}
 
 class AnalyzeProductSuccess extends ScanProductState {
   final ProductNutrition productNutrition;
+  final UserData userData;
 
-  const AnalyzeProductSuccess(this.productNutrition);
+  const AnalyzeProductSuccess(this.productNutrition, this.userData);
 
   @override
   List<Object> get props => [productNutrition];
@@ -57,6 +58,26 @@ class FetchProductError extends ScanProductState {
   final String message;
 
   const FetchProductError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+class GetProfileLoading extends ScanProductState {}
+
+class GetProfileSuccess extends ScanProductState {
+  final UserData userData;
+
+  const GetProfileSuccess(this.userData);
+
+  @override
+  List<Object> get props => [userData];
+}
+
+class GetProfileError extends ScanProductState {
+  final String message;
+
+  const GetProfileError(this.message);
 
   @override
   List<Object> get props => [message];

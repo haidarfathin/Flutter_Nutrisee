@@ -23,7 +23,7 @@ dependencies:
   flutter_bloc: ^8.1.1
   flutter_gemini: ^2.0.4
   flutter_image_compress: ^2.3.0
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.1
   flutter_local_notifications: ^17.1.2
   flutter_localizations:
     sdk: flutter
@@ -34,7 +34,6 @@ dependencies:
   go_router: ^14.1.4
   google_fonts: ^6.2.1
   google_generative_ai: ^0.4.6
-  google_nav_bar: ^5.0.6
   gradient_borders: ^1.0.0
   im_stepper: ^1.0.1+1
   image_picker: ^1.0.4
@@ -68,11 +67,11 @@ flutter:
 
 flutter_launcher_icons:
   image_path_android: "assets/images/ic_launcher.png"
-  image_path_ios: "assets/images/ic_launcher_1024.png"
+  image_path_ios: "assets/images/ic_launcher.png"
   android: true # can specify file name here e.g. "ic_launcher"
   ios: true # can specify file name here e.g. "My-Launcher-Icon"
   adaptive_icon_background: "assets/images/ic_launcher_background.png" # only available for Android 8.0 devices and above
-  adaptive_icon_foreground: "assets/images/ic_launcher_foreground.png" # only available for Android 8.0 devices and above
+  adaptive_icon_foreground: "assets/images/ic_launcher.png" # only available for Android 8.0 devices and above
   min_sdk_android: 21 # android min sdk min:16, default 21
   remove_alpha_ios: true
   background_color_ios: "#FFFFFF"

@@ -30,3 +30,15 @@ class GetProfileError extends ProfileState {
   // TODO: implement props
   List<Object> get props => [message ?? ""];
 }
+
+class ChangeSickLoading extends ProfileState {}
+
+class ChangeSickSuccess extends ProfileState {}
+
+class ChangeSickError extends ProfileState {
+  final String? message;
+
+  const ChangeSickError({required this.message});
+  @override
+  List<Object> get props => [message ?? ""];
+}
